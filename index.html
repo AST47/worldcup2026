@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GBC7BRC5X8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GBC7BRC5X8');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FIFA World Cup 2026</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/twemoji.min.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -21,12 +29,19 @@ const T = {
     subtitle: "كندا · المكسيك · الولايات المتحدة · 11 يونيو – 19 يوليو",
     tabGroups: "دور المجموعات",
     tabKnockout: "مرحلة خروج المغلوب",
+    tabAbout: "حول",
     group: "المجموعة",
     team: "المنتخب",
     lost: "خ", drawn: "ت", won: "ف", pts: "نق", gd: "فا", played: "ل",
     notPlayed: "لم تُلعب بعد",
     knockoutNote: "يُحدَّث الجدول بعد كل مباراة",
     koFooter: "أسماء المنتخبات في دور الإقصاء تُضاف تباعاً بعد انتهاء دور المجموعات",
+    dedicationL1: "إهداء إلى أبي ومعلمي الأول — محمد زهدي ❤️",
+    dedicationL2: "من علّمني كيف تقرأ جداول المباريات وكيف يُبنى نظام نهائيات كأس العالم لكرة القدم ⚽",
+    aboutBody: "مرحبًا بكم في تطبيق تتبع بطولة كأس العالم لكرة القدم ٢٠٢٦. يتيح لكم هذا التطبيق متابعة المجموعات، نتائج المباريات، وجداول الترتيب بالإضافة إلى شجرة الأدوار الإقصائية المحدثة ديناميكيًا طوال فترة البطولة.",
+    madeBy: "صُنع بواسطة ",
+    authorName: "Ahmad Saleh Tuffaha",
+    cvBtn: "🔍 استعرض السيرة الذاتية للمطور ←",
     final: "النهائي", third: "مباراة الثالث",
     r32: "دور الـ32", r16: "دور الـ16", qf: "ربع النهائي", sf: "نصف النهائي",
     unknown: "؟",
@@ -61,7 +76,6 @@ const T = {
       "NRG Stadium, Houston": "NRG ستيديوم، هيوستن",
       "AT&T Stadium, Arlington": "AT&T ستيديوم، أرلينجتون",
       "Arrowhead Stadium, Kansas City": "أروهيد ستيديوم، كانساس سيتي",
-      "Lincoln Financial, Philadelphia": "لينكولن فاينانشيال، فيلاديلفيا",
     },
     months: { "Jun": "يونيو", "Jul": "يوليو" },
   },
@@ -71,12 +85,19 @@ const T = {
     subtitle: "Canada · Mexico · United States · June 11 – July 19",
     tabGroups: "Group Stage",
     tabKnockout: "Knockout Stage",
+    tabAbout: "About",
     group: "Group",
     team: "Team",
     lost: "L", drawn: "D", won: "W", pts: "Pts", gd: "GD", played: "P",
     notPlayed: "Not played",
     knockoutNote: "Updated after every match",
     koFooter: "Knockout teams will be added after the group stage concludes",
+    dedicationL1: "Dedicated to my father and first teacher — Muhammad Zuhdi ❤️",
+    dedicationL2: "The one who taught me how to read match tables and how the World Cup finals are structured ⚽",
+    aboutBody: "Welcome to the FIFA World Cup 2026 tournament tracker app. Follow live standings, groups, individual match schedules, and a dynamically linked knockout bracket layout as the tournament results progress.",
+    madeBy: "Made by ",
+    authorName: "Ahmad Saleh Tuffaha",
+    cvBtn: "🔍 View Developer's Portfolio & CV →",
     final: "Final", third: "Third Place",
     r32: "Round of 32", r16: "Round of 16", qf: "Quarter-finals", sf: "Semi-finals",
     unknown: "?",
@@ -120,12 +141,19 @@ const T = {
     subtitle: "Kanada · Meksika · Amerika Birleşik Devletleri · 11 Haziran – 19 Temmuz",
     tabGroups: "Grup Aşaması",
     tabKnockout: "Eleme Aşaması",
+    tabAbout: "Hakkında",
     group: "Grup",
     team: "Takım",
     lost: "M", drawn: "B", won: "G", pts: "Puan", gd: "AG", played: "O",
     notPlayed: "Oynanmadı",
     knockoutNote: "Her maçtan sonra güncellenir",
     koFooter: "Eleme turu takımları grup aşaması bittikten sonra eklenecektir",
+    dedicationL1: "Babama ve ilk öğretmenime ithaf edilmiştir — Muhammad Zuhdi ❤️",
+    dedicationL2: "Bana maç tablolarını okumayı ve Dünya Kupası finallerinin nasıl yapılandırıldığını öğreten kişi ⚽",
+    aboutBody: "FIFA Dünya Kupası 2026 turnuva takip uygulamasına hoş geldiniz. Turnuva sonuçları ilerledikçe canlı puan durumlarını, grupları, bireysel maç programlarını ve dinamik olarak bağlantılı eleme aşaması tablosunu takip edin.",
+    madeBy: "Tarafından yapıldı ",
+    authorName: "Ahmad Saleh Tuffaha",
+    cvBtn: "🔍 Geliştiricinin Özgeçmişini Görüntüle →",
     final: "Final", third: "Üçüncülük Maçı",
     r32: "Son 32", r16: "Son 16", qf: "Çeyrek Final", sf: "Yarı Final",
     unknown: "?",
@@ -352,8 +380,6 @@ function calcStandings(groupKey, lang) {
   return st;
 }
 
-// ─── KO placeholder labels ────────────────────────────────────
-// label(lang, type, group) → localized string
 function koLabel(lang, type, group) {
   if (lang === "ar") {
     if (type === "W")  return `أول المجموعة ${group}`;
@@ -371,7 +397,6 @@ function koLabel(lang, type, group) {
   return "?";
 }
 
-// Each slot: { id, homeType, homeGroup, awayType, awayGroup, home, away, hg, ag, date, time, venue }
 const mkP = (id, homeType, homeGroup, awayType, awayGroup, date="", time="", venue="") => ({
   id, homeType, homeGroup, awayType, awayGroup,
   home:"", away:"", hg:null, ag:null, date, time, venue
@@ -434,7 +459,6 @@ const getWinner = m => {
   return null;
 };
 
-// ─── KO Card ─────────────────────────────────────────────────
 function KOCard({ match, accent, lang }) {
   const t = T[lang];
   const ac = accent || "#4a9eff";
@@ -532,7 +556,7 @@ function SymmetricBracket({ lang }) {
           ))}
           <div style={{ width:CENTER_W, flexShrink:0, height:TOTAL_H, display:"flex", flexDirection:"column",
             alignItems:"center", justifyContent:"center", gap:20, margin:`0 ${GAP}px` }}>
-            <div style={{ fontSize:10, color:"#f1c40f", fontWeight:700 }}>🏆 {t.final}</div>
+            <div style={{ fontSize:10, color:"#f1c40f", fontWeight:700 }}>{t.final}</div>
             <KOCard match={KO.final[0]} accent="#f1c40f" lang={lang}/>
             <div style={{ width:"70%", height:1, background:"var(--border)" }}/>
             <div style={{ fontSize:10, color:"#cd7f32", fontWeight:600 }}>🥉 {t.third}</div>
@@ -549,7 +573,6 @@ function SymmetricBracket({ lang }) {
   );
 }
 
-// ─── Group Card ──────────────────────────────────────────────
 function GroupCard({ groupKey, color, lang }) {
   const [open, setOpen] = useState(false);
   const t = T[lang];
@@ -643,7 +666,6 @@ function GroupCard({ groupKey, color, lang }) {
   );
 }
 
-// ─── App ─────────────────────────────────────────────────────
 const CSS_VARS = `
   :root {
     --bg:        #ffffff;
@@ -691,6 +713,21 @@ const CSS_VARS = `
   }
   * { box-sizing: border-box; }
   body { margin: 0; }
+  img.emoji { height: 1em; width: 1em; vertical-align: -0.1em; }
+
+  /* أنيميشن نبض الزر المخصص */
+  @keyframes cv-pulse {
+    0% { transform: scale(1); box-shadow: 0 2px 8px rgba(9, 105, 218, 0.15); }
+    50% { transform: scale(1.03); box-shadow: 0 4px 14px rgba(9, 105, 218, 0.35); }
+    100% { transform: scale(1); box-shadow: 0 2px 8px rgba(9, 105, 218, 0.15); }
+  }
+  .pulsing-cv-btn {
+    animation: cv-pulse 2s infinite ease-in-out;
+  }
+  .pulsing-cv-btn:hover {
+    animation-play-state: paused;
+    filter: brightness(1.08);
+  }
 `;
 
 function App() {
@@ -704,12 +741,11 @@ function App() {
       <div dir={t.dir} style={{ fontFamily:"'Segoe UI',Tahoma,Arial,sans-serif", background:"var(--bg)", minHeight:"100vh", color:"var(--text)" }}>
         {/* Header */}
         <div style={{ background:"var(--header-bg)", borderBottom:"1px solid var(--border)", padding:"14px 20px",
-          display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:10 }}>
+          display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:10 }}>
           <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-            <span style={{ fontSize:28 }}>🏆</span>
             <div>
-              <div style={{ fontSize:19, fontWeight:700, color:"var(--header-text)", letterSpacing:.5 }}>{t.title}</div>
-              <div style={{ fontSize:11, color:"var(--header-sub)" }}>{t.subtitle}</div>
+              <div style={{ fontSize:19, fontWeight:700, color:"var(--header-text)", letterSpacing:.5, textAlign:"center" }}>{t.title}</div>
+              <div style={{ fontSize:11, color:"var(--header-sub)", textAlign:"center" }}>{t.subtitle}</div>
             </div>
           </div>
           <div style={{ display:"flex", gap:6 }}>
@@ -727,7 +763,7 @@ function App() {
 
         {/* Tabs */}
         <div style={{ display:"flex", borderBottom:"1px solid var(--border)", background:"var(--tab-bg)" }}>
-          {[["groups",t.tabGroups],["knockout",t.tabKnockout]].map(([k,l])=>(
+          {[["groups",t.tabGroups],["knockout",t.tabKnockout],["about",t.tabAbout]].map(([k,l])=>(
             <button key={k} onClick={()=>setTab(k)} style={{
               padding:"12px 24px", border:"none", background:"none", cursor:"pointer",
               color:tab===k?"var(--accent)":"var(--text3)",
@@ -755,6 +791,59 @@ function App() {
               </div>
             </div>
           )}
+          {tab==="about" && (
+            <div style={{ maxWidth:640, margin:"0 auto", background:"var(--surface)", border:"1px solid var(--border)",
+              borderRadius:10, padding:"28px 24px", color:"var(--text)", textAlign:"center" }}>
+              <div style={{ marginBottom:14 }}>
+                <p style={{ color:"var(--accent)", marginTop:0, marginBottom:4, fontWeight:700, fontSize:15 }}>
+                  {t.dedicationL1}
+                </p>
+                <p style={{ fontStyle:"italic", color:"var(--text3)", marginTop:0, marginBottom:0, fontSize:12 }}>
+                  {t.dedicationL2}
+                </p>
+              </div>
+              <hr style={{ border:"none", borderTop:"1px solid var(--border)", margin:"20px 0" }}/>
+              <p style={{ color:"var(--text2)", fontSize:13 }}>
+                {t.aboutBody}
+              </p>
+              <hr style={{ border:"none", borderTop:"1px solid var(--border)", margin:"20px 0" }}/>
+              <p style={{ margin:0, fontSize:13 }}>
+                {t.madeBy}{" "}
+                <a href="https://ast47.github.io/ahmadsalehtuffaha/" target="_blank" rel="noopener noreferrer"
+                  style={{ color:"var(--accent)", fontWeight:600, textDecoration:"none" }}>
+                  {t.authorName}
+                </a>
+              </p>
+
+              {/* الزر المتفق عليه ينبض الآن بشكل ناعم وتفاعلي */}
+              <div style={{ display: "flex", justifyContent: "center", marginTop: 24 }}>
+                <a 
+                  href="https://ast47.github.io/ahmadsalehtuffaha/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="pulsing-cv-btn"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    maxWidth: "360px",
+                    padding: "11px 20px",
+                    background: "linear-gradient(135deg, var(--accent) 0%, #4a9eff 100%)",
+                    color: "#ffffff",
+                    fontWeight: "700",
+                    fontSize: "13px",
+                    textDecoration: "none",
+                    borderRadius: "8px",
+                    transition: "all 0.2s ease"
+                  }}
+                >
+                  {t.cvBtn}
+                </a>
+              </div>
+
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -763,4 +852,12 @@ function App() {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
+
+if (window.twemoji) {
+  const observer = new MutationObserver(() => {
+    window.twemoji.parse(document.getElementById("root"), { folder: "svg", ext: ".svg" });
+  });
+  observer.observe(document.getElementById("root"), { childList: true, subtree: true });
+  window.twemoji.parse(document.getElementById("root"), { folder: "svg", ext: ".svg" });
+}
 </script></body></html>
