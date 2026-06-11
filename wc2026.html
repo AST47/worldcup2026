@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIFA World Cup 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="env,react">
+const { useState } = React;
+
+// ─── TRANSLATIONS ─────────────────────────────────────────────
+const T = {
+  ar: {
+    dir: "rtl",
+    title: "كأس العالم 2026",
+    subtitle: "كندا · المكسيك · الولايات المتحدة · 11 يونيو – 19 يوليو",
+    tabGroups: "دور المجموعات",
+    tabKnockout: "مرحلة خروج المغلوب",
+    group: "المجموعة",
+    team: "المنتخب",
+    lost: "خ", drawn: "ت", won: "ف", pts: "نق", gd: "فا", played: "ل",
+    notPlayed: "لم تُلعب بعد",
+    knockoutNote: "يُحدَّث الجدول بعد كل مباراة",
+    koFooter: "أسماء المنتخبات في دور الإقصاء تُضاف تباعاً بعد انتهاء دور المجموعات",
+    final: "النهائي", third: "مباراة الثالث",
+    r32: "دور الـ32", r16: "دور الـ16", qf: "ربع النهائي", sf: "نصف النهائي",
+    unknown: "؟",
+    teams: {
+      "Mexico": "المكسيك", "South Africa": "جنوب أفريقيا", "South Korea": "كوريا الجنوبية", "Czechia": "تشيكيا",
+      "Canada": "كندا", "Bosnia and Herzegovina": "البوسنة والهرسك", "Qatar": "قطر", "Switzerland": "سويسرا",
+      "Brazil": "البرازيل", "Morocco": "المغرب", "Haiti": "هاييتي", "Scotland": "أسكتلندا",
+      "USA": "الولايات المتحدة", "Paraguay": "باراغواي", "Australia": "أستراليا", "Türkiye": "تركيا",
+      "Germany": "ألمانيا", "Curaçao": "كوراساو", "Ivory Coast": "كوت ديفوار", "Ecuador": "الإكوادور",
+      "Netherlands": "هولندا", "Japan": "اليابان", "Sweden": "السويد", "Tunisia": "تونس",
+      "Belgium": "بلجيكا", "Egypt": "مصر", "Iran": "إيران", "New Zealand": "نيوزيلندا",
+      "Spain": "إسبانيا", "Cape Verde": "الرأس الأخضر", "Saudi Arabia": "السعودية", "Uruguay": "أوروغواي",
+      "France": "فرنسا", "Senegal": "السنغال", "Iraq": "العراق", "Norway": "النرويج",
+      "Argentina": "الأرجنتين", "Algeria": "الجزائر", "Austria": "النمسا", "Jordan": "الأردن",
+      "Portugal": "البرتغال", "DR Congo": "الكونغو الديمقراطية", "Uzbekistan": "أوزبكستان", "Colombia": "كولومبيا",
+      "England": "إنجلترا", "Croatia": "كرواتيا", "Ghana": "غانا", "Panama": "بنما",
+    },
+    venues: {
+      "Azteca Stadium, Mexico City": "أستاد أزتيكا، مكسيكو سيتي",
+      "Akron Stadium, Guadalajara": "أستاد أكرون، خالابا",
+      "Mercedes-Benz Stadium, Atlanta": "مرسيدس-بنز ستيديوم، أتلانتا",
+      "BBVA Stadium, Monterrey": "أستاد BBVA، مونتيري",
+      "BMO Field, Toronto": "BMO فيلد، تورنتو",
+      "Levi's Stadium, Santa Clara": "ملعب ليفايز، سانتا كلارا",
+      "SoFi Stadium, Inglewood": "SoFi ستيديوم، إنجلوود",
+      "BC Place, Vancouver": "BC بليس، فانكوفر",
+      "Lumen Field, Seattle": "لومن فيلد، سياتل",
+      "MetLife Stadium, New Jersey": "ملعب ميتلايف، نيوجيرسي",
+      "Gillette Stadium, Foxboro": "جيليت ستيديوم، فوكسبورو",
+      "Lincoln Financial, Philadelphia": "لينكولن فاينانشيال، فيلاديلفيا",
+      "Hard Rock Stadium, Miami": "هارد روك ستيديوم، ميامي",
+      "NRG Stadium, Houston": "NRG ستيديوم، هيوستن",
+      "AT&T Stadium, Arlington": "AT&T ستيديوم، أرلينجتون",
+      "Arrowhead Stadium, Kansas City": "أروهيد ستيديوم، كانساس سيتي",
+      "Lincoln Financial, Philadelphia": "لينكولن فاينانشيال، فيلاديلفيا",
+    },
+    months: { "Jun": "يونيو", "Jul": "يوليو" },
+  },
+  en: {
+    dir: "ltr",
+    title: "FIFA World Cup 2026",
+    subtitle: "Canada · Mexico · United States · June 11 – July 19",
+    tabGroups: "Group Stage",
+    tabKnockout: "Knockout Stage",
+    group: "Group",
+    team: "Team",
+    lost: "L", drawn: "D", won: "W", pts: "Pts", gd: "GD", played: "P",
+    notPlayed: "Not played",
+    knockoutNote: "Updated after every match",
+    koFooter: "Knockout teams will be added after the group stage concludes",
+    final: "Final", third: "Third Place",
+    r32: "Round of 32", r16: "Round of 16", qf: "Quarter-finals", sf: "Semi-finals",
+    unknown: "?",
+    teams: {
+      "Mexico": "Mexico", "South Africa": "South Africa", "South Korea": "South Korea", "Czechia": "Czechia",
+      "Canada": "Canada", "Bosnia and Herzegovina": "Bosnia and Herzegovina", "Qatar": "Qatar", "Switzerland": "Switzerland",
+      "Brazil": "Brazil", "Morocco": "Morocco", "Haiti": "Haiti", "Scotland": "Scotland",
+      "USA": "USA", "Paraguay": "Paraguay", "Australia": "Australia", "Türkiye": "Türkiye",
+      "Germany": "Germany", "Curaçao": "Curaçao", "Ivory Coast": "Ivory Coast", "Ecuador": "Ecuador",
+      "Netherlands": "Netherlands", "Japan": "Japan", "Sweden": "Sweden", "Tunisia": "Tunisia",
+      "Belgium": "Belgium", "Egypt": "Egypt", "Iran": "Iran", "New Zealand": "New Zealand",
+      "Spain": "Spain", "Cape Verde": "Cape Verde", "Saudi Arabia": "Saudi Arabia", "Uruguay": "Uruguay",
+      "France": "France", "Senegal": "Senegal", "Iraq": "Iraq", "Norway": "Norway",
+      "Argentina": "Argentina", "Algeria": "Algeria", "Austria": "Austria", "Jordan": "Jordan",
+      "Portugal": "Portugal", "DR Congo": "DR Congo", "Uzbekistan": "Uzbekistan", "Colombia": "Colombia",
+      "England": "England", "Croatia": "Croatia", "Ghana": "Ghana", "Panama": "Panama",
+    },
+    venues: {
+      "Azteca Stadium, Mexico City": "Azteca Stadium, Mexico City",
+      "Akron Stadium, Guadalajara": "Akron Stadium, Guadalajara",
+      "Mercedes-Benz Stadium, Atlanta": "Mercedes-Benz Stadium, Atlanta",
+      "BBVA Stadium, Monterrey": "BBVA Stadium, Monterrey",
+      "BMO Field, Toronto": "BMO Field, Toronto",
+      "Levi's Stadium, Santa Clara": "Levi's Stadium, Santa Clara",
+      "SoFi Stadium, Inglewood": "SoFi Stadium, Inglewood",
+      "BC Place, Vancouver": "BC Place, Vancouver",
+      "Lumen Field, Seattle": "Lumen Field, Seattle",
+      "MetLife Stadium, New Jersey": "MetLife Stadium, New Jersey",
+      "Gillette Stadium, Foxboro": "Gillette Stadium, Foxboro",
+      "Lincoln Financial, Philadelphia": "Lincoln Financial Field, Philadelphia",
+      "Hard Rock Stadium, Miami": "Hard Rock Stadium, Miami",
+      "NRG Stadium, Houston": "NRG Stadium, Houston",
+      "AT&T Stadium, Arlington": "AT&T Stadium, Arlington",
+      "Arrowhead Stadium, Kansas City": "Arrowhead Stadium, Kansas City",
+    },
+    months: { "Jun": "Jun", "Jul": "Jul" },
+  },
+  tr: {
+    dir: "ltr",
+    title: "FIFA Dünya Kupası 2026",
+    subtitle: "Kanada · Meksika · Amerika Birleşik Devletleri · 11 Haziran – 19 Temmuz",
+    tabGroups: "Grup Aşaması",
+    tabKnockout: "Eleme Aşaması",
+    group: "Grup",
+    team: "Takım",
+    lost: "M", drawn: "B", won: "G", pts: "Puan", gd: "AG", played: "O",
+    notPlayed: "Oynanmadı",
+    knockoutNote: "Her maçtan sonra güncellenir",
+    koFooter: "Eleme turu takımları grup aşaması bittikten sonra eklenecektir",
+    final: "Final", third: "Üçüncülük Maçı",
+    r32: "Son 32", r16: "Son 16", qf: "Çeyrek Final", sf: "Yarı Final",
+    unknown: "?",
+    teams: {
+      "Mexico": "Meksika", "South Africa": "Güney Afrika", "South Korea": "Güney Kore", "Czechia": "Çekya",
+      "Canada": "Kanada", "Bosnia and Herzegovina": "Bosna-Hersek", "Qatar": "Katar", "Switzerland": "İsviçre",
+      "Brazil": "Brezilya", "Morocco": "Fas", "Haiti": "Haiti", "Scotland": "İskoçya",
+      "USA": "ABD", "Paraguay": "Paraguay", "Australia": "Avustralya", "Türkiye": "Türkiye",
+      "Germany": "Almanya", "Curaçao": "Curaçao", "Ivory Coast": "Fildişi Sahili", "Ecuador": "Ekvador",
+      "Netherlands": "Hollanda", "Japan": "Japonya", "Sweden": "İsveç", "Tunisia": "Tunus",
+      "Belgium": "Belçika", "Egypt": "Mısır", "Iran": "İran", "New Zealand": "Yeni Zelanda",
+      "Spain": "İspanya", "Cape Verde": "Yeşil Burun Adaları", "Saudi Arabia": "Suudi Arabistan", "Uruguay": "Uruguay",
+      "France": "Fransa", "Senegal": "Senegal", "Iraq": "Irak", "Norway": "Norveç",
+      "Argentina": "Arjantin", "Algeria": "Cezayir", "Austria": "Avusturya", "Jordan": "Ürdün",
+      "Portugal": "Portekiz", "DR Congo": "Kongo Demokratik Cumhuriyeti", "Uzbekistan": "Özbekistan", "Colombia": "Kolombiya",
+      "England": "İngiltere", "Croatia": "Hırvatistan", "Ghana": "Gana", "Panama": "Panama",
+    },
+    venues: {
+      "Azteca Stadium, Mexico City": "Azteca Stadyumu, Meksiko Şehri",
+      "Akron Stadium, Guadalajara": "Akron Stadyumu, Guadalajara",
+      "Mercedes-Benz Stadium, Atlanta": "Mercedes-Benz Stadyumu, Atlanta",
+      "BBVA Stadium, Monterrey": "BBVA Stadyumu, Monterrey",
+      "BMO Field, Toronto": "BMO Field, Toronto",
+      "Levi's Stadium, Santa Clara": "Levi's Stadyumu, Santa Clara",
+      "SoFi Stadium, Inglewood": "SoFi Stadyumu, Inglewood",
+      "BC Place, Vancouver": "BC Place, Vancouver",
+      "Lumen Field, Seattle": "Lumen Field, Seattle",
+      "MetLife Stadium, New Jersey": "MetLife Stadyumu, New Jersey",
+      "Gillette Stadium, Foxboro": "Gillette Stadyumu, Foxboro",
+      "Lincoln Financial, Philadelphia": "Lincoln Financial Field, Philadelphia",
+      "Hard Rock Stadium, Miami": "Hard Rock Stadyumu, Miami",
+      "NRG Stadium, Houston": "NRG Stadyumu, Houston",
+      "AT&T Stadium, Arlington": "AT&T Stadyumu, Arlington",
+      "Arrowhead Stadium, Kansas City": "Arrowhead Stadyumu, Kansas City",
+    },
+    months: { "Jun": "Haz", "Jul": "Tem" },
+  },
+};
+
+// ─── RAW GROUPS DATA (canonical English keys) ─────────────────
+const GROUPS_RAW = {
+  A: {
+    teams: ["Mexico","South Africa","South Korea","Czechia"],
+    matches: [
+      { home:"Mexico",       away:"South Africa",  date:"11 Jun", time:"22:00", venue:"Azteca Stadium, Mexico City",      hg:null, ag:null },
+      { home:"South Korea",  away:"Czechia",        date:"12 Jun", time:"05:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null },
+      { home:"Czechia",      away:"South Africa",   date:"18 Jun", time:"19:00", venue:"Mercedes-Benz Stadium, Atlanta",    hg:null, ag:null },
+      { home:"Mexico",       away:"South Korea",    date:"19 Jun", time:"02:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null },
+      { home:"Czechia",      away:"Mexico",         date:"25 Jun", time:"02:00", venue:"Azteca Stadium, Mexico City",      hg:null, ag:null },
+      { home:"South Africa", away:"South Korea",    date:"25 Jun", time:"02:00", venue:"BBVA Stadium, Monterrey",           hg:null, ag:null },
+    ],
+  },
+  B: {
+    teams: ["Canada","Bosnia and Herzegovina","Qatar","Switzerland"],
+    matches: [
+      { home:"Canada",                  away:"Bosnia and Herzegovina", date:"12 Jun", time:"22:00", venue:"BMO Field, Toronto",             hg:null, ag:null },
+      { home:"Qatar",                   away:"Switzerland",             date:"13 Jun", time:"22:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null },
+      { home:"Switzerland",             away:"Bosnia and Herzegovina", date:"18 Jun", time:"22:00", venue:"SoFi Stadium, Inglewood",         hg:null, ag:null },
+      { home:"Canada",                  away:"Qatar",                   date:"19 Jun", time:"01:00", venue:"BC Place, Vancouver",            hg:null, ag:null },
+      { home:"Switzerland",             away:"Canada",                  date:"24 Jun", time:"22:00", venue:"BC Place, Vancouver",            hg:null, ag:null },
+      { home:"Bosnia and Herzegovina",  away:"Qatar",                   date:"24 Jun", time:"22:00", venue:"Lumen Field, Seattle",           hg:null, ag:null },
+    ],
+  },
+  C: {
+    teams: ["Brazil","Morocco","Haiti","Scotland"],
+    matches: [
+      { home:"Brazil",    away:"Morocco",   date:"13 Jun", time:"01:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null },
+      { home:"Haiti",     away:"Scotland",  date:"14 Jun", time:"02:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null },
+      { home:"Scotland",  away:"Morocco",   date:"19 Jun", time:"01:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null },
+      { home:"Brazil",    away:"Haiti",     date:"20 Jun", time:"03:30", venue:"Lincoln Financial, Philadelphia",   hg:null, ag:null },
+      { home:"Scotland",  away:"Brazil",    date:"24 Jun", time:"01:00", venue:"Hard Rock Stadium, Miami",          hg:null, ag:null },
+      { home:"Morocco",   away:"Haiti",     date:"24 Jun", time:"01:00", venue:"Mercedes-Benz Stadium, Atlanta",   hg:null, ag:null },
+    ],
+  },
+  D: {
+    teams: ["USA","Paraguay","Australia","Türkiye"],
+    matches: [
+      { home:"USA",        away:"Paraguay",   date:"13 Jun", time:"04:00", venue:"SoFi Stadium, Inglewood",        hg:null, ag:null },
+      { home:"Australia",  away:"Türkiye",    date:"14 Jun", time:"19:00", venue:"BC Place, Vancouver",            hg:null, ag:null },
+      { home:"USA",        away:"Australia",  date:"19 Jun", time:"22:00", venue:"Lumen Field, Seattle",           hg:null, ag:null },
+      { home:"Türkiye",    away:"Paraguay",   date:"20 Jun", time:"04:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null },
+      { home:"Türkiye",    away:"USA",        date:"26 Jun", time:"05:00", venue:"SoFi Stadium, Inglewood",        hg:null, ag:null },
+      { home:"Paraguay",   away:"Australia",  date:"26 Jun", time:"05:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null },
+    ],
+  },
+  E: {
+    teams: ["Germany","Curaçao","Ivory Coast","Ecuador"],
+    matches: [
+      { home:"Germany",     away:"Curaçao",      date:"14 Jun", time:"20:00", venue:"NRG Stadium, Houston",             hg:null, ag:null },
+      { home:"Ivory Coast", away:"Ecuador",       date:"15 Jun", time:"02:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null },
+      { home:"Germany",     away:"Ivory Coast",   date:"20 Jun", time:"23:00", venue:"BMO Field, Toronto",               hg:null, ag:null },
+      { home:"Ecuador",     away:"Curaçao",       date:"21 Jun", time:"03:00", venue:"Arrowhead Stadium, Kansas City",   hg:null, ag:null },
+      { home:"Ecuador",     away:"Germany",       date:"25 Jun", time:"23:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null },
+      { home:"Curaçao",     away:"Ivory Coast",   date:"25 Jun", time:"23:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null },
+    ],
+  },
+  F: {
+    teams: ["Netherlands","Japan","Sweden","Tunisia"],
+    matches: [
+      { home:"Netherlands", away:"Japan",    date:"14 Jun", time:"23:00", venue:"AT&T Stadium, Arlington",        hg:null, ag:null },
+      { home:"Sweden",      away:"Tunisia",  date:"15 Jun", time:"05:00", venue:"BBVA Stadium, Monterrey",        hg:null, ag:null },
+      { home:"Netherlands", away:"Sweden",   date:"20 Jun", time:"20:00", venue:"NRG Stadium, Houston",           hg:null, ag:null },
+      { home:"Tunisia",     away:"Japan",    date:"21 Jun", time:"07:00", venue:"BBVA Stadium, Monterrey",        hg:null, ag:null },
+      { home:"Japan",       away:"Sweden",   date:"25 Jun", time:"02:00", venue:"AT&T Stadium, Arlington",        hg:null, ag:null },
+      { home:"Tunisia",     away:"Netherlands", date:"25 Jun", time:"02:00", venue:"Arrowhead Stadium, Kansas City", hg:null, ag:null },
+    ],
+  },
+  G: {
+    teams: ["Belgium","Egypt","Iran","New Zealand"],
+    matches: [
+      { home:"Belgium",     away:"Egypt",        date:"15 Jun", time:"22:00", venue:"Lumen Field, Seattle",          hg:null, ag:null },
+      { home:"Iran",        away:"New Zealand",  date:"16 Jun", time:"04:00", venue:"SoFi Stadium, Inglewood",       hg:null, ag:null },
+      { home:"Belgium",     away:"Iran",         date:"21 Jun", time:"22:00", venue:"SoFi Stadium, Inglewood",       hg:null, ag:null },
+      { home:"New Zealand", away:"Egypt",        date:"22 Jun", time:"04:00", venue:"BC Place, Vancouver",           hg:null, ag:null },
+      { home:"Egypt",       away:"Iran",         date:"26 Jun", time:"06:00", venue:"Lumen Field, Seattle",          hg:null, ag:null },
+      { home:"New Zealand", away:"Belgium",      date:"26 Jun", time:"06:00", venue:"BC Place, Vancouver",           hg:null, ag:null },
+    ],
+  },
+  H: {
+    teams: ["Spain","Cape Verde","Saudi Arabia","Uruguay"],
+    matches: [
+      { home:"Spain",       away:"Cape Verde",    date:"15 Jun", time:"19:00", venue:"Mercedes-Benz Stadium, Atlanta", hg:null, ag:null },
+      { home:"Saudi Arabia",away:"Uruguay",        date:"16 Jun", time:"01:00", venue:"Hard Rock Stadium, Miami",       hg:null, ag:null },
+      { home:"Spain",       away:"Saudi Arabia",  date:"21 Jun", time:"19:00", venue:"Mercedes-Benz Stadium, Atlanta", hg:null, ag:null },
+      { home:"Uruguay",     away:"Cape Verde",    date:"21 Jun", time:"01:00", venue:"Hard Rock Stadium, Miami",       hg:null, ag:null },
+      { home:"Cape Verde",  away:"Saudi Arabia",  date:"26 Jun", time:"03:00", venue:"NRG Stadium, Houston",           hg:null, ag:null },
+      { home:"Uruguay",     away:"Spain",         date:"26 Jun", time:"03:00", venue:"Akron Stadium, Guadalajara",     hg:null, ag:null },
+    ],
+  },
+  I: {
+    teams: ["France","Senegal","Iraq","Norway"],
+    matches: [
+      { home:"France",   away:"Senegal",  date:"16 Jun", time:"22:00", venue:"MetLife Stadium, New Jersey",     hg:null, ag:null },
+      { home:"Iraq",     away:"Norway",   date:"17 Jun", time:"01:00", venue:"Gillette Stadium, Foxboro",        hg:null, ag:null },
+      { home:"France",   away:"Iraq",     date:"22 Jun", time:"00:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null },
+      { home:"Norway",   away:"Senegal",  date:"22 Jun", time:"03:00", venue:"MetLife Stadium, New Jersey",     hg:null, ag:null },
+      { home:"Norway",   away:"France",   date:"26 Jun", time:"22:00", venue:"Gillette Stadium, Foxboro",        hg:null, ag:null },
+      { home:"Senegal",  away:"Iraq",     date:"26 Jun", time:"22:00", venue:"BMO Field, Toronto",               hg:null, ag:null },
+    ],
+  },
+  J: {
+    teams: ["Argentina","Algeria","Austria","Jordan"],
+    matches: [
+      { home:"Argentina", away:"Algeria",   date:"17 Jun", time:"04:00", venue:"Arrowhead Stadium, Kansas City",  hg:null, ag:null },
+      { home:"Austria",   away:"Jordan",    date:"17 Jun", time:"07:00", venue:"Levi's Stadium, Santa Clara",     hg:null, ag:null },
+      { home:"Argentina", away:"Austria",   date:"22 Jun", time:"20:00", venue:"AT&T Stadium, Arlington",         hg:null, ag:null },
+      { home:"Jordan",    away:"Algeria",   date:"23 Jun", time:"06:00", venue:"Levi's Stadium, Santa Clara",     hg:null, ag:null },
+      { home:"Argentina", away:"Jordan",    date:"27 Jun", time:"02:00", venue:"AT&T Stadium, Arlington",         hg:null, ag:null },
+      { home:"Algeria",   away:"Austria",   date:"27 Jun", time:"02:00", venue:"Arrowhead Stadium, Kansas City",  hg:null, ag:null },
+    ],
+  },
+  K: {
+    teams: ["Portugal","DR Congo","Uzbekistan","Colombia"],
+    matches: [
+      { home:"Portugal",   away:"DR Congo",    date:"17 Jun", time:"20:00", venue:"NRG Stadium, Houston",            hg:null, ag:null },
+      { home:"Uzbekistan", away:"Colombia",    date:"18 Jun", time:"05:00", venue:"Azteca Stadium, Mexico City",     hg:null, ag:null },
+      { home:"Portugal",   away:"Uzbekistan",  date:"23 Jun", time:"20:00", venue:"NRG Stadium, Houston",            hg:null, ag:null },
+      { home:"Colombia",   away:"DR Congo",    date:"24 Jun", time:"05:00", venue:"Akron Stadium, Guadalajara",      hg:null, ag:null },
+      { home:"Portugal",   away:"Colombia",    date:"27 Jun", time:"22:00", venue:"NRG Stadium, Houston",            hg:null, ag:null },
+      { home:"DR Congo",   away:"Uzbekistan",  date:"27 Jun", time:"22:00", venue:"Mercedes-Benz Stadium, Atlanta",  hg:null, ag:null },
+    ],
+  },
+  L: {
+    teams: ["England","Croatia","Ghana","Panama"],
+    matches: [
+      { home:"England",  away:"Croatia",  date:"17 Jun", time:"23:00", venue:"AT&T Stadium, Arlington",          hg:null, ag:null },
+      { home:"Ghana",    away:"Panama",   date:"18 Jun", time:"02:00", venue:"BMO Field, Toronto",               hg:null, ag:null },
+      { home:"England",  away:"Ghana",    date:"23 Jun", time:"23:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null },
+      { home:"Panama",   away:"Croatia",  date:"24 Jun", time:"02:00", venue:"BMO Field, Toronto",               hg:null, ag:null },
+      { home:"Panama",   away:"England",  date:"28 Jun", time:"00:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null },
+      { home:"Croatia",  away:"Ghana",    date:"28 Jun", time:"00:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null },
+    ],
+  },
+};
+
+const FLAGS = {
+  "Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿",
+  "Canada":"🇨🇦","Bosnia and Herzegovina":"🇧🇦","Qatar":"🇶🇦","Switzerland":"🇨🇭",
+  "Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Türkiye":"🇹🇷",
+  "Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨",
+  "Netherlands":"🇳🇱","Japan":"🇯🇵","Sweden":"🇸🇪","Tunisia":"🇹🇳",
+  "Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿",
+  "Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾",
+  "France":"🇫🇷","Senegal":"🇸🇳","Iraq":"🇮🇶","Norway":"🇳🇴",
+  "Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴",
+  "Portugal":"🇵🇹","DR Congo":"🇨🇩","Uzbekistan":"🇺🇿","Colombia":"🇨🇴",
+  "England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦",
+};
+
+const GC = ["#e74c3c","#e67e22","#f1c40f","#2ecc71","#1abc9c","#3498db","#9b59b6","#e91e63","#00bcd4","#4caf50","#ff5722","#607d8b"];
+
+function tn(lang, key) { return T[lang].teams[key] || key; }
+function vn(lang, key) { return T[lang].venues[key] || key; }
+function fmtDate(lang, date) {
+  if (lang === "ar") {
+    const [d, m] = date.split(" ");
+    return `${d} ${T.ar.months[m] || m}`;
+  }
+  if (lang === "tr") {
+    const [d, m] = date.split(" ");
+    return `${d} ${T.tr.months[m] || m}`;
+  }
+  return date;
+}
+
+function calcStandings(groupKey, lang) {
+  const { teams, matches } = GROUPS_RAW[groupKey];
+  const st = teams.map(t => ({ key:t, p:0, w:0, d:0, l:0, gf:0, ga:0, pts:0 }));
+  matches.forEach(m => {
+    if (m.hg === null || m.ag === null) return;
+    const h = m.hg, a = m.ag;
+    const ht = st.find(t => t.key === m.home);
+    const at = st.find(t => t.key === m.away);
+    if (!ht || !at) return;
+    ht.p++; at.p++;
+    ht.gf += h; ht.ga += a;
+    at.gf += a; at.ga += h;
+    if (h > a)      { ht.w++; ht.pts += 3; at.l++; }
+    else if (a > h) { at.w++; at.pts += 3; ht.l++; }
+    else            { ht.d++; ht.pts++; at.d++; at.pts++; }
+  });
+  st.sort((a,b) => b.pts-a.pts || (b.gf-b.ga)-(a.gf-a.ga) || b.gf-a.gf);
+  return st;
+}
+
+// ─── KO placeholder labels ────────────────────────────────────
+// label(lang, type, group) → localized string
+function koLabel(lang, type, group) {
+  if (lang === "ar") {
+    if (type === "W")  return `أول المجموعة ${group}`;
+    if (type === "RU") return `ثاني المجموعة ${group}`;
+    if (type === "3")  return `أفضل ثالث (${group})`;
+  } else if (lang === "tr") {
+    if (type === "W")  return `${group} Gr. 1.`;
+    if (type === "RU") return `${group} Gr. 2.`;
+    if (type === "3")  return `En iyi 3. (${group})`;
+  } else {
+    if (type === "W")  return `Winner Grp ${group}`;
+    if (type === "RU") return `Runner-up Grp ${group}`;
+    if (type === "3")  return `Best 3rd (${group})`;
+  }
+  return "?";
+}
+
+// Each slot: { id, homeType, homeGroup, awayType, awayGroup, home, away, hg, ag, date, time, venue }
+const mkP = (id, homeType, homeGroup, awayType, awayGroup, date="", time="", venue="") => ({
+  id, homeType, homeGroup, awayType, awayGroup,
+  home:"", away:"", hg:null, ag:null, date, time, venue
+});
+const mk = (id, date="", time="", venue="") => ({
+  id, home:"", away:"", hg:null, ag:null, date, time, venue
+});
+
+const KO = {
+  L_r32: [
+    mkP("Lr32_0","RU","A","RU","B",           "28 Jun","22:00","SoFi Stadium, Inglewood"),
+    mkP("Lr32_1","W","F","RU","C",            "29 Jun","09:00","Akron Stadium, Guadalajara"),
+    mkP("Lr32_2","W","I","3","C/D/F/G/H",    "30 Jun","05:00","MetLife Stadium, New Jersey"),
+    mkP("Lr32_3","W","A","3","C/E/F/H/I",    "30 Jun","09:00","Azteca Stadium, Mexico City"),
+    mkP("Lr32_4","W","D","3","B/E/F/I/J",    "1 Jul","08:00","Levi's Stadium, Santa Clara"),
+    mkP("Lr32_5","RU","K","RU","L",           "2 Jul","07:00","BMO Field, Toronto"),
+    mkP("Lr32_6","W","B","3","E/F/G/I/J",    "2 Jul","11:00","BC Place, Vancouver"),
+    mkP("Lr32_7","W","K","3","D/E/I/J/L",    "3 Jul","02:00","AT&T Stadium, Arlington"),
+  ],
+  R_r32: [
+    mkP("Rr32_0","W","E","3","A/B/C/D/F",    "29 Jun","04:30","Gillette Stadium, Foxboro"),
+    mkP("Rr32_1","W","C","RU","F",            "29 Jun","23:00","NRG Stadium, Houston"),
+    mkP("Rr32_2","RU","E","RU","I",           "30 Jun","01:00","AT&T Stadium, Arlington"),
+    mkP("Rr32_3","W","L","3","E/H/I/J/K",    "1 Jul","00:00","Mercedes-Benz Stadium, Atlanta"),
+    mkP("Rr32_4","W","G","3","A/E/H/I/J",    "2 Jul","04:00","Lumen Field, Seattle"),
+    mkP("Rr32_5","W","H","RU","J",            "2 Jul","03:00","SoFi Stadium, Inglewood"),
+    mkP("Rr32_6","W","J","RU","H",            "3 Jul","06:00","Hard Rock Stadium, Miami"),
+    mkP("Rr32_7","RU","D","RU","G",           "3 Jul","02:00","AT&T Stadium, Arlington"),
+  ],
+  L_r16:[
+    mk("Lr16_0","4 Jul","00:00","MetLife Stadium, New Jersey"),
+    mk("Lr16_1","5 Jul","01:00","Azteca Stadium, Mexico City"),
+    mk("Lr16_2","6 Jul","22:00","AT&T Stadium, Arlington"),
+    mk("Lr16_3","7 Jul","23:00","BC Place, Vancouver"),
+  ],
+  R_r16:[
+    mk("Rr16_0","4 Jul","20:00","Lincoln Financial, Philadelphia"),
+    mk("Rr16_1","5 Jul","20:00","NRG Stadium, Houston"),
+    mk("Rr16_2","6 Jul","23:00","Lumen Field, Seattle"),
+    mk("Rr16_3","6 Jul","19:00","Mercedes-Benz Stadium, Atlanta"),
+  ],
+  L_qf:[
+    mk("Lqf_0","9 Jul","21:00","Gillette Stadium, Foxboro"),
+    mk("Lqf_1","11 Jul","01:00","SoFi Stadium, Inglewood"),
+  ],
+  R_qf:[
+    mk("Rqf_0","10 Jul","01:00","Hard Rock Stadium, Miami"),
+    mk("Rqf_1","10 Jul","21:00","Arrowhead Stadium, Kansas City"),
+  ],
+  L_sf:[mk("Lsf_0","14 Jul","23:00","AT&T Stadium, Arlington")],
+  R_sf:[mk("Rsf_0","16 Jul","02:00","Mercedes-Benz Stadium, Atlanta")],
+  third:[mk("third_0","18 Jul","23:00","Hard Rock Stadium, Miami")],
+  final:[mk("final_0","19 Jul","22:00","MetLife Stadium, New Jersey")],
+};
+
+const getWinner = m => {
+  if (m.hg===null||m.ag===null) return null;
+  if (m.hg>m.ag) return m.home;
+  if (m.ag>m.hg) return m.away;
+  return null;
+};
+
+// ─── KO Card ─────────────────────────────────────────────────
+function KOCard({ match, accent, lang }) {
+  const t = T[lang];
+  const ac = accent || "#4a9eff";
+  const winner = getWinner(match);
+
+  const sideLabel = (key, type, group) => {
+    if (key) return { text: tn(lang, key), flag: FLAGS[key]||"🏳️", isReal: true };
+    if (type) return { text: koLabel(lang, type, group), flag: null, isReal: false };
+    return { text: t.unknown||"?", flag: null, isReal: false };
+  };
+
+  const sides = [
+    { ...sideLabel(match.home, match.homeType, match.homeGroup), score:match.hg, isW:winner===match.home },
+    { ...sideLabel(match.away, match.awayType, match.awayGroup), score:match.ag, isW:winner===match.away },
+  ];
+  return (
+    <div style={{ background:"var(--surface)", border:"1px solid var(--border)", borderRadius:6, overflow:"hidden", minWidth:138 }}>
+      {sides.map((s,si)=>(
+        <div key={si} style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+          padding:"5px 8px", borderBottom:si===0?"1px solid var(--bg2)":"none",
+          background:s.isW?"var(--win-bg)":"transparent" }}>
+          <span style={{ fontSize: s.isReal?10:9,
+            color: s.isReal?(s.isW?"var(--text)":"var(--text2)"):"var(--text4)",
+            display:"flex", alignItems:"center", gap:3, overflow:"hidden", whiteSpace:"nowrap" }}>
+            {s.flag && <span style={{flexShrink:0}}>{s.flag}</span>}
+            <span style={{overflow:"hidden",textOverflow:"ellipsis"}}>{s.text}</span>
+          </span>
+          <span style={{ fontSize:12, fontWeight:700, minWidth:14, textAlign:"center", marginLeft:4,
+            color:s.isW?ac:(s.score!==null?"var(--text)":"var(--border)") }}>
+            {s.score!==null?s.score:"–"}
+          </span>
+        </div>
+      ))}
+      {(match.date||match.venue) && (
+        <div style={{ padding:"3px 8px", borderTop:"1px solid var(--bg2)", background:"var(--surface2)" }}>
+          {match.date && <div style={{ fontSize:9, color:"var(--text3)" }}>{fmtDate(lang, match.date)} · {match.time}</div>}
+          {match.venue && <div style={{ fontSize:8, color:"var(--text4)", lineHeight:1.3, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{vn(lang, match.venue)}</div>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BracketCol({ matches, totalHeight, side, accent, lang }) {
+  const count = matches.length;
+  const slotH = totalHeight/count;
+  const CARD_H = 52;
+  const LINE_W = 14;
+  return (
+    <div style={{ position:"relative", width:138, flexShrink:0, height:totalHeight }}>
+      {matches.map((m,i)=>{
+        const topCenter = slotH*i+slotH/2;
+        const isEvenPair = i%2===0;
+        return (
+          <div key={m.id}>
+            <div style={{ position:"absolute", top:topCenter-CARD_H/2, left:0, right:0, zIndex:2 }}>
+              <KOCard match={m} accent={accent} lang={lang}/>
+            </div>
+            <div style={{ position:"absolute", top:topCenter,
+              ...(side==="left"?{right:-LINE_W}:{left:-LINE_W}),
+              width:LINE_W, height:1, background:"var(--line)", zIndex:1 }}/>
+            {isEvenPair&&<div style={{ position:"absolute", top:topCenter,
+              ...(side==="left"?{right:-LINE_W}:{left:-LINE_W}),
+              width:1, height:slotH, background:"var(--line)", zIndex:1 }}/>}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function SymmetricBracket({ lang }) {
+  const t = T[lang];
+  const TOTAL_H=880, GAP=10, CENTER_W=155, colW=138;
+  const leftR  = [{key:"L_r32",label:t.r32},{key:"L_r16",label:t.r16},{key:"L_qf",label:t.qf},{key:"L_sf",label:t.sf}];
+  const rightR = [{key:"R_r32",label:t.r32},{key:"R_r16",label:t.r16},{key:"R_qf",label:t.qf},{key:"R_sf",label:t.sf}];
+  const totalW = (colW+GAP)*8 + CENTER_W + GAP*2;
+  return (
+    <div style={{ overflowX:"auto", paddingBottom:16, direction:"ltr" }}>
+      <div style={{ width:totalW, margin:"0 auto" }}>
+        <div style={{ display:"flex", marginBottom:8 }}>
+          {leftR.map(({label},i)=>(
+            <div key={i} style={{ width:colW, marginRight:GAP, textAlign:"center", fontSize:9, color:"var(--text3)", fontWeight:600 }}>{label}</div>
+          ))}
+          <div style={{ width:CENTER_W, margin:`0 ${GAP}px` }}/>
+          {[...rightR].reverse().map(({label},i)=>(
+            <div key={i} style={{ width:colW, marginLeft:GAP, textAlign:"center", fontSize:9, color:"var(--text3)", fontWeight:600 }}>{label}</div>
+          ))}
+        </div>
+        <div style={{ display:"flex", alignItems:"flex-start" }}>
+          {leftR.map(({key})=>(
+            <div key={key} style={{ marginRight:GAP }}>
+              <BracketCol matches={KO[key]} totalHeight={TOTAL_H} side="left" lang={lang}/>
+            </div>
+          ))}
+          <div style={{ width:CENTER_W, flexShrink:0, height:TOTAL_H, display:"flex", flexDirection:"column",
+            alignItems:"center", justifyContent:"center", gap:20, margin:`0 ${GAP}px` }}>
+            <div style={{ fontSize:10, color:"#f1c40f", fontWeight:700 }}>🏆 {t.final}</div>
+            <KOCard match={KO.final[0]} accent="#f1c40f" lang={lang}/>
+            <div style={{ width:"70%", height:1, background:"var(--border)" }}/>
+            <div style={{ fontSize:10, color:"#cd7f32", fontWeight:600 }}>🥉 {t.third}</div>
+            <KOCard match={KO.third[0]} accent="#cd7f32" lang={lang}/>
+          </div>
+          {[...rightR].reverse().map(({key})=>(
+            <div key={key} style={{ marginLeft:GAP }}>
+              <BracketCol matches={KO[key]} totalHeight={TOTAL_H} side="right" lang={lang}/>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Group Card ──────────────────────────────────────────────
+function GroupCard({ groupKey, color, lang }) {
+  const [open, setOpen] = useState(false);
+  const t = T[lang];
+  const { matches } = GROUPS_RAW[groupKey];
+  const st = calcStandings(groupKey, lang);
+  const isRtl = lang === "ar";
+
+  return (
+    <div style={{ background:"var(--surface)", borderRadius:10, overflow:"hidden", border:"1px solid var(--border)" }}>
+      <div onClick={()=>setOpen(o=>!o)} style={{ background:color+"22", borderBottom:`2px solid ${color}`,
+        padding:"9px 14px", display:"flex", justifyContent:"space-between", alignItems:"center",
+        cursor:"pointer", userSelect:"none" }}>
+        <span style={{ fontWeight:700, color, fontSize:15 }}>{t.group} {groupKey}</span>
+        <span style={{ color, fontSize:13, display:"inline-block", transition:"transform .2s",
+          transform:open?"rotate(180deg)":"rotate(0deg)" }}>▾</span>
+      </div>
+
+      <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
+        <thead>
+          <tr style={{ color:"var(--text3)", borderBottom:"1px solid var(--border)" }}>
+            <th style={{ padding:"6px 14px", textAlign:isRtl?"right":"left", fontWeight:500 }}>{t.team}</th>
+            {[t.played, t.lost, t.drawn, t.won, t.pts].map(h=>(
+              <th key={h} style={{ padding:"6px 8px", textAlign:"center", fontWeight:500, width:32 }}>{h}</th>
+            ))}
+            <th style={{ padding:"6px 8px", textAlign:"center", fontWeight:500, width:36 }}>{t.gd}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {st.map((team,i)=>(
+            <tr key={team.key} style={{ borderBottom:"1px solid var(--bg2)", background:i<2?color+"11":"transparent" }}>
+              <td style={{ padding:"7px 14px" }}>
+                <span style={{ display:"flex", alignItems:"center", gap:6 }}>
+                  <span style={{ width:18, height:18, borderRadius:"50%", background:i<2?color:"var(--bg3)",
+                    display:"inline-flex", alignItems:"center", justifyContent:"center",
+                    fontSize:9, color:i<2?"#fff":"var(--text3)", fontWeight:700, flexShrink:0 }}>{i+1}</span>
+                  <span>{FLAGS[team.key]||"🏳️"}</span>
+                  <span style={{ color:i<2?"var(--text)":"var(--text2)" }}>{tn(lang,team.key)}</span>
+                </span>
+              </td>
+              <td style={{ textAlign:"center", color:"var(--text2)" }}>{team.p}</td>
+              <td style={{ textAlign:"center", color:"var(--text2)" }}>{team.l}</td>
+              <td style={{ textAlign:"center", color:"var(--text2)" }}>{team.d}</td>
+              <td style={{ textAlign:"center", color:"var(--text2)" }}>{team.w}</td>
+              <td style={{ textAlign:"center", fontWeight:700, color }}>{team.pts}</td>
+              <td style={{ textAlign:"center", color:"var(--text3)", fontSize:11 }}>{team.gf}:{team.ga}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {open && (
+        <div style={{ borderTop:"1px solid var(--border)", background:"var(--surface2)" }}>
+          {matches.map((m,i)=>(
+            <div key={i} style={{ display:"flex", alignItems:"center", padding:"8px 12px",
+              borderBottom:i<matches.length-1?"1px solid var(--border2)":"none", gap:8 }}>
+              <div style={{ flexShrink:0, textAlign:"center", minWidth:54 }}>
+                <div style={{ fontSize:10, color:"var(--text3)" }}>{fmtDate(lang, m.date)}</div>
+                <div style={{ fontSize:11, color:"var(--text2)", fontWeight:600 }}>{m.time}</div>
+              </div>
+              <div style={{ flex:1, fontSize:11, color:"var(--text)",
+                display:"flex", alignItems:"center", justifyContent:"flex-end", gap:4 }}>
+                <span>{tn(lang,m.home)}</span><span>{FLAGS[m.home]||"🏳️"}</span>
+              </div>
+              <div style={{ flexShrink:0, minWidth:46, textAlign:"center" }}>
+                {m.hg!==null&&m.ag!==null
+                  ? (
+                    <span style={{ display:"flex", alignItems:"center", gap:5, fontSize:13, fontWeight:700 }}>
+                      <span style={{ color }}>{m.hg}</span>
+                      <span style={{ color:"var(--text3)", fontSize:11 }}>vs</span>
+                      <span style={{ color }}>{m.ag}</span>
+                    </span>
+                  ) : (
+                    <span style={{ display:"flex", alignItems:"center", gap:5, fontSize:13, fontWeight:700 }}>
+                      <span style={{ color:"var(--border)" }}>–</span>
+                      <span style={{ color:"var(--text3)", fontSize:11 }}>vs</span>
+                      <span style={{ color:"var(--border)" }}>–</span>
+                    </span>
+                  )}
+              </div>
+              <div style={{ flex:1, fontSize:11, color:"var(--text)",
+                display:"flex", alignItems:"center", gap:4 }}>
+                <span>{FLAGS[m.away]||"🏳️"}</span><span>{tn(lang,m.away)}</span>
+              </div>
+              <div style={{ flexShrink:0, fontSize:9, color:"var(--text4)", textAlign:"left",
+                maxWidth:110, lineHeight:1.3 }}>{vn(lang,m.venue)}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── App ─────────────────────────────────────────────────────
+const CSS_VARS = `
+  :root {
+    --bg:        #ffffff;
+    --bg2:       #f4f6f9;
+    --bg3:       #eaecf0;
+    --surface:   #ffffff;
+    --surface2:  #f0f2f5;
+    --border:    #d0d5dd;
+    --border2:   #e4e7ec;
+    --text:      #0d1117;
+    --text2:     #444c56;
+    --text3:     #6a737d;
+    --text4:     #9ba3ab;
+    --accent:    #0969da;
+    --win-bg:    #dff0ff;
+    --line:      #c8d2db;
+    --ko-footer: #f0f2f5;
+    --header-bg: #0d1117;
+    --header-text:#ffffff;
+    --header-sub: #8b949e;
+    --tab-bg:    #f6f8fa;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:        #0a0e1a;
+      --bg2:       #0d1525;
+      --bg3:       #111827;
+      --surface:   #111827;
+      --surface2:  #0d1525;
+      --border:    #1e2d4a;
+      --border2:   #1a2540;
+      --text:      #e0e6f0;
+      --text2:     #c0cfe0;
+      --text3:     #6a85b0;
+      --text4:     #3a5575;
+      --accent:    #4a9eff;
+      --win-bg:    #162840;
+      --line:      #1e3a5a;
+      --ko-footer: #111827;
+      --header-bg: #0d1525;
+      --header-text:#ffffff;
+      --header-sub: #6a85b0;
+      --tab-bg:    #0d1525;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+`;
+
+function App() {
+  const [tab, setTab] = useState("groups");
+  const [lang, setLang] = useState("en");
+  const t = T[lang];
+
+  return (
+    <>
+      <style>{CSS_VARS}</style>
+      <div dir={t.dir} style={{ fontFamily:"'Segoe UI',Tahoma,Arial,sans-serif", background:"var(--bg)", minHeight:"100vh", color:"var(--text)" }}>
+        {/* Header */}
+        <div style={{ background:"var(--header-bg)", borderBottom:"1px solid var(--border)", padding:"14px 20px",
+          display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:10 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+            <span style={{ fontSize:28 }}>🏆</span>
+            <div>
+              <div style={{ fontSize:19, fontWeight:700, color:"var(--header-text)", letterSpacing:.5 }}>{t.title}</div>
+              <div style={{ fontSize:11, color:"var(--header-sub)" }}>{t.subtitle}</div>
+            </div>
+          </div>
+          <div style={{ display:"flex", gap:6 }}>
+            {[["ar","العربية"],["en","English"],["tr","Türkçe"]].map(([l,label])=>(
+              <button key={l} onClick={()=>setLang(l)} style={{
+                padding:"5px 12px", border:`1px solid ${lang===l?"var(--accent)":"var(--border)"}`,
+                background:lang===l?"color-mix(in srgb, var(--accent) 15%, transparent)":"transparent",
+                color:lang===l?"var(--accent)":"var(--text3)",
+                borderRadius:6, cursor:"pointer", fontFamily:"inherit", fontSize:12,
+                fontWeight:lang===l?600:400, transition:"all .15s"
+              }}>{label}</button>
+            ))}
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div style={{ display:"flex", borderBottom:"1px solid var(--border)", background:"var(--tab-bg)" }}>
+          {[["groups",t.tabGroups],["knockout",t.tabKnockout]].map(([k,l])=>(
+            <button key={k} onClick={()=>setTab(k)} style={{
+              padding:"12px 24px", border:"none", background:"none", cursor:"pointer",
+              color:tab===k?"var(--accent)":"var(--text3)",
+              borderBottom:tab===k?"2px solid var(--accent)":"2px solid transparent",
+              fontFamily:"inherit", fontSize:14, fontWeight:tab===k?600:400, transition:"all .2s"
+            }}>{l}</button>
+          ))}
+        </div>
+
+        <div style={{ padding:"20px 16px", maxWidth:tab==="knockout"?1700:1100, margin:"0 auto" }}>
+          {tab==="groups" && (
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))", gap:16 }}>
+              {Object.keys(GROUPS_RAW).map((g,gi)=>(
+                <GroupCard key={g} groupKey={g} color={GC[gi]} lang={lang}/>
+              ))}
+            </div>
+          )}
+          {tab==="knockout" && (
+            <div>
+              <div style={{ fontSize:11, color:"var(--text3)", marginBottom:14, textAlign:"center" }}>{t.knockoutNote}</div>
+              <SymmetricBracket lang={lang}/>
+              <div style={{ marginTop:20, padding:"10px 16px", background:"var(--ko-footer)", borderRadius:8,
+                border:"1px solid var(--border)", fontSize:11, color:"var(--text3)", textAlign:"center" }}>
+                {t.koFooter}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script></body></html>
