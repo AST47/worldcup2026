@@ -744,12 +744,12 @@ function ScheduleTab({ lang }) {
 
   const monthOrder = { "Jun": 6, "Jul": 7 };
   const parseSort = (dateStr, timeStr) => {
-  const [d, mo] = dateStr.split(" ");
-  const dayNum = parseInt(d, 10);
-  const monthNum = monthOrder[mo] || 6; // يونيو يعطي 6، يوليو يعطي 7
-  const [h, mi] = timeStr.split(":").map(Number);
-  return (monthNum * 10000) + (dayNum * 100) + h + (mi / 60);
-};
+    const [d, mo] = dateStr.split(" ");
+    const dayNum = parseInt(d, 10);
+    const monthNum = monthOrder[mo] || 6;
+    const [h, mi] = timeStr.split(":").map(Number);
+    return (monthNum * 10000) + (dayNum * 100) + h + (mi / 60);
+  };
 
   allMatches.sort((a, b) => parseSort(a.date, a.time) - parseSort(b.date, b.time));
 
@@ -763,79 +763,93 @@ function ScheduleTab({ lang }) {
     const color = GC_MAP[m.groupKey];
     const homeWin = finished && m.hg > m.ag;
     const awayWin = finished && m.ag > m.hg;
+    
     return (
-      <div style={{
-        display:"flex", alignItems:"center", padding:"10px 14px",
-        borderBottom:"1px solid var(--border2)", gap:8,
-        background:"var(--surface)", opacity: finished ? 0.68 : 1,
+      <div className="match-card" style={{
+        padding: "12px 14px",
+        borderBottom: "1px solid var(--border2)",
+        background: "var(--surface)",
+        opacity: finished ? 0.68 : 1,
       }}>
-        <div style={{ flexShrink:0, textAlign:"center", minWidth:52 }}>
-          <div style={{ fontSize:10, color:"var(--text3)", fontWeight:600 }}>{fmtDate(lang, m.date)}</div>
-          <div style={{ fontSize:11, color:"var(--text2)" }}>{m.time}</div>
+        {/* السطر الأول: معلومات المباراة (التاريخ، الوقت، المجموعة، والملعب) */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px", width: "100%" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div style={{
+              width: 20, height: 20, borderRadius: "50%",
+              background: color + "33", border: "1px solid " + color + "55",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 9, fontWeight: 700, color,
+            }}>{m.groupKey}</div>
+            <div style={{ fontSize: 11, color: "var(--text3)", fontWeight: 600 }}>
+              {fmtDate(lang, m.date)} · <span style={{ color: "var(--text2)" }}>{m.time}</span>
+            </div>
+          </div>
+          <div style={{ fontSize: 9, color: "var(--text4)", maxWidth: "50%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {vn(lang, m.venue)}
+          </div>
         </div>
-        <div style={{
-          flexShrink:0, width:20, height:20, borderRadius:"50%",
-          background:color+"33", border:"1px solid "+color+"55",
-          display:"flex", alignItems:"center", justifyContent:"center",
-          fontSize:9, fontWeight:700, color,
-        }}>{m.groupKey}</div>
-        <div style={{
-          flex:1, display:"flex", alignItems:"center",
-          justifyContent: isRtl?"flex-start":"flex-end",
-          gap:5, overflow:"hidden",
-        }}>
-          <span style={{
-            fontSize:12, fontWeight: homeWin?700:400,
-            color: homeWin?"var(--text)":"var(--text2)",
-            whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis",
-          }}>{tn(lang, m.home)}</span>
-          <span style={{ flexShrink:0 }}>{FLAGS[m.home]||"\u{1F3F3}\uFE0F"}</span>
-        </div>
-        <div style={{ flexShrink:0, minWidth:54, textAlign:"center" }}>
-          {finished ? (
+
+        {/* السطر الثاني: المنتخبات والنتيجة */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", gap: 4 }}>
+          {/* الفريق المستضيف */}
+          <div style={{
+            flex: 1, display: "flex", alignItems: "center",
+            justifyContent: isRtl ? "flex-start" : "flex-end",
+            gap: 5, overflow: "hidden",
+          }}>
             <span style={{
-              display:"inline-flex", alignItems:"center", gap:4,
-              background:"var(--bg2)", borderRadius:6, padding:"3px 8px",
-            }}>
-              <span style={{ fontSize:14, fontWeight:800, color: homeWin?color:"var(--text2)" }}>{m.hg}</span>
-              <span style={{ fontSize:10, color:"var(--text4)" }}>{"\u2013"}</span>
-              <span style={{ fontSize:14, fontWeight:800, color: awayWin?color:"var(--text2)" }}>{m.ag}</span>
-            </span>
-          ) : (
+              fontSize: 13, fontWeight: homeWin ? 700 : 400,
+              color: homeWin ? "var(--text)" : "var(--text2)",
+              whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+            }}>{tn(lang, m.home)}</span>
+            <span style={{ flexShrink: 0 }}>{FLAGS[m.home] || "🏳️"}</span>
+          </div>
+
+          {/* مربع النتيجة / VS */}
+          <div style={{ flexShrink: 0, minWidth: 60, textAlign: "center" }}>
+            {finished ? (
+              <span style={{
+                display: "inline-flex", alignItems: "center", gap: 5,
+                background: "var(--bg2)", borderRadius: 6, padding: "4px 10px",
+              }}>
+                <span style={{ fontSize: 14, fontWeight: 800, color: homeWin ? color : "var(--text2)" }}>{m.hg}</span>
+                <span style={{ fontSize: 10, color: "var(--text4)" }}>–</span>
+                <span style={{ fontSize: 14, fontWeight: 800, color: awayWin ? color : "var(--text2)" }}>{m.ag}</span>
+              </span>
+            ) : (
+              <span style={{
+                display: "inline-flex", alignItems: "center",
+                background: color + "18", borderRadius: 6, padding: "4px 12px",
+                border: "1px solid " + color + "33",
+              }}>
+                <span style={{ fontSize: 11, color, fontWeight: 700 }}>vs</span>
+              </span>
+            )}
+          </div>
+
+          {/* الفريق الضيف */}
+          <div style={{
+            flex: 1, display: "flex", alignItems: "center",
+            justifyContent: isRtl ? "flex-end" : "flex-start",
+            gap: 5, overflow: "hidden",
+          }}>
+            <span style={{ flexShrink: 0 }}>{FLAGS[m.away] || "🏳️"}</span>
             <span style={{
-              display:"inline-flex", alignItems:"center",
-              background:color+"18", borderRadius:6, padding:"3px 10px",
-              border:"1px solid "+color+"33",
-            }}>
-              <span style={{ fontSize:10, color, fontWeight:700 }}>vs</span>
-            </span>
-          )}
+              fontSize: 13, fontWeight: awayWin ? 700 : 400,
+              color: awayWin ? "var(--text)" : "var(--text2)",
+              whiteSpace: "nowrap", overflow: "hidden", textOverflow:"ellipsis",
+            }}>{tn(lang, m.away)}</span>
+          </div>
         </div>
-        <div style={{
-          flex:1, display:"flex", alignItems:"center",
-          justifyContent: isRtl?"flex-end":"flex-start",
-          gap:5, overflow:"hidden",
-        }}>
-          <span style={{ flexShrink:0 }}>{FLAGS[m.away]||"\u{1F3F3}\uFE0F"}</span>
-          <span style={{
-            fontSize:12, fontWeight: awayWin?700:400,
-            color: awayWin?"var(--text)":"var(--text2)",
-            whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis",
-          }}>{tn(lang, m.away)}</span>
-        </div>
-        <div style={{
-          flexShrink:0, fontSize:9, color:"var(--text4)",
-          maxWidth:90, textAlign: isRtl?"left":"right", lineHeight:1.3,
-        }}>{vn(lang, m.venue)}</div>
       </div>
     );
   };
 
   return (
-    <div style={{ maxWidth:720, margin:"0 auto" }}>
-      {upcoming.map((m,i) => <MatchRow key={"u"+i} m={m} finished={false}/>)}
-      {played.length>0 && <div style={{ height:1, background:"var(--border)" }}/>}
-      {played.map((m,i) => <MatchRow key={"p"+i} m={m} finished={true}/>)}
+    <div style={{ maxWidth: 720, margin: "0 auto", borderRadius: 8, overflow: "hidden", border: "1px solid var(--border)" }}>
+      {upcoming.map((m, i) => <MatchRow key={"u" + i} m={m} finished={false} />)}
+      {played.length > 0 && <div style={{ height: 1, background: "var(--border)" }} />}
+      {played.map((m, i) => <MatchRow key={"p" + i} m={m} finished={true} />)}
     </div>
   );
 }
