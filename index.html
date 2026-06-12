@@ -4,7 +4,8 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GBC7BRC5X8"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
   gtag('config', 'G-GBC7BRC5X8');
 </script>
 <meta charset="UTF-8">
@@ -16,13 +17,14 @@
 </head>
 <body>
 <div id="root"></div>
-<script type=\"text/babel\" data-presets=\"env,react\">
+<script type="text/babel" data-presets="env,react">
 const { useState } = React;
 
 // ─── TRANSLATIONS ─────────────────────────────────────────────
 const T = {
   ar: {
-    dir: "rtl",\n    title: "بطولة كأس العالم FIFA 2026™",
+    dir: "rtl",
+    title: "بطولة كأس العالم FIFA 2026™",
     groups: "مرحلة المجموعات",
     bracket: "مرحلة خروج المغلوب",
     schedule: "جدول المباريات",
@@ -38,7 +40,7 @@ const T = {
     finalist: "الوصيف",
     semi: "النصف النهائي",
     quarter: "الربع النهائي",
-    r16: "دور الـ 32",
+    r16: "دور الـ 16",
     r32: "دور الـ 32",
     aboutTitle: "بطولة كأس العالم FIFA 2026™ - تتبع التوقعات",
     aboutDesc: "تم تطوير هذا التطبيق التفاعلي لمتابعة محاكاة وتوقعات بطولة كأس العالم 2026 بشكل ديناميكي مرن. يتيح التطبيق عرض الترتيب المحدث للمجموعات وشجرة الأدوار الإقصائية وجدول زمني متكامل للمباريات.",
@@ -137,7 +139,7 @@ const TN = {
     "Morocco": "Fas", "Senegal": "Senegal", "Japan": "Japonya", "South Korea": "Güney Kore",
     "Australia": "Avustralya", "Iran": "İran", "Saudi Arabia": "Suudi Arabistan", "Egypt": "Mısır",
     "Tunisia": "Tunus", "Algeria": "Cezayir", "Cameroon": "Kamerun", "Ghana": "Gana",
-    "Uruguay": "Uruguay", "Colombia": "Kolombiya", "Ecuador": "Ekvador", "Peru": "Peru",
+    "Uruguay": "Uruguay", "Colombia": "Kolombiya", "Ekvador": "Ekvador", "Peru": "Peru",
     "Chile": "Şili", "Croatia": "Hırvatistan", "Belgium": "Belçika", "Switzerland": "İsviçre",
     "Denmark": "Danimarka", "Serbia": "Sırbistan", "Poland": "Polonya", "Ukraine": "Ukrayna",
     "Turkey": "Türkiye", "Sweden": "İsveç", "Norway": "Norveç", "Austria": "Avusturya",
@@ -207,12 +209,8 @@ function tn(lang, name) { return TN[lang]?.[name] || name; }
 function vn(lang, vKey) { return VN[lang]?.[vKey] || vKey; }
 
 function fmtDate(lang, dateStr) {
-  if(lang === "ar") {
-    return dateStr.replace("Jun", "يونيو").replace("Jul", "يوليو");
-  }
-  if(lang === "tr") {
-    return dateStr.replace("Jun", "Haz").replace("Jul", "Tem");
-  }
+  if(lang === "ar") return dateStr.replace("Jun", "يونيو").replace("Jul", "يوليو");
+  if(lang === "tr") return dateStr.replace("Jun", "Haz").replace("Jul", "Tem");
   return dateStr;
 }
 
@@ -252,11 +250,11 @@ const CSS_VARS = `
   }
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
   body { background: var(--bg); color: var(--text); padding: 16px; display: flex; justify-content: center; }
-  #root { width: 100%; maxWidth: 1280px; }
-  .tabs-nav { display: flex; gap: 8px; borderBottom: 2px solid var(--border); paddingBottom: 8px; marginBottom: 16px; overflowX: auto; }
-  .tab-btn { background: transparent; border: none; color: var(--text3); padding: 8px 16px; cursor: pointer; fontSize: 14px; fontWeight: 600; borderRadius: 6px; transition: all 0.2s; whiteSpace: nowrap; }
+  #root { width: 100%; max-width: 1280px; }
+  .tabs-nav { display: flex; gap: 8px; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; overflow-x: auto; }
+  .tab-btn { background: transparent; border: none; color: var(--text3); padding: 8px 16px; cursor: pointer; font-size: 14px; font-weight: 600; coral-radius: 6px; border-radius: 6px; transition: all 0.2s; white-space: nowrap; }
   .tab-btn.active { background: var(--accent); color: #fff; }
-  .lang-select { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 6px 12px; borderRadius: 6px; fontSize: 13px; fontWeight: 600; cursor: pointer; outline: none; }
+  .lang-select { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; outline: none; }
   
   @keyframes cv-pulse {
     0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
@@ -271,7 +269,7 @@ const CSS_VARS = `
     animation-play-state: paused;
   }
 
-  /* التجاوب الذكي لتاب الجدول في الشاشات الصغيرة والموبايل */
+  /* التجاوب لجدول المباريات في الموبايل */
   @media (max-width: 768px) {
     .match-schedule-row {
       flex-direction: column !important;
@@ -291,7 +289,7 @@ const CSS_VARS = `
       flex-direction: column !important;
       align-items: flex-start !important;
       gap: 8px !important;
-      width: 100%;
+      width: 100% !important;
     }
     .match-teams-box {
       width: 100% !important;
@@ -299,8 +297,7 @@ const CSS_VARS = `
     }
     .match-venue-box {
       width: 100% !important;
-      text-align: inherit !important;
-      padding-left: 2px;
+      text-align: start !important;
       font-size: 10px !important;
       opacity: 0.8;
     }
@@ -315,7 +312,7 @@ const CSS_VARS = `
 
 const LangContext = React.createContext();
 
-// ─── INITIAL MATCHES GENERATION ───────────────────────────────
+// ─── GENERATE INITIAL MATCHES ─────────────────────────────────
 const initialMatches = [];
 const monthOrder = { "Jun": 6, "Jul": 7 };
 const venuesList = [
@@ -357,7 +354,7 @@ Object.keys(GROUPS_RAW).forEach((gKey, gIdx) => {
   });
 });
 
-// ─── MAIN APP COMPONENT ───────────────────────────────────────
+// ─── APP ──────────────────────────────────────────────────────
 function App() {
   const [lang, setLang] = useState("ar");
   const [activeTab, setActiveTab] = useState("groups");
@@ -380,7 +377,6 @@ function App() {
       <style>{CSS_VARS}</style>
       <div dir={t.dir}>
         
-        {/* Header */}
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20, flexWrap:"wrap", gap:12 }}>
           <h1 style={{ fontSize:22, fontWeight:800, letterSpacing:-0.5 }}>{t.title}</h1>
           <select className="lang-select" value={lang} onChange={e => setLang(e.target.value)}>
@@ -390,7 +386,6 @@ function App() {
           </select>
         </div>
 
-        {/* Navigation */}
         <div className="tabs-nav">
           <button className={`tab-btn ${activeTab==='groups'?'active':''}`} onClick={()=>setActiveTab('groups')}>{t.groups}</button>
           <button className={`tab-btn ${activeTab==='bracket'?'active':''}`} onClick={()=>setActiveTab('bracket')}>{t.bracket}</button>
@@ -398,7 +393,6 @@ function App() {
           <button className={`tab-btn ${activeTab==='about'?'active':''}`} onClick={()=>setActiveTab('about')}>{t.about}</button>
         </div>
 
-        {/* Tab Contents */}
         <div>
           {activeTab === 'groups' && <GroupsTab matches={matches} updateScore={updateScore} />}
           {activeTab === 'bracket' && <BracketTab matches={matches} />}
@@ -426,7 +420,6 @@ function GroupsTab({ matches, updateScore }) {
         return (
           <div key={gKey} style={{ background:"var(--surface)", borderRadius:12, border:`1px solid var(--border)`, padding:14, display:"flex", flexDirection:"column", gap:12 }}>
             
-            {/* Group Header */}
             <div style={{ display:"flex", alignItems:"center", gap:8 }}>
               <span style={{ width:24, height:24, borderRadius:"50%", background:color, color:"#fff", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, fontSize:13 }}>
                 {gKey}
@@ -434,7 +427,6 @@ function GroupsTab({ matches, updateScore }) {
               <h3 style={{ fontSize:16, fontWeight:700 }}>{t.groups} {gKey}</h3>
             </div>
 
-            {/* Standings Table */}
             <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12, textAlign:"center" }}>
               <thead>
                 <tr style={{ color:"var(--text3)", borderBottom:"1px solid var(--border)" }}>
@@ -468,18 +460,13 @@ function GroupsTab({ matches, updateScore }) {
               </tbody>
             </table>
 
-            {/* Group Matches Inputs */}
             <div style={{ marginTop:6, display:"flex", flexDirection:"column", gap:6, borderTop:"1px dashed var(--border)", paddingTop:10 }}>
               {groupMatches.map(m => (
                 <div key={m.id} style={{ display:"flex", alignItems:"center", gap:4, justifyContent:"space-between", fontSize:12 }}>
-                  
-                  {/* Team 1 */}
                   <div style={{ flex:1, display:"flex", alignItems:"center", gap:4, justifyContent:"flex-end" }}>
                     <span style={{ color:"var(--text2)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{tn(lang, m.home)}</span>
                     <span>{FLAGS[m.home]}</span>
                   </div>
-
-                  {/* Score Inputs */}
                   <div style={{ display:"flex", alignItems:"center", gap:3 }}>
                     <input type="number" min="0" placeholder="-" value={m.hg !== null ? m.hg : ""} onChange={e => updateScore(m.id, 'hg', e.target.value)}
                       style={{ width:28, height:24, background:"var(--bg2)", border:"1px solid var(--border2)", color:"#fff", borderRadius:4, textAlign:"center", fontSize:12, fontWeight:700, outline:"none" }} />
@@ -487,13 +474,10 @@ function GroupsTab({ matches, updateScore }) {
                     <input type="number" min="0" placeholder="-" value={m.ag !== null ? m.ag : ""} onChange={e => updateScore(m.id, 'ag', e.target.value)}
                       style={{ width:28, height:24, background:"var(--bg2)", border:"1px solid var(--border2)", color:"#fff", borderRadius:4, textAlign:"center", fontSize:12, fontWeight:700, outline:"none" }} />
                   </div>
-
-                  {/* Team 2 */}
                   <div style={{ flex:1, display:"flex", alignItems:"center", gap:4, justifyContent:"flex-start" }}>
                     <span>{FLAGS[m.away]}</span>
                     <span style={{ color:"var(--text2)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{tn(lang, m.away)}</span>
                   </div>
-
                 </div>
               ))}
             </div>
@@ -510,7 +494,6 @@ function ScheduleTab({ matches }) {
   const [lang] = React.useContext(LangContext);
   const t = T[lang];
 
-  // دالة تصنيف وترتيب السطور تصاعدياً بشكل رياضي دقيق
   const parseSort = (dateStr, timeStr) => {
     const [d, mo] = dateStr.split(" ");
     const dayNum = parseInt(d, 10);
@@ -552,7 +535,6 @@ function MatchRow({ m, finished }) {
       gap: "12px",
       background: finished ? "var(--surface)" : "var(--surface)"
     }}>
-      {/* القسم الأول: التاريخ والوقت والمجموعة */}
       <div className="match-time-section" style={{
         flexShrink: 0,
         display: "flex",
@@ -573,27 +555,23 @@ function MatchRow({ m, finished }) {
         <div style={{ fontSize: 13, color: "var(--text)", fontWeight: 700 }}>{m.time}</div>
       </div>
 
-      {/* القسم الثاني: الفرق والملعب المتجاوب تلقائياً */}
       <div className="match-main-container" style={{
         flex: 1,
         display: "flex",
         gap: "12px",
         alignItems: "center"
       }}>
-        {/* بوكس المنتخبات */}
         <div className="match-teams-box" style={{
           flex: 1,
           display: "flex",
           alignItems: "center",
           gap: "8px"
         }}>
-          {/* المنتخب الأول */}
           <div style={{ flex: 1, fontSize: 12, fontWeight: 600, color: "var(--text)", display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 6 }}>
             <span className="team-name-text">{tn(lang, m.home)}</span>
             <span style={{ fontSize: 16 }}>{FLAGS[m.home] || "🏳️"}</span>
           </div>
 
-          {/* النتيجة أو VS */}
           <div style={{ flexShrink: 0, minWidth: m.hg !== null ? "55px" : "45px", textAlign: "center" }}>
             {m.hg !== null && m.ag !== null ? (
               <span style={{
@@ -615,19 +593,13 @@ function MatchRow({ m, finished }) {
             )}
           </div>
 
-          {/* المنتخب الثاني */}
           <div style={{ flex: 1, fontSize: 12, fontWeight: 600, color: "var(--text)", display: "flex", alignItems: "center", gap: 6 }}>
             <span style={{ fontSize: 16 }}>{FLAGS[m.away] || "🏳️"}</span>
             <span className="team-name-text">{tn(lang, m.away)}</span>
           </div>
         </div>
 
-        {/* ملعب المباراة والمدينة */}
-        <div className="match-venue-box" style={{
-          fontSize: 10,
-          color: "var(--text4)",
-          lineHeight: 1.3
-        }}>
+        <div className="match-venue-box" style={{ fontSize: 10, color: "var(--text4)", lineHeight: 1.3 }}>
           {vn(lang, m.venue)}
         </div>
       </div>
@@ -686,17 +658,17 @@ function BracketRound({ title, teams, isFinal, champion }) {
 
   return (
     <div style={{ flex:1, display:"flex", flexDirection:"column", gap:16, minWidth:160 }}>
-      <h4 style={{ textBreak:"break-all", fontSize:12, color:"var(--text3)", textAlign:"center", borderBottom:"1px solid var(--border)", paddingBottom:6, fontWeight:700 }}>{title}</h4>
+      <h4 style={{ fontSize:12, color:"var(--text3)", textAlign:"center", borderBottom:"1px solid var(--border)", paddingBottom:6, fontWeight:700 }}>{title}</h4>
       <div style={{ display:"flex", flexDirection:"column", justifyContent:"space-around", flexGrow:1, gap:12 }}>
         {pairs.map((p, idx) => (
           <div key={idx} style={{ background:"var(--bg)", border:"1px solid var(--border2)", borderRadius:8, padding:8, display:"flex", flexDirection:"column", gap:6 }}>
             <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:12, fontWeight:600 }}>
               <span>{p[0] ? FLAGS[p[0]] : "🏳️"}</span>
-              <span style={{ overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{p[0] ? tn(lang, p[0]) : "---"}</span>
+              <span style={{ overflow:"hidden", textOverflow:"ellipsis", white-space:"nowrap" }}>{p[0] ? tn(lang, p[0]) : "---"}</span>
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:12, fontWeight:600, borderTop:"1px solid var(--border)", paddingTop:4 }}>
               <span>{p[1] ? FLAGS[p[1]] : "🏳️"}</span>
-              <span style={{ overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{p[1] ? tn(lang, p[1]) : "---"}</span>
+              <span style={{ overflow:"hidden", textOverflow:"ellipsis", white-space:"nowrap" }}>{p[1] ? tn(lang, p[1]) : "---"}</span>
             </div>
           </div>
         ))}
@@ -720,9 +692,9 @@ function AboutTab() {
   const t = T[lang];
 
   return (
-    <div style={{ background:"var(--surface)", borderRadius:12, border:"1px solid var(--border)", padding:24, maxWidth:680, margin:"0 auto" }}>
+    <div style={{ background:"var(--surface)", borderRadius:12, border:"1px solid var(--border)", padding:24, max-width:680, margin:"0 auto" }}>
       <h3 style={{ fontSize:18, fontWeight:800, marginBottom:12, color:"var(--accent)" }}>{t.aboutTitle}</h3>
-      <p style={{ fontSize:14, color:"var(--text2)", lineHeight:1.6, marginBottom:20 }}>{t.aboutDesc}</p>
+      <p style={{ fontSize:14, color:"var(--text2)", line-height:1.6, marginBottom:20 }}>{t.aboutDesc}</p>
       
       <div style={{ borderTop:"1px solid var(--border)", paddingTop:16 }}>
         <span style={{ fontSize:12, color:"var(--text3)", display:"block", marginBottom:4 }}>{t.developer}</span>
@@ -746,7 +718,7 @@ function AboutTab() {
               fontWeight: "700",
               fontSize: "13px",
               textDecoration: "none",
-              borderRadius: "8px",
+              border-radius: "8px",
               transition: "all 0.2s ease"
             }}
           >
