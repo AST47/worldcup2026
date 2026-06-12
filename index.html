@@ -104,7 +104,7 @@ const T = {
 
 const FLAGS = {
   "Canada": "🇨🇦", "Mexico": "🇲🇽", "USA": "🇺🇸", "Argentina": "🇦🇷",
-  "Brazil": "🇧🇷", "France": "🇫🇷", "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Spain": "🇪🇸",
+  "Brazil": "🇧🇷", "France": "🇫🇷", "England": "🏴󠁧󠁢󠁥الن󠁧󠁢󠁿", "Spain": "🇪🇸",
   "Germany": "🇩🇪", "Italy": "🇮🇹", "Netherlands": "🇳🇱", "Portugal": "🇵🇹",
   "Morocco": "🇲🇦", "Senegal": "🇸🇳", "Japan": "🇯🇵", "South Korea": "🇰🇷",
   "Australia": "🇦🇺", "Iran": "🇮🇷", "Saudi Arabia": "🇸🇦", "Egypt": "🇪🇬",
@@ -139,7 +139,7 @@ const TN = {
     "Morocco": "Fas", "Senegal": "Senegal", "Japan": "Japonya", "South Korea": "Güney Kore",
     "Australia": "Avustralya", "Iran": "İran", "Saudi Arabia": "Suudi Arabistan", "Egypt": "Mısır",
     "Tunisia": "Tunus", "Algeria": "Cezayir", "Cameroon": "Kamerun", "Ghana": "Gana",
-    "Uruguay": "Uruguay", "Colombia": "Kolombiya", "Ekvador": "Ekvador", "Peru": "Peru",
+    "Uruguay": "Uruguay", "Colombia": "Kolombiya", "Ecuador": "Ekvador", "Peru": "Peru",
     "Chile": "Şili", "Croatia": "Hırvatistan", "Belgium": "Belçika", "Switzerland": "İsviçre",
     "Denmark": "Danimarka", "Serbia": "Sırbistan", "Poland": "Polonya", "Ukraine": "Ukrayna",
     "Turkey": "Türkiye", "Sweden": "İsveç", "Norway": "Norveç", "Austria": "Avusturya",
@@ -163,7 +163,7 @@ const VN = {
     "Boston": "ملعب جيليت، بوسطن",
     "Philadelphia": "ملعب لينكون فاينانشال فيلد، فيلادلفيا",
     "New York": "ملعب متلايف، نيويورك/نيو جيرسي",
-    "San Francisco": "ملعب ليفاي، سان فرانسيسكو",
+    "San Francisco": "ملعب ليفاي، san فرانسيسكو",
     "Monterrey": "ملعب بي بي في آي، مونتيرري",
     "Mexico City": "ملعب أزتيكا، مكسيكو سيتي"
   },
@@ -252,7 +252,7 @@ const CSS_VARS = `
   body { background: var(--bg); color: var(--text); padding: 16px; display: flex; justify-content: center; }
   #root { width: 100%; max-width: 1280px; }
   .tabs-nav { display: flex; gap: 8px; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; overflow-x: auto; }
-  .tab-btn { background: transparent; border: none; color: var(--text3); padding: 8px 16px; cursor: pointer; font-size: 14px; font-weight: 600; coral-radius: 6px; border-radius: 6px; transition: all 0.2s; white-space: nowrap; }
+  .tab-btn { background: transparent; border: none; color: var(--text3); padding: 8px 16px; cursor: pointer; font-size: 14px; font-weight: 600; border-radius: 6px; transition: all 0.2s; white-space: nowrap; }
   .tab-btn.active { background: var(--accent); color: #fff; }
   .lang-select { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; outline: none; }
   
@@ -664,11 +664,11 @@ function BracketRound({ title, teams, isFinal, champion }) {
           <div key={idx} style={{ background:"var(--bg)", border:"1px solid var(--border2)", borderRadius:8, padding:8, display:"flex", flexDirection:"column", gap:6 }}>
             <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:12, fontWeight:600 }}>
               <span>{p[0] ? FLAGS[p[0]] : "🏳️"}</span>
-              <span style={{ overflow:"hidden", textOverflow:"ellipsis", white-space:"nowrap" }}>{p[0] ? tn(lang, p[0]) : "---"}</span>
+              <span style={{ overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{p[0] ? tn(lang, p[0]) : "---"}</span>
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:12, fontWeight:600, borderTop:"1px solid var(--border)", paddingTop:4 }}>
               <span>{p[1] ? FLAGS[p[1]] : "🏳️"}</span>
-              <span style={{ overflow:"hidden", textOverflow:"ellipsis", white-space:"nowrap" }}>{p[1] ? tn(lang, p[1]) : "---"}</span>
+              <span style={{ overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{p[1] ? tn(lang, p[1]) : "---"}</span>
             </div>
           </div>
         ))}
@@ -692,9 +692,9 @@ function AboutTab() {
   const t = T[lang];
 
   return (
-    <div style={{ background:"var(--surface)", borderRadius:12, border:"1px solid var(--border)", padding:24, max-width:680, margin:"0 auto" }}>
+    <div style={{ background:"var(--surface)", borderRadius:12, border:"1px solid var(--border)", padding:24, maxWidth:680, margin:"0 auto" }}>
       <h3 style={{ fontSize:18, fontWeight:800, marginBottom:12, color:"var(--accent)" }}>{t.aboutTitle}</h3>
-      <p style={{ fontSize:14, color:"var(--text2)", line-height:1.6, marginBottom:20 }}>{t.aboutDesc}</p>
+      <p style={{ fontSize:14, color:"var(--text2)", lineHeight:1.6, marginBottom:20 }}>{t.aboutDesc}</p>
       
       <div style={{ borderTop:"1px solid var(--border)", paddingTop:16 }}>
         <span style={{ fontSize:12, color:"var(--text3)", display:"block", marginBottom:4 }}>{t.developer}</span>
@@ -718,7 +718,7 @@ function AboutTab() {
               fontWeight: "700",
               fontSize: "13px",
               textDecoration: "none",
-              border-radius: "8px",
+              borderRadius: "8px",
               transition: "all 0.2s ease"
             }}
           >
