@@ -29,6 +29,7 @@ const T = {
     subtitle: "كندا · المكسيك · الولايات المتحدة · 11 يونيو – 19 يوليو",
     tabGroups: "دور المجموعات",
     tabKnockout: "مرحلة خروج المغلوب",
+    tabSchedule: "جدول المباريات",
     tabAbout: "حول",
     group: "المجموعة",
     team: "المنتخب",
@@ -85,6 +86,7 @@ const T = {
     subtitle: "Canada · Mexico · United States · June 11 – July 19",
     tabGroups: "Group Stage",
     tabKnockout: "Knockout Stage",
+    tabSchedule: "Schedule",
     tabAbout: "About",
     group: "Group",
     team: "Team",
@@ -141,6 +143,7 @@ const T = {
     subtitle: "Kanada · Meksika · Amerika Birleşik Devletleri · 11 Haziran – 19 Temmuz",
     tabGroups: "Grup Aşaması",
     tabKnockout: "Eleme Aşaması",
+    tabSchedule: "Fikstür",
     tabAbout: "Hakkında",
     group: "Grup",
     team: "Takım",
@@ -199,7 +202,7 @@ const GROUPS_RAW = {
     teams: ["Mexico","South Africa","South Korea","Czechia"],
     matches: [
       { home:"Mexico",       away:"South Africa",  date:"11 Jun", time:"22:00", venue:"Azteca Stadium, Mexico City",      hg:2, ag:0 },
-      { home:"South Korea",  away:"Czechia",        date:"12 Jun", time:"05:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null },
+      { home:"South Korea",  away:"Czechia",        date:"12 Jun", time:"05:00", venue:"Akron Stadium, Guadalajara",        hg:2, ag:1 },
       { home:"Czechia",      away:"South Africa",   date:"18 Jun", time:"19:00", venue:"Mercedes-Benz Stadium, Atlanta",    hg:null, ag:null },
       { home:"Mexico",       away:"South Korea",    date:"19 Jun", time:"02:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null },
       { home:"Czechia",      away:"Mexico",         date:"25 Jun", time:"02:00", venue:"Azteca Stadium, Mexico City",      hg:null, ag:null },
@@ -729,6 +732,114 @@ const CSS_VARS = `
   }
 `;
 
+function ScheduleTab({ lang }) {
+  const isRtl = lang === "ar";
+
+  const allMatches = [];
+  Object.keys(GROUPS_RAW).forEach(gKey => {
+    GROUPS_RAW[gKey].matches.forEach(m => {
+      allMatches.push({ ...m, groupKey: gKey });
+    });
+  });
+
+  const monthOrder = { "Jun": 6, "Jul": 7 };
+  const parseSort = (dateStr, timeStr) => {
+  const [d, mo] = dateStr.split(" ");
+  const dayNum = parseInt(d, 10);
+  const monthNum = monthOrder[mo] || 6; // يونيو يعطي 6، يوليو يعطي 7
+  const [h, mi] = timeStr.split(":").map(Number);
+  return (monthNum * 10000) + (dayNum * 100) + h + (mi / 60);
+};
+
+  allMatches.sort((a, b) => parseSort(a.date, a.time) - parseSort(b.date, b.time));
+
+  const played   = allMatches.filter(m => m.hg !== null && m.ag !== null);
+  const upcoming = allMatches.filter(m => m.hg === null || m.ag === null);
+
+  const GC_MAP = {};
+  Object.keys(GROUPS_RAW).forEach((g, i) => { GC_MAP[g] = GC[i]; });
+
+  const MatchRow = ({ m, finished }) => {
+    const color = GC_MAP[m.groupKey];
+    const homeWin = finished && m.hg > m.ag;
+    const awayWin = finished && m.ag > m.hg;
+    return (
+      <div style={{
+        display:"flex", alignItems:"center", padding:"10px 14px",
+        borderBottom:"1px solid var(--border2)", gap:8,
+        background:"var(--surface)", opacity: finished ? 0.68 : 1,
+      }}>
+        <div style={{ flexShrink:0, textAlign:"center", minWidth:52 }}>
+          <div style={{ fontSize:10, color:"var(--text3)", fontWeight:600 }}>{fmtDate(lang, m.date)}</div>
+          <div style={{ fontSize:11, color:"var(--text2)" }}>{m.time}</div>
+        </div>
+        <div style={{
+          flexShrink:0, width:20, height:20, borderRadius:"50%",
+          background:color+"33", border:"1px solid "+color+"55",
+          display:"flex", alignItems:"center", justifyContent:"center",
+          fontSize:9, fontWeight:700, color,
+        }}>{m.groupKey}</div>
+        <div style={{
+          flex:1, display:"flex", alignItems:"center",
+          justifyContent: isRtl?"flex-start":"flex-end",
+          gap:5, overflow:"hidden",
+        }}>
+          <span style={{
+            fontSize:12, fontWeight: homeWin?700:400,
+            color: homeWin?"var(--text)":"var(--text2)",
+            whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis",
+          }}>{tn(lang, m.home)}</span>
+          <span style={{ flexShrink:0 }}>{FLAGS[m.home]||"\u{1F3F3}\uFE0F"}</span>
+        </div>
+        <div style={{ flexShrink:0, minWidth:54, textAlign:"center" }}>
+          {finished ? (
+            <span style={{
+              display:"inline-flex", alignItems:"center", gap:4,
+              background:"var(--bg2)", borderRadius:6, padding:"3px 8px",
+            }}>
+              <span style={{ fontSize:14, fontWeight:800, color: homeWin?color:"var(--text2)" }}>{m.hg}</span>
+              <span style={{ fontSize:10, color:"var(--text4)" }}>{"\u2013"}</span>
+              <span style={{ fontSize:14, fontWeight:800, color: awayWin?color:"var(--text2)" }}>{m.ag}</span>
+            </span>
+          ) : (
+            <span style={{
+              display:"inline-flex", alignItems:"center",
+              background:color+"18", borderRadius:6, padding:"3px 10px",
+              border:"1px solid "+color+"33",
+            }}>
+              <span style={{ fontSize:10, color, fontWeight:700 }}>vs</span>
+            </span>
+          )}
+        </div>
+        <div style={{
+          flex:1, display:"flex", alignItems:"center",
+          justifyContent: isRtl?"flex-end":"flex-start",
+          gap:5, overflow:"hidden",
+        }}>
+          <span style={{ flexShrink:0 }}>{FLAGS[m.away]||"\u{1F3F3}\uFE0F"}</span>
+          <span style={{
+            fontSize:12, fontWeight: awayWin?700:400,
+            color: awayWin?"var(--text)":"var(--text2)",
+            whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis",
+          }}>{tn(lang, m.away)}</span>
+        </div>
+        <div style={{
+          flexShrink:0, fontSize:9, color:"var(--text4)",
+          maxWidth:90, textAlign: isRtl?"left":"right", lineHeight:1.3,
+        }}>{vn(lang, m.venue)}</div>
+      </div>
+    );
+  };
+
+  return (
+    <div style={{ maxWidth:720, margin:"0 auto" }}>
+      {upcoming.map((m,i) => <MatchRow key={"u"+i} m={m} finished={false}/>)}
+      {played.length>0 && <div style={{ height:1, background:"var(--border)" }}/>}
+      {played.map((m,i) => <MatchRow key={"p"+i} m={m} finished={true}/>)}
+    </div>
+  );
+}
+
 function App() {
   const [tab, setTab] = useState("groups");
   const [lang, setLang] = useState("en");
@@ -762,7 +873,7 @@ function App() {
 
         {/* Tabs */}
         <div style={{ display:"flex", borderBottom:"1px solid var(--border)", background:"var(--tab-bg)" }}>
-          {[["groups",t.tabGroups],["knockout",t.tabKnockout],["about",t.tabAbout]].map(([k,l])=>(
+          {[["groups",t.tabGroups],["schedule",t.tabSchedule],["knockout",t.tabKnockout],["about",t.tabAbout]].map(([k,l])=>(
             <button key={k} onClick={()=>setTab(k)} style={{
               padding:"12px 24px", border:"none", background:"none", cursor:"pointer",
               color:tab===k?"var(--accent)":"var(--text3)",
@@ -772,7 +883,7 @@ function App() {
           ))}
         </div>
 
-        <div style={{ padding:"20px 16px", maxWidth:tab==="knockout"?1700:1100, margin:"0 auto" }}>
+        <div style={{ padding:"20px 16px", maxWidth:tab==="knockout"?1700:(tab==="schedule"?760:1100), margin:"0 auto" }}>
           {tab==="groups" && (
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))", gap:16 }}>
               {Object.keys(GROUPS_RAW).map((g,gi)=>(
@@ -790,6 +901,7 @@ function App() {
               </div>
             </div>
           )}
+          {tab==="schedule" && <ScheduleTab lang={lang}/>}
           {tab==="about" && (
             <div style={{ maxWidth:640, margin:"0 auto", background:"var(--surface)", border:"1px solid var(--border)",
               borderRadius:10, padding:"28px 24px", color:"var(--text)", textAlign:"center" }}>
