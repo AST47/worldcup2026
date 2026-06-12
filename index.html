@@ -32,7 +32,7 @@ const T = {
     tabAbout: "حول",
     group: "المجموعة",
     team: "المنتخب",
-    lost: "خ", drawn: "ت", won: "ف", pts: "نق", gd: "فا", played: "ل",
+    lost: "خ", drawn: "ت", won: "ف", pts: "نق", gd: "لـ/عليه", played: "ل",
     notPlayed: "لم تُلعب بعد",
     knockoutNote: "يُحدَّث الجدول بعد كل مباراة",
     koFooter: "أسماء المنتخبات في دور الإقصاء تُضاف تباعاً بعد انتهاء دور المجموعات",
@@ -42,7 +42,7 @@ const T = {
     madeBy: "صُنع بواسطة ",
     authorName: "Ahmad Saleh Tuffaha",
     cvBtn: "🔍 استعرض السيرة الذاتية للمطور ←",
-    final: "النهائي", third: "مباراة الثالث",
+    final: "النهائي", third: "مباراة المركز الثالث",
     r32: "دور الـ32", r16: "دور الـ16", qf: "ربع النهائي", sf: "نصف النهائي",
     unknown: "؟",
     teams: {
@@ -60,10 +60,10 @@ const T = {
       "England": "إنجلترا", "Croatia": "كرواتيا", "Ghana": "غانا", "Panama": "بنما",
     },
     venues: {
-      "Azteca Stadium, Mexico City": "أستاد أزتيكا، مكسيكو سيتي",
-      "Akron Stadium, Guadalajara": "أستاد أكرون، خالابا",
+      "Azteca Stadium, Mexico City": "ملعب أزتيكا، مكسيكو سيتي",
+      "Akron Stadium, Guadalajara": "ملعب غوادالاخارا، غوادالاخارا",
       "Mercedes-Benz Stadium, Atlanta": "مرسيدس-بنز ستيديوم، أتلانتا",
-      "BBVA Stadium, Monterrey": "أستاد BBVA، مونتيري",
+      "BBVA Stadium, Monterrey": "ملعب BBVA، مونتيري",
       "BMO Field, Toronto": "BMO فيلد، تورنتو",
       "Levi's Stadium, Santa Clara": "ملعب ليفايز، سانتا كلارا",
       "SoFi Stadium, Inglewood": "SoFi ستيديوم، إنجلوود",
@@ -71,7 +71,7 @@ const T = {
       "Lumen Field, Seattle": "لومن فيلد، سياتل",
       "MetLife Stadium, New Jersey": "ملعب ميتلايف، نيوجيرسي",
       "Gillette Stadium, Foxboro": "جيليت ستيديوم، فوكسبورو",
-      "Lincoln Financial, Philadelphia": "لينكولن فاينانشيال، فيلاديلفيا",
+      "Lincoln Financial, Philadelphia": "لينكولن فاينانشيال فيلد، فيلادلفيا",
       "Hard Rock Stadium, Miami": "هارد روك ستيديوم، ميامي",
       "NRG Stadium, Houston": "NRG ستيديوم، هيوستن",
       "AT&T Stadium, Arlington": "AT&T ستيديوم، أرلينجتون",
@@ -144,7 +144,7 @@ const T = {
     tabAbout: "Hakkında",
     group: "Grup",
     team: "Takım",
-    lost: "M", drawn: "B", won: "G", pts: "Puan", gd: "AG", played: "O",
+    lost: "M", drawn: "B", won: "G", pts: "Puan", gd: "A:Y", played: "O",
     notPlayed: "Oynanmadı",
     knockoutNote: "Her maçtan sonra güncellenir",
     koFooter: "Eleme turu takımları grup aşaması bittikten sonra eklenecektir",
@@ -657,7 +657,7 @@ function GroupCard({ groupKey, color, lang }) {
                 <span>{FLAGS[m.away]||"🏳️"}</span><span>{tn(lang,m.away)}</span>
               </div>
               <div style={{ flexShrink:0, fontSize:9, color:"var(--text4)", textAlign:"left",
-                maxWidth:110, lineHeight:1.3 }}>{vn(lang,m.venue)}</div>
+                maxWidth:110, lineHeight:1.3 }}>{vn(lang, m.venue)}</div>
             </div>
           ))}
         </div>
@@ -715,7 +715,6 @@ const CSS_VARS = `
   body { margin: 0; }
   img.emoji { height: 1em; width: 1em; vertical-align: -0.1em; }
 
-  /* أنيميشن نبض الزر المخصص */
   @keyframes cv-pulse {
     0% { transform: scale(1); box-shadow: 0 2px 8px rgba(9, 105, 218, 0.15); }
     50% { transform: scale(1.03); box-shadow: 0 4px 14px rgba(9, 105, 218, 0.35); }
@@ -815,7 +814,6 @@ function App() {
                 </a>
               </p>
 
-              {/* الزر المتفق عليه ينبض الآن بشكل ناعم وتفاعلي */}
               <div style={{ display: "flex", justifyContent: "center", marginTop: 24 }}>
                 <a 
                   href="https://ast47.github.io/ahmadsalehtuffaha/" 
