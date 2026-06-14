@@ -10,7 +10,19 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FIFA World Cup 2026</title>
+<title>FIFA World Cup 2026 Tracker — Live Results & Standings</title>
+<meta name="description" content="Follow FIFA World Cup 2026 live — group standings, match results, and knockout bracket. Available in Arabic, English, and Turkish.">
+<meta name="keywords" content="FIFA World Cup 2026, كأس العالم 2026, World Cup standings, World Cup results, World Cup bracket">
+<meta name="author" content="AST">
+<meta property="og:title" content="FIFA World Cup 2026 Tracker">
+<meta property="og:description" content="Live group standings, match results, and knockout bracket — in Arabic, English & Turkish.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ast47.github.io/worldcup2026">
+<meta property="og:image" content="https://ast47.github.io/worldcup2026/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FIFA World Cup 2026 Tracker">
+<meta name="twitter:description" content="Live group standings, match results, and knockout bracket — in Arabic, English & Turkish.">
+<meta name="twitter:image" content="https://ast47.github.io/worldcup2026/preview.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
@@ -222,8 +234,8 @@ const GROUPS_RAW = {
   C: {
     teams: ["Brazil","Morocco","Haiti","Scotland"],
     matches: [
-      { home:"Brazil",    away:"Morocco",   date:"13 Jun", time:"22:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null },
-      { home:"Haiti",     away:"Scotland",  date:"14 Jun", time:"01:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null },
+      { home:"Brazil",    away:"Morocco",   date:"13 Jun", time:"22:00", venue:"MetLife Stadium, New Jersey",      hg:1, ag:1 },
+      { home:"Haiti",     away:"Scotland",  date:"14 Jun", time:"01:00", venue:"Gillette Stadium, Foxboro",         hg:0, ag:1 },
       { home:"Scotland",  away:"Morocco",   date:"19 Jun", time:"22:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null },
       { home:"Brazil",    away:"Haiti",     date:"20 Jun", time:"00:30", venue:"Lincoln Financial, Philadelphia",   hg:null, ag:null },
       { home:"Scotland",  away:"Brazil",    date:"24 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",          hg:null, ag:null },
@@ -234,7 +246,7 @@ const GROUPS_RAW = {
     teams: ["USA","Paraguay","Australia","Türkiye"],
     matches: [
       { home:"USA",        away:"Paraguay",   date:"13 Jun", time:"01:00", venue:"SoFi Stadium, Inglewood",        hg:4, ag:1 },
-      { home:"Australia",  away:"Türkiye",    date:"14 Jun", time:"04:00", venue:"BC Place, Vancouver",            hg:null, ag:null },
+      { home:"Australia",  away:"Türkiye",    date:"14 Jun", time:"04:00", venue:"BC Place, Vancouver",            hg:2, ag:0 },
       { home:"USA",        away:"Australia",  date:"19 Jun", time:"19:00", venue:"Lumen Field, Seattle",           hg:null, ag:null },
       { home:"Türkiye",    away:"Paraguay",   date:"20 Jun", time:"03:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null },
       { home:"Türkiye",    away:"USA",        date:"26 Jun", time:"02:00", venue:"SoFi Stadium, Inglewood",        hg:null, ag:null },
