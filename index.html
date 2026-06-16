@@ -29,20 +29,6 @@
 </head>
 <body>
 <div id="root"></div>
-<div id="api-bar" style="
-  position:fixed; bottom:0; left:0; right:0;
-  background:var(--surface,#1a1a2e); border-top:1px solid var(--border,#333);
-  padding:8px 16px; display:flex; align-items:center; justify-content:space-between;
-  font-size:11px; color:var(--text2,#aaa); z-index:1000;
-">
-  <span id="api-status">⏳ جاري التحديث...</span>
-  <button onclick="fetchResults()" style="
-    background:var(--accent,#e63946); color:#fff; border:none;
-    padding:4px 12px; border-radius:6px; font-size:11px; cursor:pointer;
-  ">تحديث الآن</button>
-</div>
-<div style="height:36px"></div>
-
 <script type="text/babel" data-presets="env,react">
 const { useState } = React;
 
@@ -226,8 +212,8 @@ const GROUPS_RAW = {
   A: {
     teams: ["Mexico","South Africa","Korea Republic","Czechia"],
     matches: [
-      { home:"Mexico",       away:"South Africa",  date:"11 Jun", time:"19:00", venue:"Azteca Stadium, Mexico City",      hg:null, ag:null },
-      { home:"Korea Republic",  away:"Czechia",        date:"12 Jun", time:"02:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null },
+      { home:"Mexico",       away:"South Africa",  date:"11 Jun", time:"19:00", venue:"Azteca Stadium, Mexico City",      hg:2, ag:0 },
+      { home:"Korea Republic",  away:"Czechia",        date:"12 Jun", time:"02:00", venue:"Akron Stadium, Guadalajara",        hg:2, ag:1 },
       { home:"Czechia",      away:"South Africa",   date:"18 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta",    hg:null, ag:null },
       { home:"Mexico",       away:"Korea Republic",    date:"19 Jun", time:"01:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null },
       { home:"Czechia",      away:"Mexico",         date:"25 Jun", time:"01:00", venue:"Azteca Stadium, Mexico City",      hg:null, ag:null },
@@ -237,8 +223,8 @@ const GROUPS_RAW = {
   B: {
     teams: ["Canada","Bosnia and Herzegovina","Qatar","Switzerland"],
     matches: [
-      { home:"Canada",                  away:"Bosnia and Herzegovina", date:"12 Jun", time:"19:00", venue:"BMO Field, Toronto",             hg:null, ag:null },
-      { home:"Qatar",                   away:"Switzerland",             date:"13 Jun", time:"19:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null },
+      { home:"Canada",                  away:"Bosnia and Herzegovina", date:"12 Jun", time:"19:00", venue:"BMO Field, Toronto",             hg:1, ag:1 },
+      { home:"Qatar",                   away:"Switzerland",             date:"13 Jun", time:"19:00", venue:"Levi's Stadium, Santa Clara",    hg:1, ag:1 },
       { home:"Switzerland",             away:"Bosnia and Herzegovina", date:"18 Jun", time:"19:00", venue:"SoFi Stadium, Inglewood",         hg:null, ag:null },
       { home:"Canada",                  away:"Qatar",                   date:"18 Jun", time:"22:00", venue:"BC Place, Vancouver",            hg:null, ag:null },
       { home:"Switzerland",             away:"Canada",                  date:"24 Jun", time:"19:00", venue:"BC Place, Vancouver",            hg:null, ag:null },
@@ -248,8 +234,8 @@ const GROUPS_RAW = {
   C: {
     teams: ["Brazil","Morocco","Haiti","Scotland"],
     matches: [
-      { home:"Brazil",    away:"Morocco",   date:"13 Jun", time:"22:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null },
-      { home:"Haiti",     away:"Scotland",  date:"14 Jun", time:"01:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null },
+      { home:"Brazil",    away:"Morocco",   date:"13 Jun", time:"22:00", venue:"MetLife Stadium, New Jersey",      hg:1, ag:1 },
+      { home:"Haiti",     away:"Scotland",  date:"14 Jun", time:"01:00", venue:"Gillette Stadium, Foxboro",         hg:0, ag:1 },
       { home:"Scotland",  away:"Morocco",   date:"19 Jun", time:"22:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null },
       { home:"Brazil",    away:"Haiti",     date:"20 Jun", time:"00:30", venue:"Lincoln Financial, Philadelphia",   hg:null, ag:null },
       { home:"Scotland",  away:"Brazil",    date:"24 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",          hg:null, ag:null },
@@ -259,8 +245,8 @@ const GROUPS_RAW = {
   D: {
     teams: ["USA","Paraguay","Australia","Türkiye"],
     matches: [
-      { home:"USA",        away:"Paraguay",   date:"13 Jun", time:"01:00", venue:"SoFi Stadium, Inglewood",        hg:null, ag:null },
-      { home:"Australia",  away:"Türkiye",    date:"14 Jun", time:"04:00", venue:"BC Place, Vancouver",            hg:null, ag:null },
+      { home:"USA",        away:"Paraguay",   date:"13 Jun", time:"01:00", venue:"SoFi Stadium, Inglewood",        hg:4, ag:1 },
+      { home:"Australia",  away:"Türkiye",    date:"14 Jun", time:"04:00", venue:"BC Place, Vancouver",            hg:2, ag:0 },
       { home:"USA",        away:"Australia",  date:"19 Jun", time:"19:00", venue:"Lumen Field, Seattle",           hg:null, ag:null },
       { home:"Türkiye",    away:"Paraguay",   date:"20 Jun", time:"03:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null },
       { home:"Türkiye",    away:"USA",        date:"26 Jun", time:"02:00", venue:"SoFi Stadium, Inglewood",        hg:null, ag:null },
@@ -270,8 +256,8 @@ const GROUPS_RAW = {
   E: {
     teams: ["Germany","Curaçao","Côte d'Ivoire","Ecuador"],
     matches: [
-      { home:"Germany",     away:"Curaçao",      date:"14 Jun", time:"17:00", venue:"NRG Stadium, Houston",             hg:null, ag:null },
-      { home:"Côte d'Ivoire", away:"Ecuador",       date:"14 Jun", time:"23:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null },
+      { home:"Germany",     away:"Curaçao",      date:"14 Jun", time:"17:00", venue:"NRG Stadium, Houston",             hg:7, ag:1 },
+      { home:"Côte d'Ivoire", away:"Ecuador",       date:"14 Jun", time:"23:00", venue:"Lincoln Financial, Philadelphia",  hg:1, ag:0 },
       { home:"Germany",     away:"Côte d'Ivoire",   date:"20 Jun", time:"20:00", venue:"BMO Field, Toronto",               hg:null, ag:null },
       { home:"Ecuador",     away:"Curaçao",       date:"21 Jun", time:"00:00", venue:"Arrowhead Stadium, Kansas City",   hg:null, ag:null },
       { home:"Ecuador",     away:"Germany",       date:"25 Jun", time:"20:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null },
@@ -281,8 +267,8 @@ const GROUPS_RAW = {
   F: {
     teams: ["Netherlands","Japan","Sweden","Tunisia"],
     matches: [
-      { home:"Netherlands", away:"Japan",    date:"14 Jun", time:"20:00", venue:"AT&T Stadium, Arlington",        hg:null, ag:null },
-      { home:"Sweden",      away:"Tunisia",  date:"15 Jun", time:"02:00", venue:"BBVA Stadium, Monterrey",        hg:null, ag:null },
+      { home:"Netherlands", away:"Japan",    date:"14 Jun", time:"20:00", venue:"AT&T Stadium, Arlington",        hg:2, ag:2 },
+      { home:"Sweden",      away:"Tunisia",  date:"15 Jun", time:"02:00", venue:"BBVA Stadium, Monterrey",        hg:5, ag:1 },
       { home:"Netherlands", away:"Sweden",   date:"20 Jun", time:"17:00", venue:"NRG Stadium, Houston",           hg:null, ag:null },
       { home:"Tunisia",     away:"Japan",    date:"21 Jun", time:"04:00", venue:"BBVA Stadium, Monterrey",        hg:null, ag:null },
       { home:"Japan",       away:"Sweden",   date:"25 Jun", time:"23:00", venue:"AT&T Stadium, Arlington",        hg:null, ag:null },
@@ -292,8 +278,8 @@ const GROUPS_RAW = {
   G: {
     teams: ["Belgium","Egypt","IR Iran","New Zealand"],
     matches: [
-      { home:"Belgium",     away:"Egypt",        date:"15 Jun", time:"19:00", venue:"Lumen Field, Seattle",          hg:null, ag:null },
-      { home:"IR Iran",        away:"New Zealand",  date:"16 Jun", time:"01:00", venue:"SoFi Stadium, Inglewood",       hg:null, ag:null },
+      { home:"Belgium",     away:"Egypt",        date:"15 Jun", time:"19:00", venue:"Lumen Field, Seattle",          hg:1, ag:1 },
+      { home:"IR Iran",        away:"New Zealand",  date:"16 Jun", time:"01:00", venue:"SoFi Stadium, Inglewood",       hg:2, ag:2 },
       { home:"Belgium",     away:"IR Iran",         date:"21 Jun", time:"19:00", venue:"SoFi Stadium, Inglewood",       hg:null, ag:null },
       { home:"New Zealand", away:"Egypt",        date:"22 Jun", time:"01:00", venue:"BC Place, Vancouver",           hg:null, ag:null },
       { home:"Egypt",       away:"IR Iran",         date:"26 Jun", time:"03:00", venue:"Lumen Field, Seattle",          hg:null, ag:null },
@@ -303,8 +289,8 @@ const GROUPS_RAW = {
   H: {
     teams: ["Spain","Cabo Verde","Saudi Arabia","Uruguay"],
     matches: [
-      { home:"Spain",       away:"Cabo Verde",    date:"15 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta", hg:null, ag:null },
-      { home:"Saudi Arabia",away:"Uruguay",        date:"15 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",       hg:null, ag:null },
+      { home:"Spain",       away:"Cabo Verde",    date:"15 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta", hg:0, ag:0 },
+      { home:"Saudi Arabia",away:"Uruguay",        date:"15 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",       hg:1, ag:1 },
       { home:"Spain",       away:"Saudi Arabia",  date:"21 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta", hg:null, ag:null },
       { home:"Uruguay",     away:"Cabo Verde",    date:"21 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",       hg:null, ag:null },
       { home:"Cabo Verde",  away:"Saudi Arabia",  date:"27 Jun", time:"00:00", venue:"NRG Stadium, Houston",           hg:null, ag:null },
@@ -897,11 +883,6 @@ function ScheduleTab({ lang }) {
 function App() {
   const [tab, setTab] = useState("groups");
   const [lang, setLang] = useState("en");
-  const [tick, setTick] = useState(0);
-  React.useEffect(() => {
-    window.__forceUpdate = () => setTick(t => t + 1);
-    return () => { window.__forceUpdate = null; };
-  }, []);
   const t = T[lang];
 
   return (
@@ -1023,136 +1004,4 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
 
 
-</script>
-<script>
-// ===== API CONFIG =====
-const API_TOKEN = "5b08761bf1ff47d89c971360c3c3a857";
-const API_URL   = "https://polished-mode-ba6a.salehzuh.workers.dev/";
-
-// Mapping: API team name -> our key
-const TEAM_MAP = {
-  "Mexico":                    "Mexico",
-  "South Africa":              "South Africa",
-  "Korea Republic":            "Korea Republic",
-  "Czechia":                   "Czechia",
-  "Czech Republic":            "Czechia",
-  "Canada":                    "Canada",
-  "Bosnia and Herzegovina":    "Bosnia and Herzegovina",
-  "Bosnia-Herzegovina":        "Bosnia and Herzegovina",
-  "Qatar":                     "Qatar",
-  "Switzerland":               "Switzerland",
-  "Brazil":                    "Brazil",
-  "Morocco":                   "Morocco",
-  "Haiti":                     "Haiti",
-  "Scotland":                  "Scotland",
-  "USA":                       "USA",
-  "United States":             "USA",
-  "United States of America":  "USA",
-  "Paraguay":                  "Paraguay",
-  "Australia":                 "Australia",
-  "Türkiye":                   "Türkiye",
-  "Turkey":                    "Türkiye",
-  "Türkiye":                   "Türkiye",
-  "Germany":                   "Germany",
-  "Curaçao":                   "Curaçao",
-  "Curacao":                   "Curaçao",
-  "Côte d'Ivoire":            "Côte d'Ivoire",
-  "Ivory Coast":               "Côte d'Ivoire",
-  "Côte d'Ivoire":            "Côte d'Ivoire",
-  "Ecuador":                   "Ecuador",
-  "Netherlands":               "Netherlands",
-  "Japan":                     "Japan",
-  "Sweden":                    "Sweden",
-  "Tunisia":                   "Tunisia",
-  "Belgium":                   "Belgium",
-  "Egypt":                     "Egypt",
-  "IR Iran":                   "IR Iran",
-  "Iran":                      "IR Iran",
-  "IR Iran":                   "IR Iran",
-  "New Zealand":               "New Zealand",
-  "Spain":                     "Spain",
-  "Cabo Verde":                "Cabo Verde",
-  "Cape Verde":                "Cabo Verde",
-  "Cape Verde Islands":        "Cabo Verde",
-  "Cabo Verde":                "Cabo Verde",
-  "Saudi Arabia":              "Saudi Arabia",
-  "Uruguay":                   "Uruguay",
-  "France":                    "France",
-  "Senegal":                   "Senegal",
-  "Iraq":                      "Iraq",
-  "Norway":                    "Norway",
-  "Argentina":                 "Argentina",
-  "Algeria":                   "Algeria",
-  "Austria":                   "Austria",
-  "Jordan":                    "Jordan",
-  "Portugal":                  "Portugal",
-  "Congo DR":                  "Congo DR",
-  "Democratic Republic of Congo": "Congo DR",
-  "Uzbekistan":                "Uzbekistan",
-  "Colombia":                  "Colombia",
-  "England":                   "England",
-  "Croatia":                   "Croatia",
-  "Ghana":                     "Ghana",
-  "Panama":                    "Panama",
-};
-
-let updateStatus = null;
-let autoUpdateInterval = null;
-
-async function fetchResults() {
-  const statusEl = document.getElementById("api-status");
-  if (statusEl) statusEl.textContent = "⏳ جاري التحديث...";
-
-  try {
-    const res = await fetch(API_URL, {
-      headers: { "X-Auth-Token": API_TOKEN }
-    });
-    const data = await res.json();
-
-    if (!data.matches) {
-      if (statusEl) statusEl.textContent = "❌ خطأ: " + (data.message || "لا توجد بيانات");
-      return;
-    }
-
-    let updated = 0;
-    data.matches.forEach(m => {
-      const homeKey = TEAM_MAP[m.homeTeam.name];
-      const awayKey = TEAM_MAP[m.awayTeam.name];
-      if (!homeKey || !awayKey) return;
-
-      // Find and update in GROUPS_RAW
-      Object.values(GROUPS_RAW).forEach(group => {
-        group.matches.forEach(match => {
-          if (match.home === homeKey && match.away === awayKey) {
-            const hg = m.score?.fullTime?.home;
-            const ag = m.score?.fullTime?.away;
-            if (hg !== null && ag !== null && hg !== undefined) {
-              if (match.hg !== hg || match.ag !== ag) {
-                match.hg = hg;
-                match.ag = ag;
-                updated++;
-              }
-            }
-          }
-        });
-      });
-    });
-
-    const now = new Date().toLocaleTimeString();
-    if (statusEl) statusEl.textContent = `✅ ${now} — ${updated} نتيجة جديدة من ${data.matches.length} مباراة`;
-
-    // Force React re-render
-    window.__forceUpdate && window.__forceUpdate();
-
-  } catch (err) {
-    if (statusEl) statusEl.textContent = "❌ فشل الاتصال: " + err.message;
-  }
-}
-
-// Auto-start when page loads
-document.addEventListener("DOMContentLoaded", () => {
-  fetchResults();
-  autoUpdateInterval = setInterval(fetchResults, 60000);
-});
-</script>
-</body></html>
+</script></body></html>
