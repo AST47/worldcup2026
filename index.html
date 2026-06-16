@@ -29,22 +29,9 @@
 </head>
 <body>
 <div id="root"></div>
-<div id="api-bar" style="
-  position:fixed; bottom:0; left:0; right:0;
-  background:var(--surface,#1a1a2e); border-top:1px solid var(--border,#333);
-  padding:8px 16px; display:flex; align-items:center; justify-content:space-between;
-  font-size:11px; color:var(--text2,#aaa); z-index:1000;
-">
-  <span id="api-status">⏳ جاري التحديث...</span>
-  <button onclick="fetchResults()" style="
-    background:var(--accent,#e63946); color:#fff; border:none;
-    padding:4px 12px; border-radius:6px; font-size:11px; cursor:pointer;
-  ">تحديث الآن</button>
-</div>
-<div style="height:36px"></div>
 
 <script type="text/babel" data-presets="env,react">
-const { useState } = React;
+const { useState, useEffect } = React;
 
 // ─── TRANSLATIONS ─────────────────────────────────────────────
 const T = {
@@ -61,7 +48,7 @@ const T = {
     lost: "خ", drawn: "ت", won: "ف", pts: "نق", gd: "لـ/عليه", played: "ل",
     notPlayed: "لم تُلعب بعد",
     knockoutNote: "يُحدَّث الجدول بعد كل مباراة",
-    koFooter: "أسماء المنتخبات في دور الإقصاء تُضاف تباعاً بعد انتهاء دور المجموعات",
+    koFooter: "أسماء المنتخبات في دور الإقصاء تُضاف تباعاً بعد انتهاء دور المجموعات ويتم تحديثها تلقائياً",
     dedicationL1: "إهداء إلى أبي ومعلمي الأول — محمد زهدي ❤️",
     dedicationL2: "من علّمني كيف تقرأ جداول المباريات وكيف يُبنى نظام نهائيات كأس العالم لكرة القدم ⚽",
     aboutBody: "مرحبًا بكم في تطبيق تتبع بطولة كأس العالم لكرة القدم ٢٠٢٦. يتيح لكم هذا التطبيق متابعة المجموعات، نتائج المباريات، وجداول الترتيب بالإضافة إلى شجرة الأدوار الإقصائية المحدثة ديناميكيًا طوال فترة البطولة.",
@@ -77,12 +64,12 @@ const T = {
       "Brazil": "البرازيل", "Morocco": "المغرب", "Haiti": "هاييتي", "Scotland": "أسكتلندا",
       "USA": "الولايات المتحدة", "Paraguay": "باراغواي", "Australia": "أستراليا", "Türkiye": "تركيا",
       "Germany": "ألمانيا", "Curaçao": "كوراساو", "Côte d'Ivoire": "ساحل العاج", "Ecuador": "الإكوادور",
-      "Netherlands": "هولندا", "Japan": "اليابان", "Sweden": "السويد", "Tunisia": "تونس",
+      "Netherlands": "هولندا", "Japan": "اليابان", "Sweden": "سويد", "Tunisia": "تونس",
       "Belgium": "بلجيكا", "Egypt": "مصر", "IR Iran": "إيران", "New Zealand": "نيوزيلندا",
       "Spain": "إسبانيا", "Cabo Verde": "الرأس الأخضر", "Saudi Arabia": "السعودية", "Uruguay": "أوروغواي",
       "France": "فرنسا", "Senegal": "السنغال", "Iraq": "العراق", "Norway": "النرويج",
       "Argentina": "الأرجنتين", "Algeria": "الجزائر", "Austria": "النمسا", "Jordan": "الأردن",
-      "Portugal": "البرتغال", "Congo DR": "الكونغو الديمقراطية", "Uzbekistan": "أوزبكستان", "Colombia": "كولومبيا",
+      "Portugal": "البرتغال", "Congo DR": "الكونغو الديمقراطية", "Uzbekistan": "أوزبكستان", "Colombia": "colombia",
       "England": "إنجلترا", "Croatia": "كرواتيا", "Ghana": "غانا", "Panama": "بنما",
     },
     venues: {
@@ -118,7 +105,7 @@ const T = {
     lost: "L", drawn: "D", won: "W", pts: "Pts", gd: "GD", played: "P",
     notPlayed: "Not played",
     knockoutNote: "Updated after every match",
-    koFooter: "Knockout teams will be added after the group stage concludes",
+    koFooter: "Knockout teams will be added and updated dynamically after the group stage concludes",
     dedicationL1: "Dedicated to my father and first teacher — Muhammad Zuhdi ❤️",
     dedicationL2: "The one who taught me how to read match tables and how the World Cup finals are structured ⚽",
     aboutBody: "Welcome to the FIFA World Cup 2026 tournament tracker app. Follow live standings, groups, individual match schedules, and a dynamically linked knockout bracket layout as the tournament results progress.",
@@ -175,7 +162,7 @@ const T = {
     lost: "M", drawn: "B", won: "G", pts: "Puan", gd: "A:Y", played: "O",
     notPlayed: "Oynanmadı",
     knockoutNote: "Her maçtan sonra güncellenir",
-    koFooter: "Eleme turu takımları grup aşaması bittikten sonra eklenecektir",
+    koFooter: "Eleme turu takımları grup aşaması bittikten sonra dinamik olarak eklenecek ve güncellenecektir",
     dedicationL1: "Babama ve ilk öğretmenime ithaf edilmiştir — Muhammad Zuhdi ❤️",
     dedicationL2: "Bana maç tablolarını okumayı ve Dünya Kupası finallerinin nasıl yapılandırıldığını öğreten kişi ⚽",
     aboutBody: "FIFA Dünya Kupası 2026 turnuva takip uygulamasına hoş geldiniz. Turnuva sonuçları ilerledikçe canlı puan durumlarını, grupları, bireysel maç programlarını ve dinamik olarak bağlantılı eleme aşaması tablosunu takip edin.",
@@ -222,7 +209,7 @@ const T = {
 };
 
 // ─── RAW GROUPS DATA (canonical English keys) ─────────────────
-const GROUPS_RAW = {
+window.GROUPS_RAW = {
   A: {
     teams: ["Mexico","South Africa","Korea Republic","Czechia"],
     matches: [
@@ -360,7 +347,7 @@ const GROUPS_RAW = {
 const FLAGS = {
   "Mexico":"🇲🇽","South Africa":"🇿🇦","Korea Republic":"🇰🇷","Czechia":"🇨🇿",
   "Canada":"🇨🇦","Bosnia and Herzegovina":"🇧🇦","Qatar":"🇶🇦","Switzerland":"🇨🇭",
-  "Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢ِسكوِتلندِا",
   "USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Türkiye":"🇹🇷",
   "Germany":"🇩🇪","Curaçao":"🇨🇼","Côte d'Ivoire":"🇨🇮","Ecuador":"🇪🇨",
   "Netherlands":"🇳🇱","Japan":"🇯🇵","Sweden":"🇸🇪","Tunisia":"🇹🇳",
@@ -376,7 +363,7 @@ const GC = ["#e74c3c","#e67e22","#f1c40f","#2ecc71","#1abc9c","#3498db","#9b59b6
 
 function tn(lang, key) { return T[lang].teams[key] || key; }
 function vn(lang, key) { return T[lang].venues[key] || key; }
-// All match times in the data are UTC
+
 function toLocalDT(date, time) {
   const [d, mo] = date.split(" ");
   const monthMap = { Jun:5, Jul:6 };
@@ -448,7 +435,7 @@ const mk = (id, date="", time="", venue="") => ({
   id, home:"", away:"", hg:null, ag:null, date, time, venue
 });
 
-const KO = {
+window.KO = {
   L_r32: [
     mkP("Lr32_0","RU","A","RU","B",           "28 Jun","22:00","SoFi Stadium, Inglewood"),
     mkP("Lr32_1","W","F","RU","C",            "29 Jun","09:00","Akron Stadium, Guadalajara"),
@@ -811,7 +798,6 @@ function ScheduleTab({ lang }) {
         background: "var(--surface)",
         opacity: finished ? 0.68 : 1,
       }}>
-        {/* السطر الأول: معلومات المباراة (التاريخ، الوقت، المجموعة، والملعب) */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px", width: "100%" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <div style={{
@@ -829,9 +815,7 @@ function ScheduleTab({ lang }) {
           </div>
         </div>
 
-        {/* السطر الثاني: المنتخبات والنتيجة */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", gap: 4 }}>
-          {/* الفريق المستضيف */}
           <div style={{
             flex: 1, display: "flex", alignItems: "center",
             justifyContent: isRtl ? "flex-start" : "flex-end",
@@ -845,7 +829,6 @@ function ScheduleTab({ lang }) {
             <span style={{ flexShrink: 0 }}>{FLAGS[m.home] || "🏳️"}</span>
           </div>
 
-          {/* مربع النتيجة / VS */}
           <div style={{ flexShrink: 0, minWidth: 60, textAlign: "center" }}>
             {finished ? (
               <span style={{
@@ -867,7 +850,6 @@ function ScheduleTab({ lang }) {
             )}
           </div>
 
-          {/* الفريق الضيف */}
           <div style={{
             flex: 1, display: "flex", alignItems: "center",
             justifyContent: isRtl ? "flex-end" : "flex-start",
@@ -877,7 +859,7 @@ function ScheduleTab({ lang }) {
             <span style={{
               fontSize: 13, fontWeight: awayWin ? 700 : 400,
               color: awayWin ? "var(--text)" : "var(--text2)",
-              whiteSpace: "nowrap", overflow: "hidden", textOverflow:"ellipsis",
+              whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
             }}>{tn(lang, m.away)}</span>
           </div>
         </div>
@@ -894,14 +876,51 @@ function ScheduleTab({ lang }) {
   );
 }
 
+// ─── STABLE TIMESTAMP COMPONENT ───────────────────────────────
+function LastUpdatedTimestamp({ lang }) {
+  const [stamp, setStamp] = useState("");
+
+  useEffect(() => {
+    const handler = () => {
+      if (!window.__lastApiSuccessTime) return;
+      const dt = window.__lastApiSuccessTime;
+      const timeStr = dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+      const dateStr = dt.toLocaleDateString(lang === 'ar' ? 'ar-EG' : (lang === 'tr' ? 'tr-TR' : 'en-US'), {
+        year: 'numeric', month: 'long', day: 'numeric'
+      });
+      setStamp(`🕒 ${timeStr}  •  📅 ${dateStr}`);
+    };
+    
+    window.__updateStampComponent = handler;
+    handler();
+    return () => { window.__updateStampComponent = null; };
+  }, [lang]);
+
+  if (!stamp) return null;
+
+  return (
+    <div style={{ 
+      fontSize: "12px", 
+      color: "var(--header-sub)", 
+      marginTop: "4px",
+      fontWeight: "500",
+      letterSpacing: "0.2px"
+    }}>
+      {stamp}
+    </div>
+  );
+}
+
 function App() {
   const [tab, setTab] = useState("groups");
   const [lang, setLang] = useState("en");
   const [tick, setTick] = useState(0);
-  React.useEffect(() => {
+  
+  useEffect(() => {
     window.__forceUpdate = () => setTick(t => t + 1);
     return () => { window.__forceUpdate = null; };
   }, []);
+  
   const t = T[lang];
 
   return (
@@ -910,7 +929,7 @@ function App() {
       <div dir={t.dir} style={{ fontFamily:"'Segoe UI',Tahoma,Arial,sans-serif", background:"var(--bg)", minHeight:"100vh", color:"var(--text)" }}>
         {/* Header */}
         <div style={{ background:"var(--header-bg)", borderBottom:"1px solid var(--border)", padding:"14px 20px",
-          display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:10 }}>
+          display:"flex", flexDirection:"column", alignItems:"center", justifycontent:"center", gap:8 }}>
           <div style={{ display:"flex", alignItems:"center", gap:12 }}>
             <div>
               <div style={{ fontSize:19, fontWeight:700, color:"var(--header-text)", letterSpacing:.5, textAlign:"center" }}>{t.title}</div>
@@ -928,6 +947,8 @@ function App() {
               }}>{label}</button>
             ))}
           </div>
+          
+          <LastUpdatedTimestamp lang={lang} />
         </div>
 
         {/* Tabs */}
@@ -1010,7 +1031,6 @@ function App() {
                   {t.cvBtn}
                 </a>
               </div>
-
             </div>
           )}
         </div>
@@ -1021,15 +1041,13 @@ function App() {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
-
-
 </script>
+
 <script>
 // ===== API CONFIG =====
 const API_TOKEN = "5b08761bf1ff47d89c971360c3c3a857";
 const API_URL   = "https://polished-mode-ba6a.salehzuh.workers.dev/";
 
-// Mapping: API team name -> our key
 const TEAM_MAP = {
   "Mexico":                    "Mexico",
   "South Africa":              "South Africa",
@@ -1053,13 +1071,11 @@ const TEAM_MAP = {
   "Australia":                 "Australia",
   "Türkiye":                   "Türkiye",
   "Turkey":                    "Türkiye",
-  "Türkiye":                   "Türkiye",
   "Germany":                   "Germany",
   "Curaçao":                   "Curaçao",
   "Curacao":                   "Curaçao",
-  "Côte d'Ivoire":            "Côte d'Ivoire",
+  "Côte d'Ivoire":             "Côte d'Ivoire",
   "Ivory Coast":               "Côte d'Ivoire",
-  "Côte d'Ivoire":            "Côte d'Ivoire",
   "Ecuador":                   "Ecuador",
   "Netherlands":               "Netherlands",
   "Japan":                     "Japan",
@@ -1069,13 +1085,11 @@ const TEAM_MAP = {
   "Egypt":                     "Egypt",
   "IR Iran":                   "IR Iran",
   "Iran":                      "IR Iran",
-  "IR Iran":                   "IR Iran",
   "New Zealand":               "New Zealand",
   "Spain":                     "Spain",
   "Cabo Verde":                "Cabo Verde",
   "Cape Verde":                "Cabo Verde",
   "Cape Verde Islands":        "Cabo Verde",
-  "Cabo Verde":                "Cabo Verde",
   "Saudi Arabia":              "Saudi Arabia",
   "Uruguay":                   "Uruguay",
   "France":                    "France",
@@ -1097,63 +1111,70 @@ const TEAM_MAP = {
   "Panama":                    "Panama",
 };
 
-let updateStatus = null;
+window.__lastApiSuccessTime = null; 
 let autoUpdateInterval = null;
 
 async function fetchResults() {
-  const statusEl = document.getElementById("api-status");
-  if (statusEl) statusEl.textContent = "⏳ جاري التحديث...";
-
   try {
     const res = await fetch(API_URL, {
       headers: { "X-Auth-Token": API_TOKEN }
     });
     const data = await res.json();
 
-    if (!data.matches) {
-      if (statusEl) statusEl.textContent = "❌ خطأ: " + (data.message || "لا توجد بيانات");
-      return;
-    }
+    if (!data.matches) return;
 
-    let updated = 0;
     data.matches.forEach(m => {
-      const homeKey = TEAM_MAP[m.homeTeam.name];
-      const awayKey = TEAM_MAP[m.awayTeam.name];
+      const homeKey = TEAM_MAP[m.homeTeam?.name];
+      const awayKey = TEAM_MAP[m.awayTeam?.name];
       if (!homeKey || !awayKey) return;
 
-      // Find and update in GROUPS_RAW
+      const hg = m.score?.fullTime?.home;
+      const ag = m.score?.fullTime?.away;
+
+      // 1. تحديث المجموعات
       Object.values(GROUPS_RAW).forEach(group => {
         group.matches.forEach(match => {
           if (match.home === homeKey && match.away === awayKey) {
-            const hg = m.score?.fullTime?.home;
-            const ag = m.score?.fullTime?.away;
             if (hg !== null && ag !== null && hg !== undefined) {
-              if (match.hg !== hg || match.ag !== ag) {
-                match.hg = hg;
-                match.ag = ag;
-                updated++;
-              }
+              match.hg = hg;
+              match.ag = ag;
             }
           }
         });
       });
+
+      // 2. تحديث الإقصائيات
+      if (m.stage && m.stage !== "GROUP_STAGE") {
+        Object.values(KO).forEach(stageMatches => {
+          stageMatches.forEach(koMatch => {
+            if ((koMatch.home === homeKey && koMatch.away === awayKey) || 
+                (koMatch.home === "" && koMatch.away === "" && m.status === "SCHEDULED")) {
+              
+              koMatch.home = homeKey;
+              koMatch.away = awayKey;
+
+              if (hg !== null && ag !== null && hg !== undefined) {
+                koMatch.hg = hg;
+                koMatch.ag = ag;
+              }
+            }
+          });
+        });
+      }
     });
 
-    const now = new Date().toLocaleTimeString();
-    if (statusEl) statusEl.textContent = `✅ ${now} — ${updated} نتيجة جديدة من ${data.matches.length} مباراة`;
-
-    // Force React re-render
+    window.__lastApiSuccessTime = new Date();
+    if (window.__updateStampComponent) window.__updateStampComponent();
     window.__forceUpdate && window.__forceUpdate();
 
   } catch (err) {
-    if (statusEl) statusEl.textContent = "❌ فشل الاتصال: " + err.message;
+    console.error("Fetch error:", err);
   }
 }
 
-// Auto-start when page loads
 document.addEventListener("DOMContentLoaded", () => {
   fetchResults();
-  autoUpdateInterval = setInterval(fetchResults, 60000);
+  autoUpdateInterval = setInterval(fetchResults, 60000); // تحديث صامت كل دقيقة الخلفية
 });
 </script>
 </body></html>
