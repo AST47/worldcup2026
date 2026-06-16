@@ -29,22 +29,9 @@
 </head>
 <body>
 <div id="root"></div>
-<div id="api-bar" style="
-  position:fixed; bottom:0; left:0; right:0;
-  background:var(--surface,#1a1a2e); border-top:1px solid var(--border,#333);
-  padding:8px 16px; display:flex; align-items:center; justify-content:space-between;
-  font-size:11px; color:var(--text2,#aaa); z-index:1000;
-">
-  <span id="api-status">⏳ جاري التحديث...</span>
-  <button onclick="fetchResults()" style="
-    background:var(--accent,#e63946); color:#fff; border:none;
-    padding:4px 12px; border-radius:6px; font-size:11px; cursor:pointer;
-  ">تحديث الآن</button>
-</div>
-<div style="height:36px"></div>
 
 <script type="text/babel" data-presets="env,react">
-const { useState } = React;
+const { useState, useEffect } = React;
 
 // ─── TRANSLATIONS ─────────────────────────────────────────────
 const T = {
@@ -54,14 +41,17 @@ const T = {
     subtitle: "كندا · المكسيك · الولايات المتحدة · 11 يونيو – 19 يوليو",
     tabGroups: "دور المجموعات",
     tabKnockout: "مرحلة خروج المغلوب",
-    tabSchedule: "جدول المباريات",
     tabAbout: "حول",
     group: "المجموعة",
     team: "المنتخب",
     lost: "خ", drawn: "ت", won: "ف", pts: "نق", gd: "لـ/عليه", played: "ل",
     notPlayed: "لم تُلعب بعد",
+    notStarted: "لم تبدأ",
+    live: "مباشر",
+    remaining: "متبقي",
+    hour: "ساعة", minute: "دقيقة",
     knockoutNote: "يُحدَّث الجدول بعد كل مباراة",
-    koFooter: "أسماء المنتخبات في دور الإقصاء تُضاف تباعاً بعد انتهاء دور المجموعات",
+    koFooter: "أسماء المنتخبات في دور الإقصاء تُضاف تباعاً بعد انتهاء دور المجموعات ويتم تحديثها تلقائياً",
     dedicationL1: "إهداء إلى أبي ومعلمي الأول — محمد زهدي ❤️",
     dedicationL2: "من علّمني كيف تقرأ جداول المباريات وكيف يُبنى نظام نهائيات كأس العالم لكرة القدم ⚽",
     aboutBody: "مرحبًا بكم في تطبيق تتبع بطولة كأس العالم لكرة القدم ٢٠٢٦. يتيح لكم هذا التطبيق متابعة المجموعات، نتائج المباريات، وجداول الترتيب بالإضافة إلى شجرة الأدوار الإقصائية المحدثة ديناميكيًا طوال فترة البطولة.",
@@ -77,7 +67,7 @@ const T = {
       "Brazil": "البرازيل", "Morocco": "المغرب", "Haiti": "هاييتي", "Scotland": "أسكتلندا",
       "USA": "الولايات المتحدة", "Paraguay": "باراغواي", "Australia": "أستراليا", "Türkiye": "تركيا",
       "Germany": "ألمانيا", "Curaçao": "كوراساو", "Côte d'Ivoire": "ساحل العاج", "Ecuador": "الإكوادور",
-      "Netherlands": "هولندا", "Japan": "اليابان", "Sweden": "السويد", "Tunisia": "تونس",
+      "Netherlands": "هولندا", "Japan": "اليابان", "Sweden": "سويد", "Tunisia": "تونس",
       "Belgium": "بلجيكا", "Egypt": "مصر", "IR Iran": "إيران", "New Zealand": "نيوزيلندا",
       "Spain": "إسبانيا", "Cabo Verde": "الرأس الأخضر", "Saudi Arabia": "السعودية", "Uruguay": "أوروغواي",
       "France": "فرنسا", "Senegal": "السنغال", "Iraq": "العراق", "Norway": "النرويج",
@@ -111,14 +101,17 @@ const T = {
     subtitle: "Canada · Mexico · United States · June 11 – July 19",
     tabGroups: "Group Stage",
     tabKnockout: "Knockout Stage",
-    tabSchedule: "Schedule",
     tabAbout: "About",
     group: "Group",
     team: "Team",
     lost: "L", drawn: "D", won: "W", pts: "Pts", gd: "GD", played: "P",
     notPlayed: "Not played",
+    notStarted: "Not started",
+    live: "LIVE",
+    remaining: "Rem.",
+    hour: "h", minute: "m",
     knockoutNote: "Updated after every match",
-    koFooter: "Knockout teams will be added after the group stage concludes",
+    koFooter: "Knockout teams will be added and updated dynamically after the group stage concludes",
     dedicationL1: "Dedicated to my father and first teacher — Muhammad Zuhdi ❤️",
     dedicationL2: "The one who taught me how to read match tables and how the World Cup finals are structured ⚽",
     aboutBody: "Welcome to the FIFA World Cup 2026 tournament tracker app. Follow live standings, groups, individual match schedules, and a dynamically linked knockout bracket layout as the tournament results progress.",
@@ -168,14 +161,17 @@ const T = {
     subtitle: "Kanada · Meksika · Amerika Birleşik Devletleri · 11 Haziran – 19 Temmuz",
     tabGroups: "Grup Aşaması",
     tabKnockout: "Eleme Aşaması",
-    tabSchedule: "Fikstür",
     tabAbout: "Hakkında",
     group: "Grup",
     team: "Takım",
     lost: "M", drawn: "B", won: "G", pts: "Puan", gd: "A:Y", played: "O",
     notPlayed: "Oynanmadı",
+    notStarted: "Başlamadı",
+    live: "CANLI",
+    remaining: "Kalan",
+    hour: "sa", minute: "dk",
     knockoutNote: "Her maçtan sonra güncellenir",
-    koFooter: "Eleme turu takımları grup aşaması bittikten sonra eklenecektir",
+    koFooter: "Eleme turu takımları grup aşaması bittikten sonra dinamik olarak eklenecek ve güncellenecektir",
     dedicationL1: "Babama ve ilk öğretmenime ithaf edilmiştir — Muhammad Zuhdi ❤️",
     dedicationL2: "Bana maç tablolarını okumayı ve Dünya Kupası finallerinin nasıl yapılandırıldığını öğreten kişi ⚽",
     aboutBody: "FIFA Dünya Kupası 2026 turnuva takip uygulamasına hoş geldiniz. Turnuva sonuçları ilerledikçe canlı puan durumlarını, grupları, bireysel maç programlarını ve dinamik olarak bağlantılı eleme aşaması tablosunu takip edin.",
@@ -222,137 +218,137 @@ const T = {
 };
 
 // ─── RAW GROUPS DATA (canonical English keys) ─────────────────
-const GROUPS_RAW = {
+window.GROUPS_RAW = {
   A: {
     teams: ["Mexico","South Africa","Korea Republic","Czechia"],
     matches: [
-      { home:"Mexico",       away:"South Africa",  date:"11 Jun", time:"19:00", venue:"Azteca Stadium, Mexico City",      hg:null, ag:null },
-      { home:"Korea Republic",  away:"Czechia",        date:"12 Jun", time:"02:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null },
-      { home:"Czechia",      away:"South Africa",   date:"18 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta",    hg:null, ag:null },
-      { home:"Mexico",       away:"Korea Republic",    date:"19 Jun", time:"01:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null },
-      { home:"Czechia",      away:"Mexico",         date:"25 Jun", time:"01:00", venue:"Azteca Stadium, Mexico City",      hg:null, ag:null },
-      { home:"South Africa", away:"Korea Republic",    date:"25 Jun", time:"01:00", venue:"BBVA Stadium, Monterrey",           hg:null, ag:null },
+      { home:"Mexico",       away:"South Africa",  date:"11 Jun", time:"19:00", venue:"Azteca Stadium, Mexico City",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Korea Republic",  away:"Czechia",        date:"12 Jun", time:"02:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Czechia",      away:"South Africa",   date:"18 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta",    hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Mexico",       away:"Korea Republic",    date:"19 Jun", time:"01:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Czechia",      away:"Mexico",         date:"25 Jun", time:"01:00", venue:"Azteca Stadium, Mexico City",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"South Africa", away:"Korea Republic",    date:"25 Jun", time:"01:00", venue:"BBVA Stadium, Monterrey",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
   B: {
     teams: ["Canada","Bosnia and Herzegovina","Qatar","Switzerland"],
     matches: [
-      { home:"Canada",                  away:"Bosnia and Herzegovina", date:"12 Jun", time:"19:00", venue:"BMO Field, Toronto",             hg:null, ag:null },
-      { home:"Qatar",                   away:"Switzerland",             date:"13 Jun", time:"19:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null },
-      { home:"Switzerland",             away:"Bosnia and Herzegovina", date:"18 Jun", time:"19:00", venue:"SoFi Stadium, Inglewood",         hg:null, ag:null },
-      { home:"Canada",                  away:"Qatar",                   date:"18 Jun", time:"22:00", venue:"BC Place, Vancouver",            hg:null, ag:null },
-      { home:"Switzerland",             away:"Canada",                  date:"24 Jun", time:"19:00", venue:"BC Place, Vancouver",            hg:null, ag:null },
-      { home:"Bosnia and Herzegovina",  away:"Qatar",                   date:"24 Jun", time:"19:00", venue:"Lumen Field, Seattle",           hg:null, ag:null },
+      { home:"Canada",                  away:"Bosnia and Herzegovina", date:"12 Jun", time:"19:00", venue:"BMO Field, Toronto",             hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Qatar",                   away:"Switzerland",             date:"13 Jun", time:"19:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Switzerland",             away:"Bosnia and Herzegovina", date:"18 Jun", time:"19:00", venue:"SoFi Stadium, Inglewood",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Canada",                  away:"Qatar",                   date:"18 Jun", time:"22:00", venue:"BC Place, Vancouver",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Switzerland",             away:"Canada",                  date:"24 Jun", time:"19:00", venue:"BC Place, Vancouver",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Bosnia and Herzegovina",  away:"Qatar",                   date:"24 Jun", time:"19:00", venue:"Lumen Field, Seattle",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
   C: {
     teams: ["Brazil","Morocco","Haiti","Scotland"],
     matches: [
-      { home:"Brazil",    away:"Morocco",   date:"13 Jun", time:"22:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null },
-      { home:"Haiti",     away:"Scotland",  date:"14 Jun", time:"01:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null },
-      { home:"Scotland",  away:"Morocco",   date:"19 Jun", time:"22:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null },
-      { home:"Brazil",    away:"Haiti",     date:"20 Jun", time:"00:30", venue:"Lincoln Financial, Philadelphia",   hg:null, ag:null },
-      { home:"Scotland",  away:"Brazil",    date:"24 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",          hg:null, ag:null },
-      { home:"Morocco",   away:"Haiti",     date:"24 Jun", time:"22:00", venue:"Mercedes-Benz Stadium, Atlanta",   hg:null, ag:null },
+      { home:"Brazil",    away:"Morocco",   date:"13 Jun", time:"22:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Haiti",     away:"Scotland",  date:"14 Jun", time:"01:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Scotland",  away:"Morocco",   date:"19 Jun", time:"22:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Brazil",    away:"Haiti",     date:"20 Jun", time:"00:30", venue:"Lincoln Financial, Philadelphia",   hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Scotland",  away:"Brazil",    date:"24 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",          hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Morocco",   away:"Haiti",     date:"24 Jun", time:"22:00", venue:"Mercedes-Benz Stadium, Atlanta",   hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
   D: {
     teams: ["USA","Paraguay","Australia","Türkiye"],
     matches: [
-      { home:"USA",        away:"Paraguay",   date:"13 Jun", time:"01:00", venue:"SoFi Stadium, Inglewood",        hg:null, ag:null },
-      { home:"Australia",  away:"Türkiye",    date:"14 Jun", time:"04:00", venue:"BC Place, Vancouver",            hg:null, ag:null },
-      { home:"USA",        away:"Australia",  date:"19 Jun", time:"19:00", venue:"Lumen Field, Seattle",           hg:null, ag:null },
-      { home:"Türkiye",    away:"Paraguay",   date:"20 Jun", time:"03:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null },
-      { home:"Türkiye",    away:"USA",        date:"26 Jun", time:"02:00", venue:"SoFi Stadium, Inglewood",        hg:null, ag:null },
-      { home:"Paraguay",   away:"Australia",  date:"26 Jun", time:"02:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null },
+      { home:"USA",        away:"Paraguay",   date:"13 Jun", time:"01:00", venue:"SoFi Stadium, Inglewood",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Australia",  away:"Türkiye",    date:"14 Jun", time:"04:00", venue:"BC Place, Vancouver",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"USA",        away:"Australia",  date:"19 Jun", time:"19:00", venue:"Lumen Field, Seattle",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Türkiye",    away:"Paraguay",   date:"20 Jun", time:"03:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Türkiye",    away:"USA",        date:"26 Jun", time:"02:00", venue:"SoFi Stadium, Inglewood",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Paraguay",   away:"Australia",  date:"26 Jun", time:"02:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
   E: {
     teams: ["Germany","Curaçao","Côte d'Ivoire","Ecuador"],
     matches: [
-      { home:"Germany",     away:"Curaçao",      date:"14 Jun", time:"17:00", venue:"NRG Stadium, Houston",             hg:null, ag:null },
-      { home:"Côte d'Ivoire", away:"Ecuador",       date:"14 Jun", time:"23:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null },
-      { home:"Germany",     away:"Côte d'Ivoire",   date:"20 Jun", time:"20:00", venue:"BMO Field, Toronto",               hg:null, ag:null },
-      { home:"Ecuador",     away:"Curaçao",       date:"21 Jun", time:"00:00", venue:"Arrowhead Stadium, Kansas City",   hg:null, ag:null },
-      { home:"Ecuador",     away:"Germany",       date:"25 Jun", time:"20:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null },
-      { home:"Curaçao",     away:"Côte d'Ivoire",   date:"25 Jun", time:"20:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null },
+      { home:"Germany",     away:"Curaçao",      date:"14 Jun", time:"17:00", venue:"NRG Stadium, Houston",             hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Côte d'Ivoire", away:"Ecuador",       date:"14 Jun", time:"23:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Germany",     away:"Côte d'Ivoire",   date:"20 Jun", time:"20:00", venue:"BMO Field, Toronto",               hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Ecuador",     away:"Curaçao",       date:"21 Jun", time:"00:00", venue:"Arrowhead Stadium, Kansas City",   hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Ecuador",     away:"Germany",       date:"25 Jun", time:"20:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Curaçao",     away:"Côte d'Ivoire",   date:"25 Jun", time:"20:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
   F: {
     teams: ["Netherlands","Japan","Sweden","Tunisia"],
     matches: [
-      { home:"Netherlands", away:"Japan",    date:"14 Jun", time:"20:00", venue:"AT&T Stadium, Arlington",        hg:null, ag:null },
-      { home:"Sweden",      away:"Tunisia",  date:"15 Jun", time:"02:00", venue:"BBVA Stadium, Monterrey",        hg:null, ag:null },
-      { home:"Netherlands", away:"Sweden",   date:"20 Jun", time:"17:00", venue:"NRG Stadium, Houston",           hg:null, ag:null },
-      { home:"Tunisia",     away:"Japan",    date:"21 Jun", time:"04:00", venue:"BBVA Stadium, Monterrey",        hg:null, ag:null },
-      { home:"Japan",       away:"Sweden",   date:"25 Jun", time:"23:00", venue:"AT&T Stadium, Arlington",        hg:null, ag:null },
-      { home:"Tunisia",     away:"Netherlands", date:"25 Jun", time:"23:00", venue:"Arrowhead Stadium, Kansas City", hg:null, ag:null },
+      { home:"Netherlands", away:"Japan",    date:"14 Jun", time:"20:00", venue:"AT&T Stadium, Arlington",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Sweden",      away:"Tunisia",  date:"15 Jun", time:"02:00", venue:"BBVA Stadium, Monterrey",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Netherlands", away:"Sweden",   date:"20 Jun", time:"17:00", venue:"NRG Stadium, Houston",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Tunisia",     away:"Japan",    date:"21 Jun", time:"04:00", venue:"BBVA Stadium, Monterrey",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Japan",       away:"Sweden",   date:"25 Jun", time:"23:00", venue:"AT&T Stadium, Arlington",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Tunisia",     away:"Netherlands", date:"25 Jun", time:"23:00", venue:"Arrowhead Stadium, Kansas City", hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
   G: {
     teams: ["Belgium","Egypt","IR Iran","New Zealand"],
     matches: [
-      { home:"Belgium",     away:"Egypt",        date:"15 Jun", time:"19:00", venue:"Lumen Field, Seattle",          hg:null, ag:null },
-      { home:"IR Iran",        away:"New Zealand",  date:"16 Jun", time:"01:00", venue:"SoFi Stadium, Inglewood",       hg:null, ag:null },
-      { home:"Belgium",     away:"IR Iran",         date:"21 Jun", time:"19:00", venue:"SoFi Stadium, Inglewood",       hg:null, ag:null },
-      { home:"New Zealand", away:"Egypt",        date:"22 Jun", time:"01:00", venue:"BC Place, Vancouver",           hg:null, ag:null },
-      { home:"Egypt",       away:"IR Iran",         date:"26 Jun", time:"03:00", venue:"Lumen Field, Seattle",          hg:null, ag:null },
-      { home:"New Zealand", away:"Belgium",      date:"27 Jun", time:"03:00", venue:"BC Place, Vancouver",           hg:null, ag:null },
+      { home:"Belgium",     away:"Egypt",        date:"15 Jun", time:"19:00", venue:"Lumen Field, Seattle",          hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"IR Iran",        away:"New Zealand",  date:"16 Jun", time:"01:00", venue:"SoFi Stadium, Inglewood",       hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Belgium",     away:"IR Iran",         date:"21 Jun", time:"19:00", venue:"SoFi Stadium, Inglewood",       hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"New Zealand", away:"Egypt",        date:"22 Jun", time:"01:00", venue:"BC Place, Vancouver",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Egypt",       away:"IR Iran",         date:"26 Jun", time:"03:00", venue:"Lumen Field, Seattle",          hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"New Zealand", away:"Belgium",      date:"27 Jun", time:"03:00", venue:"BC Place, Vancouver",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
   H: {
     teams: ["Spain","Cabo Verde","Saudi Arabia","Uruguay"],
     matches: [
-      { home:"Spain",       away:"Cabo Verde",    date:"15 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta", hg:null, ag:null },
-      { home:"Saudi Arabia",away:"Uruguay",        date:"15 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",       hg:null, ag:null },
-      { home:"Spain",       away:"Saudi Arabia",  date:"21 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta", hg:null, ag:null },
-      { home:"Uruguay",     away:"Cabo Verde",    date:"21 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",       hg:null, ag:null },
-      { home:"Cabo Verde",  away:"Saudi Arabia",  date:"27 Jun", time:"00:00", venue:"NRG Stadium, Houston",           hg:null, ag:null },
-      { home:"Uruguay",     away:"Spain",         date:"27 Jun", time:"00:00", venue:"Akron Stadium, Guadalajara",     hg:null, ag:null },
+      { home:"Spain",       away:"Cabo Verde",    date:"15 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta", hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Saudi Arabia",away:"Uruguay",        date:"15 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",       hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Spain",       away:"Saudi Arabia",  date:"21 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta", hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Uruguay",     away:"Cabo Verde",    date:"21 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",       hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Cabo Verde",  away:"Saudi Arabia",  date:"27 Jun", time:"00:00", venue:"NRG Stadium, Houston",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Uruguay",     away:"Spain",         date:"27 Jun", time:"00:00", venue:"Akron Stadium, Guadalajara",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
   I: {
     teams: ["France","Senegal","Iraq","Norway"],
     matches: [
-      { home:"France",   away:"Senegal",  date:"16 Jun", time:"19:00", venue:"MetLife Stadium, New Jersey",     hg:null, ag:null },
-      { home:"Iraq",     away:"Norway",   date:"16 Jun", time:"22:00", venue:"Gillette Stadium, Foxboro",        hg:null, ag:null },
-      { home:"France",   away:"Iraq",     date:"22 Jun", time:"21:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null },
-      { home:"Norway",   away:"Senegal",  date:"23 Jun", time:"00:00", venue:"MetLife Stadium, New Jersey",     hg:null, ag:null },
-      { home:"Norway",   away:"France",   date:"26 Jun", time:"19:00", venue:"Gillette Stadium, Foxboro",        hg:null, ag:null },
-      { home:"Senegal",  away:"Iraq",     date:"26 Jun", time:"19:00", venue:"BMO Field, Toronto",               hg:null, ag:null },
+      { home:"France",   away:"Senegal",  date:"16 Jun", time:"19:00", venue:"MetLife Stadium, New Jersey",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Iraq",     away:"Norway",   date:"16 Jun", time:"22:00", venue:"Gillette Stadium, Foxboro",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"France",   away:"Iraq",     date:"22 Jun", time:"21:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Norway",   away:"Senegal",  date:"23 Jun", time:"00:00", venue:"MetLife Stadium, New Jersey",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Norway",   away:"France",   date:"26 Jun", time:"19:00", venue:"Gillette Stadium, Foxboro",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Senegal",  away:"Iraq",     date:"26 Jun", time:"19:00", venue:"BMO Field, Toronto",               hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
   J: {
     teams: ["Argentina","Algeria","Austria","Jordan"],
     matches: [
-      { home:"Argentina", away:"Algeria",   date:"17 Jun", time:"01:00", venue:"Arrowhead Stadium, Kansas City",  hg:null, ag:null },
-      { home:"Austria",   away:"Jordan",    date:"17 Jun", time:"04:00", venue:"Levi's Stadium, Santa Clara",     hg:null, ag:null },
-      { home:"Argentina", away:"Austria",   date:"22 Jun", time:"17:00", venue:"AT&T Stadium, Arlington",         hg:null, ag:null },
-      { home:"Jordan",    away:"Algeria",   date:"23 Jun", time:"03:00", venue:"Levi's Stadium, Santa Clara",     hg:null, ag:null },
-      { home:"Argentina", away:"Jordan",    date:"27 Jun", time:"02:00", venue:"AT&T Stadium, Arlington",         hg:null, ag:null },
-      { home:"Algeria",   away:"Austria",   date:"28 Jun", time:"02:00", venue:"Arrowhead Stadium, Kansas City",  hg:null, ag:null },
+      { home:"Argentina", away:"Algeria",   date:"17 Jun", time:"01:00", venue:"Arrowhead Stadium, Kansas City",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Austria",   away:"Jordan",    date:"17 Jun", time:"04:00", venue:"Levi's Stadium, Santa Clara",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Argentina", away:"Austria",   date:"22 Jun", time:"17:00", venue:"AT&T Stadium, Arlington",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Jordan",    away:"Algeria",   date:"23 Jun", time:"03:00", venue:"Levi's Stadium, Santa Clara",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Argentina", away:"Jordan",    date:"27 Jun", time:"02:00", venue:"AT&T Stadium, Arlington",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Algeria",   away:"Austria",   date:"27 Jun", time:"02:00", venue:"Arrowhead Stadium, Kansas City",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
   K: {
     teams: ["Portugal","Congo DR","Uzbekistan","Colombia"],
     matches: [
-      { home:"Portugal",   away:"Congo DR",    date:"17 Jun", time:"17:00", venue:"NRG Stadium, Houston",            hg:null, ag:null },
-      { home:"Uzbekistan", away:"Colombia",    date:"18 Jun", time:"02:00", venue:"Azteca Stadium, Mexico City",     hg:null, ag:null },
-      { home:"Portugal",   away:"Uzbekistan",  date:"23 Jun", time:"17:00", venue:"NRG Stadium, Houston",            hg:null, ag:null },
-      { home:"Colombia",   away:"Congo DR",    date:"24 Jun", time:"02:00", venue:"Akron Stadium, Guadalajara",      hg:null, ag:null },
-      { home:"Portugal",   away:"Colombia",    date:"27 Jun", time:"22:00", venue:"NRG Stadium, Houston",            hg:null, ag:null },
-      { home:"Congo DR",   away:"Uzbekistan",  date:"27 Jun", time:"22:00", venue:"Mercedes-Benz Stadium, Atlanta",  hg:null, ag:null },
+      { home:"Portugal",   away:"Congo DR",    date:"17 Jun", time:"17:00", venue:"NRG Stadium, Houston",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Uzbekistan", away:"Colombia",    date:"18 Jun", time:"02:00", venue:"Azteca Stadium, Mexico City",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Portugal",   away:"Uzbekistan",  date:"23 Jun", time:"17:00", venue:"NRG Stadium, Houston",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Colombia",   away:"Congo DR",    date:"24 Jun", time:"02:00", venue:"Akron Stadium, Guadalajara",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Portugal",   away:"Colombia",    date:"27 Jun", time:"22:00", venue:"NRG Stadium, Houston",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Congo DR",   away:"Uzbekistan",  date:"27 Jun", time:"22:00", venue:"Mercedes-Benz Stadium, Atlanta",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
   L: {
     teams: ["England","Croatia","Ghana","Panama"],
     matches: [
-      { home:"England",  away:"Croatia",  date:"17 Jun", time:"20:00", venue:"AT&T Stadium, Arlington",          hg:null, ag:null },
-      { home:"Ghana",    away:"Panama",   date:"17 Jun", time:"23:00", venue:"BMO Field, Toronto",               hg:null, ag:null },
-      { home:"England",  away:"Ghana",    date:"23 Jun", time:"20:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null },
-      { home:"Panama",   away:"Croatia",  date:"23 Jun", time:"23:00", venue:"BMO Field, Toronto",               hg:null, ag:null },
-      { home:"Panama",   away:"England",  date:"27 Jun", time:"21:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null },
-      { home:"Croatia",  away:"Ghana",    date:"27 Jun", time:"21:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null },
+      { home:"England",  away:"Croatia",  date:"17 Jun", time:"20:00", venue:"AT&T Stadium, Arlington",          hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Ghana",    away:"Panama",   date:"17 Jun", time:"23:00", venue:"BMO Field, Toronto",               hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"England",  away:"Ghana",    date:"23 Jun", time:"20:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Panama",   away:"Croatia",  date:"23 Jun", time:"23:00", venue:"BMO Field, Toronto",               hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Panama",   away:"England",  date:"27 Jun", time:"21:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
+      { home:"Croatia",  away:"Ghana",    date:"27 Jun", time:"21:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
     ],
   },
 };
@@ -360,7 +356,7 @@ const GROUPS_RAW = {
 const FLAGS = {
   "Mexico":"🇲🇽","South Africa":"🇿🇦","Korea Republic":"🇰🇷","Czechia":"🇨🇿",
   "Canada":"🇨🇦","Bosnia and Herzegovina":"🇧🇦","Qatar":"🇶🇦","Switzerland":"🇨🇭",
-  "Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇲🇭","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳كوِتلندِا",
   "USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Türkiye":"🇹🇷",
   "Germany":"🇩🇪","Curaçao":"🇨🇼","Côte d'Ivoire":"🇨🇮","Ecuador":"🇪🇨",
   "Netherlands":"🇳🇱","Japan":"🇯🇵","Sweden":"🇸🇪","Tunisia":"🇹🇳",
@@ -377,15 +373,11 @@ const GC = ["#e74c3c","#e67e22","#f1c40f","#2ecc71","#1abc9c","#3498db","#9b59b6
 function tn(lang, key) { return T[lang].teams[key] || key; }
 function vn(lang, key) { return T[lang].venues[key] || key; }
 
-// التعديل الهندسي الذكي: نعتبر أن الوقت المدخل في البيانات هو بتوقيت تركيا (GMT+3) بشكل دائم
 function toLocalDT(date, time) {
   const [d, mo] = date.split(" ");
   const monthMap = { Jun:5, Jul:6 };
   const [h, mi] = time.split(":").map(Number);
-  
-  // نقوم بإنشاء الوقت مع تعيين المنطقة الزمنية لتركيا المستضيفة (طرح 3 ساعات للتحويل لـ UTC)
-  const utcHour = h - 3;
-  return new Date(Date.UTC(2026, monthMap[mo], parseInt(d), utcHour, mi));
+  return new Date(Date.UTC(2026, monthMap[mo], parseInt(d), h, mi));
 }
 
 function fmtDate(lang, date, time) {
@@ -446,13 +438,13 @@ function koLabel(lang, type, group) {
 
 const mkP = (id, homeType, homeGroup, awayType, awayGroup, date="", time="", venue="") => ({
   id, homeType, homeGroup, awayType, awayGroup,
-  home:"", away:"", hg:null, ag:null, date, time, venue, isKO: true
+  home:"", away:"", hg:null, ag:null, date, time, venue, status:"SCHEDULED"
 });
 const mk = (id, date="", time="", venue="") => ({
-  id, home:"", away:"", hg:null, ag:null, date, time, venue, isKO: true
+  id, home:"", away:"", hg:null, ag:null, date, time, venue, status:"SCHEDULED"
 });
 
-const KO = {
+window.KO = {
   L_r32: [
     mkP("Lr32_0","RU","A","RU","B",           "28 Jun","22:00","SoFi Stadium, Inglewood"),
     mkP("Lr32_1","W","F","RU","C",            "29 Jun","09:00","Akron Stadium, Guadalajara"),
@@ -734,6 +726,7 @@ const CSS_VARS = `
     --header-text:#ffffff;
     --header-sub: #8b949e;
     --tab-bg:    #f6f8fa;
+    --live-pulse:#10b981;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -756,6 +749,7 @@ const CSS_VARS = `
       --header-text:#ffffff;
       --header-sub: #6a85b0;
       --tab-bg:    #0d1525;
+      --live-pulse:#34d399;
     }
   }
   * { box-sizing: border-box; }
@@ -774,43 +768,25 @@ const CSS_VARS = `
     animation-play-state: paused;
     filter: brightness(1.08);
   }
+
+  @keyframes slow-pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.85; }
+    100% { opacity: 0.3; }
+  }
+  .live-progress-bar-fill {
+    animation: slow-pulse 3s infinite ease-in-out;
+  }
 `;
 
 function ScheduleTab({ lang }) {
   const isRtl = lang === "ar";
   const t = T[lang];
 
-  // دمج مباريات المجموعات والإقصائيات في مصفوفة موحدة لتبويب الجدول
   const allMatches = [];
-  
-  // 1. إضافة المجموعات
   Object.keys(GROUPS_RAW).forEach(gKey => {
     GROUPS_RAW[gKey].matches.forEach(m => {
-      allMatches.push({ ...m, groupKey: gKey, isKO: false });
-    });
-  });
-
-  // 2. إضافة الأدوار الإقصائية بالكامل لكي تظهر بالجدول الشامل للمستخدم
-  Object.keys(KO).forEach(koKey => {
-    KO[koKey].forEach(m => {
-      // إسناد اسم المرحلة الاقصائية كـ groupKey مؤقت للعرض الجمالي
-      let stageLabel = "KO";
-      if (koKey.includes("r32")) stageLabel = t.r32;
-      if (koKey.includes("r16")) stageLabel = t.r16;
-      if (koKey.includes("qf")) stageLabel = t.qf;
-      if (koKey.includes("sf")) stageLabel = t.sf;
-      if (koKey.includes("third")) stageLabel = "🥉";
-      if (koKey.includes("final")) stageLabel = "🏆";
-
-      allMatches.push({ 
-        ...m, 
-        groupKey: stageLabel,
-        // معالجة الأسماء غير المحددة في دور المجموعات بعد
-        homeName: m.home ? tn(lang, m.home) : koLabel(lang, m.homeType, m.homeGroup),
-        awayName: m.away ? tn(lang, m.away) : koLabel(lang, m.awayType, m.awayGroup),
-        homeFlag: m.home ? (FLAGS[m.home] || "🏳️") : "⏳",
-        awayFlag: m.away ? (FLAGS[m.away] || "🏳️") : "⏳"
-      });
+      allMatches.push({ ...m, groupKey: gKey });
     });
   });
 
@@ -823,124 +799,233 @@ function ScheduleTab({ lang }) {
     return (monthNum * 10000) + (dayNum * 100) + h + (mi / 60);
   };
 
-  // ترتيب زمني تصاعدي دقيق لجميع مباريات البطولة
   allMatches.sort((a, b) => parseSort(a.date, a.time) - parseSort(b.date, b.time));
 
-  const played   = allMatches.filter(m => m.hg !== null && m.ag !== null);
-  const upcoming = allMatches.filter(m => m.hg === null || m.ag === null);
+  // الفرز التلقائي: المباريات المباشرة والقادمة في الأعلى، المنتهية تنزل لأسفل
+  const liveMatches = allMatches.filter(m => m.status === "LIVE" || m.status === "IN_PLAY");
+  const upcomingMatches = allMatches.filter(m => m.status === "SCHEDULED");
+  const finishedMatches = allMatches.filter(m => m.status === "FINISHED" || (m.hg !== null && m.ag !== null && m.status !== "LIVE" && m.status !== "IN_PLAY"));
+
+  const sortedList = [...liveMatches, ...upcomingMatches, ...finishedMatches];
 
   const GC_MAP = {};
   Object.keys(GROUPS_RAW).forEach((g, i) => { GC_MAP[g] = GC[i]; });
 
-  const MatchRow = ({ m, finished }) => {
-    const isGroupMatch = !m.isKO;
-    const color = isGroupMatch ? (GC_MAP[m.groupKey] || "var(--accent)") : "var(--accent)";
-    const homeWin = finished && m.hg > m.ag;
-    const awayWin = finished && m.ag > m.hg;
+  // دالة لحساب الوقت المتبقي المرتبط كلياً بـ وقت آخر تحديث ناجح
+  const getStaticCountdown = (matchDate, matchTime) => {
+    if (!window.__lastApiSuccessTime) return null;
+    const matchDT = toLocalDT(matchDate, matchTime);
+    const diffMs = matchDT - window.__lastApiSuccessTime;
+    if (diffMs <= 0) return null;
     
-    const hName = isGroupMatch ? tn(lang, m.home) : m.homeName;
-    const aName = isGroupMatch ? tn(lang, m.away) : m.awayName;
-    const hFlag = isGroupMatch ? (FLAGS[m.home] || "🏳️") : m.homeFlag;
-    const aFlag = isGroupMatch ? (FLAGS[m.away] || "🏳️") : m.awayFlag;
-
-    return (
-      <div className="match-card" style={{
-        padding: "12px 14px",
-        borderBottom: "1px solid var(--border2)",
-        background: "var(--surface)",
-        opacity: finished ? 0.68 : 1,
-      }}>
-        {/* السطر الأول: معلومات المباراة */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px", width: "100%" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{
-              padding: "2px 6px", borderRadius: "10px",
-              background: color + "33", border: "1px solid " + color + "55",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 9, fontWeight: 700, color,
-            }}>{isGroupMatch ? `${t.group} ${m.groupKey}` : m.groupKey}</div>
-            <div style={{ fontSize: 11, color: "var(--text3)", fontWeight: 600 }}>
-              {fmtDate(lang, m.date, m.time)} · <span style={{ color: "var(--text2)" }}>{fmtTime(m.date, m.time)}</span>
-            </div>
-          </div>
-          <div style={{ fontSize: 9, color: "var(--text4)", maxWidth: "50%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            {vn(lang, m.venue)}
-          </div>
-        </div>
-
-        {/* السطر الثاني: المنتخبات والنتيجة */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", gap: 4 }}>
-          {/* الفريق المستضيف */}
-          <div style={{
-            flex: 1, display: "flex", alignItems: "center",
-            justifyContent: isRtl ? "flex-start" : "flex-end",
-            gap: 5, overflow: "hidden",
-          }}>
-            <span style={{
-              fontSize: 13, fontWeight: homeWin ? 700 : 400,
-              color: homeWin ? "var(--text)" : "var(--text2)",
-              whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-            }}>{hName}</span>
-            <span style={{ flexShrink: 0 }}>{hFlag}</span>
-          </div>
-
-          {/* مربع النتيجة / VS */}
-          <div style={{ flexShrink: 0, minWidth: 60, textAlign: "center" }}>
-            {finished ? (
-              <span style={{
-                display: "inline-flex", alignItems: "center", gap: 5,
-                background: "var(--bg2)", borderRadius: 6, padding: "4px 10px",
-              }}>
-                <span style={{ fontSize: 14, fontWeight: 800, color: homeWin ? color : "var(--text2)" }}>{m.hg}</span>
-                <span style={{ fontSize: 10, color: "var(--text4)" }}>–</span>
-                <span style={{ fontSize: 14, fontWeight: 800, color: awayWin ? color : "var(--text2)" }}>{m.ag}</span>
-              </span>
-            ) : (
-              <span style={{
-                display: "inline-flex", alignItems: "center",
-                background: color + "18", borderRadius: 6, padding: "4px 12px",
-                border: "1px solid " + color + "33",
-              }}>
-                <span style={{ fontSize: 11, color, fontWeight: 700 }}>vs</span>
-              </span>
-            )}
-          </div>
-
-          {/* الفريق الضيف */}
-          <div style={{
-            flex: 1, display: "flex", alignItems: "center",
-            justifyContent: isRtl ? "flex-end" : "flex-start",
-            gap: 5, overflow: "hidden",
-          }}>
-            <span style={{ flexShrink: 0 }}>{aFlag}</span>
-            <span style={{
-              fontSize: 13, fontWeight: awayWin ? 700 : 400,
-              color: awayWin ? "var(--text)" : "var(--text2)",
-              whiteSpace: "nowrap", overflow: "hidden", textOverflow:"ellipsis",
-            }}>{aName}</span>
-          </div>
-        </div>
-      </div>
-    );
+    const diffMins = Math.floor(diffMs / 60000);
+    const hours = Math.floor(diffMins / 60);
+    const mins = diffMins % 60;
+    return { hours, mins };
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: "0 auto", borderRadius: 8, overflow: "hidden", border: "1px solid var(--border)" }}>
-      {upcoming.map((m, i) => <MatchRow key={"u" + i} m={m} finished={false} />)}
-      {played.length > 0 && <div style={{ height: 1, background: "var(--border)" }} />}
-      {played.map((m, i) => <MatchRow key={"p" + i} m={m} finished={true} />)}
+    <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", flexDirection: "column", gap: 14 }}>
+      {sortedList.map((m, i) => {
+        const color = GC_MAP[m.groupKey];
+        const isLive = m.status === "LIVE" || m.status === "IN_PLAY";
+        const isFinished = m.status === "FINISHED" || (!isLive && m.hg !== null && m.ag !== null);
+        const isFeatured = i === 0; // المباراة الأولى في القائمة تظهر بشكل متميز دوماً
+
+        const homeWin = isFinished && m.hg > m.ag;
+        const awayWin = isFinished && m.ag > m.hg;
+
+        // حساب العداد التنازلي الثابت المرتبط بـ الـ fetch الصامت فقط
+        const countdown = (!isLive && !isFinished) ? getStaticCountdown(m.date, m.time) : null;
+
+        return (
+          <div 
+            key={m.groupKey + i} 
+            style={{
+              borderRadius: 10, 
+              overflow: "hidden", 
+              border: isLive ? "2px solid var(--live-pulse)" : (isFeatured ? `1px dashed ${color}` : "1px solid var(--border)"),
+              boxShadow: isLive ? "0 4px 16px rgba(16, 185, 129, 0.12)" : "none",
+              background: "var(--surface)",
+              opacity: isFinished ? 0.68 : 1,
+              position: "relative",
+              transition: "all 0.3s ease"
+            }}
+          >
+            {/* شريط التقدم النبضي للمباراة الـ Live */}
+            {isLive && (
+              <div style={{ width: "100%", height: "4px", background: "var(--border2)", position: "relative" }}>
+                <div 
+                  className="live-progress-bar-fill"
+                  style={{ 
+                    position: "absolute", 
+                    top: 0, left: 0, bottom: 0, 
+                    width: `${Math.min(100, Math.max(5, ((m.minute || 45) / 90) * 100))}%`, 
+                    background: "var(--live-pulse)" 
+                  }} 
+                />
+              </div>
+            )}
+
+            <div style={{ padding: isFeatured ? "16px" : "12px 14px" }}>
+              {/* السطر العلوي للمعلومات */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", width: "100%" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{
+                    width: 22, height: 22, borderRadius: "50%",
+                    background: color + "33", border: "1px solid " + color + "55",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 10, fontWeight: 700, color,
+                  }}>{m.groupKey}</div>
+                  <div style={{ fontSize: 11, color: "var(--text3)", fontWeight: 600 }}>
+                    {fmtDate(lang, m.date, m.time)} · <span style={{ color: "var(--text2)" }}>{fmtTime(m.date, m.time)}</span>
+                  </div>
+                </div>
+
+                {/* شارات الحالة والعداد المرتبط بالتحديث */}
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  {isLive && (
+                    <span style={{ 
+                      background: "var(--live-pulse)", color: "#fff", 
+                      fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 4 
+                    }}>{t.live}</span>
+                  )}
+                  {!isLive && !isFinished && isFeatured && (
+                    <span style={{ 
+                      background: "var(--bg2)", color: "var(--text3)", 
+                      fontSize: 10, fontWeight: 600, padding: "2px 8px", borderRadius: 4 
+                    }}>{t.notStarted}</span>
+                  )}
+                  {countdown && isFeatured && (
+                    <span style={{ fontSize: 10, color: color, fontWeight: 700, background: color + "14", padding: "2px 6px", borderRadius: 4 }}>
+                      ⏳ {t.remaining}: {countdown.hours > 0 ? `${countdown.hours}${t.hour} ` : ""}{countdown.mins}{t.minute}
+                    </span>
+                  )}
+                  <div style={{ fontSize: 9, color: "var(--text4)", maxWidth: 140, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {vn(lang, m.venue)}
+                  </div>
+                </div>
+              </div>
+
+              {/* أطراف المباراة والنتيجة */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", gap: 4, margin: "6px 0" }}>
+                <div style={{
+                  flex: 1, display: "flex", alignItems: "center",
+                  justifyContent: isRtl ? "flex-start" : "flex-end",
+                  gap: 8, overflow: "hidden",
+                }}>
+                  <span style={{
+                    fontSize: isFeatured ? 15 : 13, fontWeight: (homeWin || isLive) ? 700 : 400,
+                    color: homeWin ? "var(--text)" : (isFinished ? "var(--text3)" : "var(--text)"),
+                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                  }}>{tn(lang, m.home)}</span>
+                  <span style={{ flexShrink: 0, fontSize: isFeatured ? 22 : 18 }}>{FLAGS[m.home] || "🏳️"}</span>
+                </div>
+
+                {/* كتلة النتيجة المركزية */}
+                <div style={{ flexShrink: 0, minWidth: 70, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  {(isFinished || isLive) ? (
+                    <span style={{
+                      display: "inline-flex", alignItems: "center", gap: 6,
+                      background: isLive ? "var(--win-bg)" : "var(--bg2)", 
+                      borderRadius: 6, padding: isFeatured ? "6px 14px" : "4px 10px",
+                      border: isLive ? "1px solid var(--accent)" : "none"
+                    }}>
+                      <span style={{ fontSize: isFeatured ? 18 : 14, fontWeight: 800, color: (isLive || homeWin) ? "var(--text)" : "var(--text2)" }}>{m.hg}</span>
+                      <span style={{ fontSize: 11, color: "var(--text4)" }}>–</span>
+                      <span style={{ fontSize: isFeatured ? 18 : 14, fontWeight: 800, color: (isLive || awayWin) ? "var(--text)" : "var(--text2)" }}>{m.ag}</span>
+                    </span>
+                  ) : (
+                    <span style={{
+                      display: "inline-flex", alignItems: "center",
+                      background: color + "18", borderRadius: 6, padding: "4px 14px",
+                      border: "1px solid " + color + "33",
+                    }}>
+                      <span style={{ fontSize: 11, color, fontWeight: 700 }}>vs</span>
+                    </span>
+                  )}
+                  
+                  {/* دقائق المباراة Live + منطقة التوسيعات المستقبلية */}
+                  {isLive && (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 4 }}>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: "var(--live-pulse)" }}>
+                        {m.minute || 0}'
+                      </span>
+                      {m.injuryTime && (
+                        <span style={{ fontSize: 10, fontWeight: 600, color: "var(--text3)" }}>
+                          +{m.injuryTime}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div style={{
+                  flex: 1, display: "flex", alignItems: "center",
+                  justifyContent: isRtl ? "flex-end" : "flex-start",
+                  gap: 8, overflow: "hidden",
+                }}>
+                  <span style={{ flexShrink: 0, fontSize: isFeatured ? 22 : 18 }}>{FLAGS[m.away] || "🏳️"}</span>
+                  <span style={{
+                    fontSize: isFeatured ? 15 : 13, fontWeight: (awayWin || isLive) ? 700 : 400,
+                    color: awayWin ? "var(--text)" : (isFinished ? "var(--text3)" : "var(--text)"),
+                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                  }}>{tn(lang, m.away)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── STABLE TIMESTAMP COMPONENT ───────────────────────────────
+function LastUpdatedTimestamp({ lang }) {
+  const [stamp, setStamp] = useState("");
+
+  useEffect(() => {
+    const handler = () => {
+      if (!window.__lastApiSuccessTime) return;
+      const dt = window.__lastApiSuccessTime;
+      const timeStr = dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+      const dateStr = dt.toLocaleDateString(lang === 'ar' ? 'ar-EG' : (lang === 'tr' ? 'tr-TR' : 'en-US'), {
+        year: 'numeric', month: 'long', day: 'numeric'
+      });
+      setStamp(`🕒 ${timeStr}  •  📅 ${dateStr}`);
+    };
+    
+    window.__updateStampComponent = handler;
+    handler();
+    return () => { window.__updateStampComponent = null; };
+  }, [lang]);
+
+  if (!stamp) return null;
+
+  return (
+    <div style={{ 
+      fontSize: "12px", 
+      color: "var(--header-sub)", 
+      marginTop: "4px",
+      fontWeight: "500",
+      letterSpacing: "0.2px"
+    }}>
+      {stamp}
     </div>
   );
 }
 
 function App() {
-  const [tab, setTab] = useState("groups");
-  const [lang, setLang] = useState("en");
+  const [tab, setTab] = useState("schedule"); // الأساسي والافتراضي الآن هو جدول المباريات (Home)
+  const [lang, setLang] = useState("ar"); // لغة البداية الافتراضية
   const [tick, setTick] = useState(0);
-  React.useEffect(() => {
+  
+  useEffect(() => {
     window.__forceUpdate = () => setTick(t => t + 1);
     return () => { window.__forceUpdate = null; };
   }, []);
+  
   const t = T[lang];
 
   return (
@@ -949,7 +1034,7 @@ function App() {
       <div dir={t.dir} style={{ fontFamily:"'Segoe UI',Tahoma,Arial,sans-serif", background:"var(--bg)", minHeight:"100vh", color:"var(--text)" }}>
         {/* Header */}
         <div style={{ background:"var(--header-bg)", borderBottom:"1px solid var(--border)", padding:"14px 20px",
-          display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:10 }}>
+          display:"flex", flexDirection:"column", alignItems:"center", justifycontent:"center", gap:8 }}>
           <div style={{ display:"flex", alignItems:"center", gap:12 }}>
             <div>
               <div style={{ fontSize:19, fontWeight:700, color:"var(--header-text)", letterSpacing:.5, textAlign:"center" }}>{t.title}</div>
@@ -967,16 +1052,26 @@ function App() {
               }}>{label}</button>
             ))}
           </div>
+          
+          <LastUpdatedTimestamp lang={lang} />
         </div>
 
         {/* Tabs */}
         <div style={{ display:"flex", borderBottom:"1px solid var(--border)", background:"var(--tab-bg)" }}>
-          {[["groups",t.tabGroups],["schedule",t.tabSchedule],["knockout",t.tabKnockout],["about",t.tabAbout]].map(([k,l])=>(
+          {/* التاب الأول تحول إلى أيقونة منزل مريحة للموبايل */}
+          <button onClick={()=>setTab("schedule")} style={{
+            padding:"12px 24px", border:"none", background:"none", cursor:"pointer",
+            color:tab==="schedule"?"var(--accent)":"var(--text3)",
+            borderBottom:tab==="schedule"?"2px solid var(--accent)":"2px solid transparent",
+            fontSize:16, transition:"all .2s"
+          }}>🏠</button>
+          
+          {[["groups",t.tabGroups],["knockout",t.tabKnockout],["about",t.tabAbout]].map(([k,l])=>(
             <button key={k} onClick={()=>setTab(k)} style={{
-              padding:"12px 24px", border:"none", background:"none", cursor:"pointer",
+              padding:"12px 20px", border:"none", background:"none", cursor:"pointer",
               color:tab===k?"var(--accent)":"var(--text3)",
               borderBottom:tab===k?"2px solid var(--accent)":"2px solid transparent",
-              fontFamily:"inherit", fontSize:14, fontWeight:tab===k?600:400, transition:"all .2s"
+              fontFamily:"inherit", fontSize:13, fontWeight:tab===k?600:400, transition:"all .2s"
             }}>{l}</button>
           ))}
         </div>
@@ -1049,7 +1144,6 @@ function App() {
                   {t.cvBtn}
                 </a>
               </div>
-
             </div>
           )}
         </div>
@@ -1068,78 +1162,141 @@ const API_TOKEN = "5b08761bf1ff47d89c971360c3c3a857";
 const API_URL   = "https://polished-mode-ba6a.salehzuh.workers.dev/";
 
 const TEAM_MAP = {
-  "Mexico": "Mexico", "South Africa": "South Africa", "Korea Republic": "Korea Republic",
-  "South Korea": "Korea Republic", "Czechia": "Czechia", "Czech Republic": "Czechia",
-  "Canada": "Canada", "Bosnia and Herzegovina": "Bosnia and Herzegovina", "Bosnia-Herzegovina": "Bosnia and Herzegovina",
-  "Qatar": "Qatar", "Switzerland": "Switzerland", "Brazil": "Brazil", "Morocco": "Morocco",
-  "Haiti": "Haiti", "Scotland": "Scotland", "USA": "USA", "United States": "USA",
-  "United States of America": "USA", "Paraguay": "Paraguay", "Australia": "Australia",
-  "Türkiye": "Türkiye", "Turkey": "Türkiye", "Germany": "Germany", "Curaçao": "Curaçao",
-  "Curacao": "Curaçao", "Côte d'Ivoire": "Côte d'Ivoire", "Ivory Coast": "Côte d'Ivoire",
-  "Ecuador": "Ecuador", "Netherlands": "Netherlands", "Japan": "Japan", "Sweden": "Sweden",
-  "Tunisia": "Tunisia", "Belgium": "Belgium", "Egypt": "Egypt", "IR Iran": "IR Iran",
-  "Iran": "IR Iran", "New Zealand": "New Zealand", "Spain": "Spain", "Cabo Verde": "Cabo Verde",
-  "Cape Verde": "Cabo Verde", "Cape Verde Islands": "Cabo Verde", "Saudi Arabia": "Saudi Arabia",
-  "Uruguay": "Uruguay", "France": "France", "Senegal": "Senegal", "Iraq": "Iraq", "Norway": "Norway",
-  "Argentina": "Argentina", "Algeria": "Algeria", "Austria": "Austria", "Jordan": "Jordan",
-  "Portugal": "Portugal", "Congo DR": "Congo DR", "Democratic Republic of Congo": "Congo DR",
-  "Uzbekistan": "Uzbekistan", "Colombia": "Colombia", "England": "England", "Croatia": "Croatia",
-  "Ghana": "Ghana", "Panama": "Panama",
+  "Mexico":                    "Mexico",
+  "South Africa":              "South Africa",
+  "Korea Republic":            "Korea Republic",
+  "South Korea":               "Korea Republic",
+  "Czechia":                   "Czechia",
+  "Czech Republic":            "Czechia",
+  "Canada":                    "Canada",
+  "Bosnia and Herzegovina":    "Bosnia and Herzegovina",
+  "Bosnia-Herzegovina":        "Bosnia and Herzegovina",
+  "Qatar":                     "Qatar",
+  "Switzerland":               "Switzerland",
+  "Brazil":                    "Brazil",
+  "Morocco":                   "Morocco",
+  "Haiti":                     "Haiti",
+  "Scotland":                  "Scotland",
+  "USA":                       "USA",
+  "United States":             "USA",
+  "United States of America":  "USA",
+  "Paraguay":                  "Paraguay",
+  "Australia":                 "Australia",
+  "Türkiye":                   "Türkiye",
+  "Turkey":                    "Türkiye",
+  "Germany":                   "Germany",
+  "Curaçao":                   "Curaçao",
+  "Curacao":                   "Curaçao",
+  "Côte d'Ivoire":             "Côte d'Ivoire",
+  "Ivory Coast":               "Côte d'Ivoire",
+  "Ecuador":                   "Ecuador",
+  "Netherlands":               "Netherlands",
+  "Japan":                     "Japan",
+  "Sweden":                    "Sweden",
+  "Tunisia":                   "Tunisia",
+  "Belgium":                   "Belgium",
+  "Egypt":                     "Egypt",
+  "IR Iran":                   "IR Iran",
+  "Iran":                      "IR Iran",
+  "New Zealand":               "New Zealand",
+  "Spain":                     "Spain",
+  "Cabo Verde":                "Cabo Verde",
+  "Cape Verde":                "Cabo Verde",
+  "Cape Verde Islands":        "Cabo Verde",
+  "Saudi Arabia":              "Saudi Arabia",
+  "Uruguay":                   "Uruguay",
+  "France":                    "France",
+  "Senegal":                   "Senegal",
+  "Iraq":                      "Iraq",
+  "Norway":                    "Norway",
+  "Argentina":                 "Argentina",
+  "Algeria":                   "Algeria",
+  "Austria":                   "Austria",
+  "Jordan":                    "Jordan",
+  "Portugal":                  "Portugal",
+  "Congo DR":                  "Congo DR",
+  "Democratic Republic of Congo": "Congo DR",
+  "Uzbekistan":                "Uzbekistan",
+  "Colombia":                  "Colombia",
+  "England":                   "England",
+  "Croatia":                   "Croatia",
+  "Ghana":                     "Ghana",
+  "Panama":                    "Panama",
 };
 
+window.__lastApiSuccessTime = null; 
 let autoUpdateInterval = null;
 
 async function fetchResults() {
-  const statusEl = document.getElementById("api-status");
-  if (statusEl) statusEl.textContent = "⏳ جاري التحديث...";
-
   try {
     const res = await fetch(API_URL, {
       headers: { "X-Auth-Token": API_TOKEN }
     });
     const data = await res.json();
 
-    if (!data.matches) {
-      if (statusEl) statusEl.textContent = "❌ خطأ: " + (data.message || "لا توجد بيانات");
-      return;
-    }
+    if (!data.matches) return;
 
-    let updated = 0;
     data.matches.forEach(m => {
-      const homeKey = TEAM_MAP[m.homeTeam.name];
-      const awayKey = TEAM_MAP[m.awayTeam.name];
+      const homeKey = TEAM_MAP[m.homeTeam?.name];
+      const awayKey = TEAM_MAP[m.awayTeam?.name];
       if (!homeKey || !awayKey) return;
 
+      const hg = m.score?.fullTime?.home;
+      const ag = m.score?.fullTime?.away;
+      const status = m.status || "SCHEDULED";
+      const minute = m.minute || null;
+      const injuryTime = m.injuryTime || null;
+
+      // 1. تحديث المجموعات
       Object.values(GROUPS_RAW).forEach(group => {
         group.matches.forEach(match => {
           if (match.home === homeKey && match.away === awayKey) {
-            const hg = m.score?.fullTime?.home;
-            const ag = m.score?.fullTime?.away;
+            match.status = status;
+            match.minute = minute;
+            match.injuryTime = injuryTime;
             if (hg !== null && ag !== null && hg !== undefined) {
-              if (match.hg !== hg || match.ag !== ag) {
-                match.hg = hg;
-                match.ag = ag;
-                updated++;
-              }
+              match.hg = hg;
+              match.ag = ag;
             }
           }
         });
       });
+
+      // 2. تحديث الإقصائيات
+      if (m.stage && m.stage !== "GROUP_STAGE") {
+        Object.values(KO).forEach(stageMatches => {
+          stageMatches.forEach(koMatch => {
+            if ((koMatch.home === homeKey && koMatch.away === awayKey) || 
+                (koMatch.home === "" && koMatch.away === "" && status === "SCHEDULED")) {
+              
+              koMatch.home = homeKey;
+              koMatch.away = awayKey;
+              koMatch.status = status;
+              koMatch.minute = minute;
+              koMatch.injuryTime = injuryTime;
+
+              if (hg !== null && ag !== null && hg !== undefined) {
+                koMatch.hg = hg;
+                koMatch.ag = ag;
+              }
+            }
+          });
+        });
+      }
     });
 
-    const now = new Date().toLocaleTimeString();
-    if (statusEl) statusEl.textContent = `✅ ${now} — ${updated} نتيجة جديدة من ${data.matches.length} مباراة`;
-
+    window.__lastApiSuccessTime = new Date();
+    if (window.__updateStampComponent) window.__updateStampComponent();
     window.__forceUpdate && window.__forceUpdate();
 
   } catch (err) {
-    if (statusEl) statusEl.textContent = "❌ فشل الاتصال: " + err.message;
+    console.error("Fetch error:", err);
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   fetchResults();
-  autoUpdateInterval = setInterval(fetchResults, 60000);
+  autoUpdateInterval = setInterval(fetchResults, 60000); // تحديث صامت كل دقيقة
 });
 </script>
 </body></html>
