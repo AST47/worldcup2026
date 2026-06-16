@@ -377,7 +377,8 @@ function toLocalDT(date, time) {
   const [d, mo] = date.split(" ");
   const monthMap = { Jun: 5, Jul: 6 };
   const [h, mi] = time.split(":").map(Number);
-  return new Date(2026, monthMap[mo], parseInt(d), h, mi);
+  const utcDate = new Date(Date.UTC(2026, monthMap[mo], parseInt(d), h - 3, mi));
+  return utcDate;
 }
 
 function fmtDate(lang, date, time) {
