@@ -373,23 +373,27 @@ const GC = ["#e74c3c","#e67e22","#f1c40f","#2ecc71","#1abc9c","#3498db","#9b59b6
 function tn(lang, key) { return T[lang].teams[key] || key; }
 function vn(lang, key) { return T[lang].venues[key] || key; }
 
+// البيانات بتوقيت UTC — نحول لتوقيت المتصفح
 function toLocalDT(dateStr, timeStr) {
   const [d, mo] = dateStr.split(" ");
   const monthMap = { Jun: "06", Jul: "07" };
-  const dayStr = String(parseInt(d)).padStart(2, '0');
+  const dayStr = String(parseInt(d)).padStart(2, "0");
   const monthStr = monthMap[mo];
-  return new Date(`2026-${monthStr}-${dayStr}T${timeStr}:00+03:00`);
+  return new Date(`2026-${monthStr}-${dayStr}T${timeStr}:00Z`);
 }
 
 function fmtDate(lang, date, time) {
-  const [d, m] = date.split(" ");
-  if (lang === "ar") return d + " " + (T.ar.months[m] || m);
-  if (lang === "tr") return d + " " + (T.tr.months[m] || m);
-  return date;
+  const dt = toLocalDT(date, time);
+  const day = dt.getDate();
+  const moKeys = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const moKey = moKeys[dt.getMonth()];
+  if (lang === "ar") return day + " " + (T.ar.months[moKey] || moKey);
+  if (lang === "tr") return day + " " + (T.tr.months[moKey] || moKey);
+  return day + " " + moKey;
 }
 
 function fmtTime(date, time) {
-  return time; 
+  return toLocalDT(date, time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
 }
 
 function calcStandings(groupKey, lang) {
