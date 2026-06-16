@@ -375,30 +375,20 @@ function vn(lang, key) { return T[lang].venues[key] || key; }
 
 function toLocalDT(date, time) {
   const [d, mo] = date.split(" ");
-  const monthMap = { Jun: "06", Jul: "07" };
-  const dayStr = String(parseInt(d)).padStart(2, '0');
-  const monthStr = monthMap[mo];
-  const isoString = `2026-${monthStr}-${dayStr}T${time}:00+03:00`;
-  return new Date(isoString);
+  const monthMap = { Jun: 5, Jul: 6 };
+  const [h, mi] = time.split(":").map(Number);
+  return new Date(2026, monthMap[mo], parseInt(d), h, mi);
 }
 
 function fmtDate(lang, date, time) {
-  if (!time) {
-    if (lang === "ar") { const [d,m] = date.split(" "); return d + " " + (T.ar.months[m]||m); }
-    if (lang === "tr") { const [d,m] = date.split(" "); return d + " " + (T.tr.months[m]||m); }
-    return date;
-  }
-  const dt = toLocalDT(date, time);
-  const day = dt.getDate();
-  const moKeys = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const moKey = moKeys[dt.getMonth()];
-  if (lang === "ar") return day + " " + (T.ar.months[moKey]||moKey);
-  if (lang === "tr") return day + " " + (T.tr.months[moKey]||moKey);
-  return day + " " + moKey;
+  const [d, m] = date.split(" ");
+  if (lang === "ar") return d + " " + (T.ar.months[m] || m);
+  if (lang === "tr") return d + " " + (T.tr.months[m] || m);
+  return date;
 }
 
 function fmtTime(date, time) {
-  return toLocalDT(date, time).toLocaleTimeString([], { hour:"2-digit", minute:"2-digit", hour12:false });
+  return time; 
 }
 
 function calcStandings(groupKey, lang) {
