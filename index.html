@@ -40,7 +40,7 @@ const T = {
     title: "كأس العالم 2026",
     subtitle: "كندا · المكسيك · الولايات المتحدة · 11 يونيو – 19 يوليو",
     tabGroups: "دور المجموعات",
-    tabKnockout: "مرحلة خروج المغلوب",
+    tabKnockout: "مرحلة الإقصاءات",
     tabAbout: "حول",
     group: "المجموعة",
     team: "المنتخب",
@@ -443,49 +443,49 @@ const mk = (id, date="", time="", venue="") => ({
 
 window.KO = {
   L_r32: [
-    mkP("Lr32_0","RU","A","RU","B",           "28 Jun","22:00","SoFi Stadium, Inglewood"),
-    mkP("Lr32_1","W","F","RU","C",            "29 Jun","09:00","Akron Stadium, Guadalajara"),
-    mkP("Lr32_2","W","I","3","C/D/F/G/H",    "30 Jun","05:00","MetLife Stadium, New Jersey"),
-    mkP("Lr32_3","W","A","3","C/E/F/H/I",    "30 Jun","09:00","Azteca Stadium, Mexico City"),
-    mkP("Lr32_4","W","D","3","B/E/F/I/J",    "1 Jul","08:00","Levi's Stadium, Santa Clara"),
-    mkP("Lr32_5","RU","K","RU","L",           "2 Jul","07:00","BMO Field, Toronto"),
-    mkP("Lr32_6","W","B","3","E/F/G/I/J",    "2 Jul","11:00","BC Place, Vancouver"),
-    mkP("Lr32_7","W","K","3","D/E/I/J/L",    "3 Jul","02:00","AT&T Stadium, Arlington"),
+    mkP("Lr32_0","RU","A","RU","B",           "28 Jun","19:00","SoFi Stadium, Inglewood"),
+    mkP("Lr32_1","W","C","RU","F",            "29 Jun","17:00","NRG Stadium, Houston"),
+    mkP("Lr32_2","W","E","3","A/B/C/D/F",    "29 Jun","20:30","Gillette Stadium, Foxboro"),
+    mkP("Lr32_3","W","F","W","C",             "30 Jun","01:00","Estadio Akron, Monterrey"),
+    mkP("Lr32_4","RU","E","RU","I",           "30 Jun","17:00","AT&T Stadium, Arlington"),
+    mkP("Lr32_5","W","I","3","C/D/F/G/H",    "30 Jun","21:00","MetLife Stadium, New Jersey"),
+    mkP("Lr32_6","W","A","3","C/E/F/H/I",    "1 Jul","01:00","Azteca Stadium, Mexico City"),
+    mkP("Lr32_7","W","L","3","E/H/I/J/K",    "1 Jul","16:00","Mercedes-Benz Stadium, Atlanta"),
   ],
   R_r32: [
-    mkP("Rr32_0","W","E","3","A/B/C/D/F",    "29 Jun","04:30","Gillette Stadium, Foxboro"),
-    mkP("Rr32_1","W","C","RU","F",            "29 Jun","23:00","NRG Stadium, Houston"),
-    mkP("Rr32_2","RU","E","RU","I",           "30 Jun","01:00","AT&T Stadium, Arlington"),
-    mkP("Rr32_3","W","L","3","E/H/I/J/K",    "1 Jul","00:00","Mercedes-Benz Stadium, Atlanta"),
-    mkP("Rr32_4","W","G","3","A/E/H/I/J",    "2 Jul","04:00","Lumen Field, Seattle"),
-    mkP("Rr32_5","W","H","RU","J",            "2 Jul","03:00","SoFi Stadium, Inglewood"),
-    mkP("Rr32_6","W","J","RU","H",            "3 Jul","06:00","Hard Rock Stadium, Miami"),
-    mkP("Rr32_7","RU","D","RU","G",           "3 Jul","02:00","AT&T Stadium, Arlington"),
+    mkP("Rr32_0","W","G","3","A/E/H/I/J",    "1 Jul","20:00","Lumen Field, Seattle"),
+    mkP("Rr32_1","W","D","3","B/E/F/I/J",    "2 Jul","00:00","Levi's Stadium, Santa Clara"),
+    mkP("Rr32_2","W","H","RU","J",            "2 Jul","19:00","SoFi Stadium, Inglewood"),
+    mkP("Rr32_3","RU","K","RU","L",           "2 Jul","23:00","BMO Field, Toronto"),
+    mkP("Rr32_4","W","B","3","E/F/G/I/J",    "3 Jul","03:00","BC Place, Vancouver"),
+    mkP("Rr32_5","RU","D","RU","G",           "3 Jul","18:00","AT&T Stadium, Arlington"),
+    mkP("Rr32_6","W","J","RU","H",            "3 Jul","22:00","Hard Rock Stadium, Miami"),
+    mkP("Rr32_7","W","K","3","D/E/I/J/L",    "4 Jul","01:30","Arrowhead Stadium, Kansas City"),
   ],
   L_r16:[
-    mk("Lr16_0","4 Jul","00:00","MetLife Stadium, New Jersey"),
-    mk("Lr16_1","5 Jul","01:00","Azteca Stadium, Mexico City"),
-    mk("Lr16_2","6 Jul","22:00","AT&T Stadium, Arlington"),
-    mk("Lr16_3","7 Jul","23:00","BC Place, Vancouver"),
+    mk("Lr16_0","4 Jul","17:00","NRG Stadium, Houston"),
+    mk("Lr16_1","4 Jul","21:00","Lincoln Financial, Philadelphia"),
+    mk("Lr16_2","5 Jul","20:00","MetLife Stadium, New Jersey"),
+    mk("Lr16_3","6 Jul","00:00","Azteca Stadium, Mexico City"),
   ],
   R_r16:[
-    mk("Rr16_0","4 Jul","20:00","Lincoln Financial, Philadelphia"),
-    mk("Rr16_1","5 Jul","20:00","NRG Stadium, Houston"),
-    mk("Rr16_2","6 Jul","23:00","Lumen Field, Seattle"),
-    mk("Rr16_3","6 Jul","19:00","Mercedes-Benz Stadium, Atlanta"),
+    mk("Rr16_0","6 Jul","19:00","AT&T Stadium, Arlington"),
+    mk("Rr16_1","7 Jul","00:00","Lumen Field, Seattle"),
+    mk("Rr16_2","7 Jul","16:00","Mercedes-Benz Stadium, Atlanta"),
+    mk("Rr16_3","7 Jul","20:00","BC Place, Vancouver"),
   ],
   L_qf:[
-    mk("Lqf_0","9 Jul","21:00","Gillette Stadium, Foxboro"),
-    mk("Lqf_1","11 Jul","01:00","SoFi Stadium, Inglewood"),
+    mk("Lqf_0","9 Jul","20:00","Gillette Stadium, Foxboro"),
+    mk("Lqf_1","11 Jul","21:00","Hard Rock Stadium, Miami"),
   ],
   R_qf:[
-    mk("Rqf_0","10 Jul","01:00","Hard Rock Stadium, Miami"),
-    mk("Rqf_1","10 Jul","21:00","Arrowhead Stadium, Kansas City"),
+    mk("Rqf_0","10 Jul","19:00","SoFi Stadium, Inglewood"),
+    mk("Rqf_1","12 Jul","01:00","Arrowhead Stadium, Kansas City"),
   ],
-  L_sf:[mk("Lsf_0","14 Jul","23:00","AT&T Stadium, Arlington")],
-  R_sf:[mk("Rsf_0","16 Jul","02:00","Mercedes-Benz Stadium, Atlanta")],
-  third:[mk("third_0","18 Jul","23:00","Hard Rock Stadium, Miami")],
-  final:[mk("final_0","19 Jul","22:00","MetLife Stadium, New Jersey")],
+  L_sf:[mk("Lsf_0","14 Jul","19:00","AT&T Stadium, Arlington")],
+  R_sf:[mk("Rsf_0","15 Jul","19:00","Mercedes-Benz Stadium, Atlanta")],
+  third:[mk("third_0","18 Jul","21:00","Hard Rock Stadium, Miami")],
+  final:[mk("final_0","19 Jul","19:00","MetLife Stadium, New Jersey")],
 };
 
 const getWinner = m => {
@@ -783,9 +783,26 @@ function ScheduleTab({ lang }) {
   const allMatches = [];
   Object.keys(GROUPS_RAW).forEach(gKey => {
     GROUPS_RAW[gKey].matches.forEach(m => {
-      allMatches.push({ ...m, groupKey: gKey });
+      allMatches.push({ ...m, groupKey: gKey, stageLabel: null });
     });
   });
+
+  // إضافة مباريات الإقصاءات
+  const koStages = [
+    { key:"L_r32",  label:"R32" }, { key:"R_r32", label:"R32" },
+    { key:"L_r16",  label:"R16" }, { key:"R_r16", label:"R16" },
+    { key:"L_qf",   label:"QF"  }, { key:"R_qf",  label:"QF"  },
+    { key:"L_sf",   label:"SF"  }, { key:"R_sf",  label:"SF"  },
+    { key:"third",  label:"3rd" },
+    { key:"final",  label:"Final"},
+  ];
+  if (window.KO) {
+    koStages.forEach(({ key, label }) => {
+      (window.KO[key] || []).forEach(m => {
+        if (m.date) allMatches.push({ ...m, groupKey: null, stageLabel: label });
+      });
+    });
+  }
 
   const monthOrder = { "Jun": 6, "Jul": 7 };
   const parseSort = (dateStr, timeStr) => {
@@ -821,7 +838,7 @@ function ScheduleTab({ lang }) {
   return (
     <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", flexDirection: "column", gap: 14 }}>
       {sortedList.map((m, i) => {
-        const color = GC_MAP[m.groupKey];
+        const color = m.groupKey ? GC_MAP[m.groupKey] : "#888";
         const now = new Date();
         const matchDT = toLocalDT(m.date, m.time);
         const matchEndDT = new Date(matchDT.getTime() + 3 * 60 * 60 * 1000); // +3 ساعات
@@ -843,7 +860,7 @@ function ScheduleTab({ lang }) {
             style={{
               borderRadius: 10, 
               overflow: "hidden", 
-              border: isLive ? "2px solid var(--live-pulse)" : (isFeatured ? `1px dashed ${color}` : "1px solid var(--border)"),
+              border: isLive ? "2px solid var(--live-pulse)" : (isFeatured && color ? `1px dashed ${color}` : "1px solid var(--border)"),
               boxShadow: isLive ? "0 4px 16px rgba(16, 185, 129, 0.12)" : "none",
               background: "var(--surface)",
               opacity: isFinished ? 0.68 : 1,
@@ -875,7 +892,7 @@ function ScheduleTab({ lang }) {
                     background: color + "33", border: "1px solid " + color + "55",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: 10, fontWeight: 700, color,
-                  }}>{m.groupKey}</div>
+                  }}>{m.stageLabel || m.groupKey}</div>
                   <div style={{ fontSize: 11, color: "var(--text3)", fontWeight: 600 }}>
                     {fmtDate(lang, m.date, m.time)} · <span style={{ color: "var(--text2)" }}>{fmtTime(m.date, m.time)}</span>
                   </div>
@@ -1017,7 +1034,7 @@ function LastUpdatedTimestamp({ lang }) {
 
 function App() {
   const [tab, setTab] = useState("schedule"); // الأساسي والافتراضي الآن هو جدول المباريات (Home)
-  const [lang, setLang] = useState("ar"); // لغة البداية الافتراضية
+  const [lang, setLang] = useState("en"); // لغة البداية الافتراضية
   const [tick, setTick] = useState(0);
   
   useEffect(() => {
