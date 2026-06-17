@@ -58,6 +58,15 @@ const T = {
     madeBy: "صُنع بواسطة ",
     authorName: "Ahmad Saleh Tuffaha",
     cvBtn: "🔍 استعرض السيرة الذاتية للمطور ←",
+    changelogTitle: "سجل التغييرات",
+    changelog: [
+      { v:"v2.2", date:"16 يونيو 2026", title:"تحديث تلقائي",        desc:"نتائج مباشرة عبر API رسمي من خلال Cloudflare Worker. تحديث كل دقيقة تلقائياً." },
+      { v:"v2.1", date:"15 يونيو 2026", title:"توقيت ذكي",           desc:"الأوقات تتحول تلقائياً لتوقيت المستخدم أياً كان موقعه." },
+      { v:"v2.0", date:"14 يونيو 2026", title:"جدول المباريات",       desc:"تاب جديد بكل المباريات بالتسلسل الزمني — مباشر، قادم، منتهي." },
+      { v:"v1.2", date:"13 يونيو 2026", title:"الإقصاءات والترجمات", desc:"تصحيح تسميات جولات الإقصاء وتوقيتاتها. تحديث المصطلحات الرسمية لـ FIFA بكل اللغات." },
+      { v:"v1.1", date:"12 يونيو 2026", title:"تحسينات وإصلاحات",    desc:"دارك مود، أعلام Emoji، تصحيح أخطاء إملائية عربية وتركية، ترقية لـ GitHub Pages." },
+      { v:"v1.0", date:"11 يونيو 2026", title:"الإصدار الأول",        desc:"Tracker كامل: 12 مجموعة، 48 فريق، ترتيب تلقائي، براكيت الإقصاء. ثلاث لغات: عربي، إنجليزي، تركي." },
+    ],
     final: "النهائي", third: "مباراة المركز الثالث",
     r32: "دور الـ32", r16: "دور الـ16", qf: "ربع النهائي", sf: "نصف النهائي",
     unknown: "؟",
@@ -118,6 +127,15 @@ const T = {
     madeBy: "Made by ",
     authorName: "Ahmad Saleh Tuffaha",
     cvBtn: "🔍 View Developer's Portfolio & CV →",
+    changelogTitle: "Changelog",
+    changelog: [
+      { v:"v2.2", date:"16 Jun 2026", title:"Auto-Updates",          desc:"Live results via official API through Cloudflare Worker. Updates every minute automatically." },
+      { v:"v2.1", date:"15 Jun 2026", title:"Smart Timezone",        desc:"All times auto-convert to the user's local timezone, wherever they are." },
+      { v:"v2.0", date:"14 Jun 2026", title:"Schedule Tab",          desc:"New tab with all matches in chronological order — live, upcoming, then finished." },
+      { v:"v1.2", date:"13 Jun 2026", title:"Bracket & Translations",desc:"Fixed knockout round labels and official FIFA venue times. Updated terminology across all languages." },
+      { v:"v1.1", date:"12 Jun 2026", title:"UI & Bug Fixes",        desc:"Dark mode, emoji flags, Arabic/Turkish typo fixes, migrated to GitHub Pages." },
+      { v:"v1.0", date:"11 Jun 2026", title:"Initial Release",       desc:"Full tracker: 12 groups, 48 teams, live standings, knockout bracket. Trilingual: Arabic, English, Turkish." },
+    ],
     final: "Final", third: "Third Place",
     r32: "Round of 32", r16: "Round of 16", qf: "Quarter-finals", sf: "Semi-finals",
     unknown: "?",
@@ -178,6 +196,15 @@ const T = {
     madeBy: "Tarafından yapıldı ",
     authorName: "Ahmad Saleh Tuffaha",
     cvBtn: "🔍 Geliştiricinin Özgeçmişini Görüntüle →",
+    changelogTitle: "Sürüm Geçmişi",
+    changelog: [
+      { v:"v2.2", date:"16 Haz 2026", title:"Otomatik Güncelleme",   desc:"Cloudflare Worker üzerinden resmi API ile canlı sonuçlar. Her dakika otomatik güncelleme." },
+      { v:"v2.1", date:"15 Haz 2026", title:"Akıllı Saat Dilimi",    desc:"Tüm saatler kullanıcının yerel saat dilimine otomatik dönüştürülür." },
+      { v:"v2.0", date:"14 Haz 2026", title:"Fikstür Sekmesi",       desc:"Tüm maçların kronolojik sırayla gösterildiği yeni sekme — canlı, yaklaşan, biten." },
+      { v:"v1.2", date:"13 Haz 2026", title:"Eleme & Çeviriler",     desc:"Eleme turu etiketleri ve resmi FIFA venue saatleri düzeltildi. Tüm dillerde terminoloji güncellendi." },
+      { v:"v1.1", date:"12 Haz 2026", title:"UI & Hata Düzeltmeleri",desc:"Karanlık mod, emoji bayraklar, Arapça/Türkçe yazım düzeltmeleri, GitHub Pages'e geçiş." },
+      { v:"v1.0", date:"11 Haz 2026", title:"İlk Sürüm",             desc:"Tam takip: 12 grup, 48 takım, canlı puan durumu, eleme kupası. Üç dil: Arapça, İngilizce, Türkçe." },
+    ],
     final: "Final", third: "Üçüncülük Maçı",
     r32: "Son 32", r16: "Son 16", qf: "Çeyrek Final", sf: "Yarı Final",
     unknown: "?",
@@ -843,9 +870,9 @@ function ScheduleTab({ lang }) {
         const matchDT = toLocalDT(m.date, m.time);
         const matchEndDT = new Date(matchDT.getTime() + 3 * 60 * 60 * 1000); // +3 ساعات
         const isLive = m.status === "IN_PLAY" || m.status === "LIVE" ||
-          (!m.status && now >= matchDT && now < matchEndDT);
-        const isFinished = m.status === "FINISHED" || m.hg !== null ||
-          (!m.status && now >= matchEndDT);
+          (m.status !== "FINISHED" && now >= matchDT && now < matchEndDT);
+        const isFinished = m.status === "FINISHED" || (m.hg !== null && m.ag !== null) ||
+          (m.status !== "IN_PLAY" && m.status !== "LIVE" && now >= matchEndDT);
         const isFeatured = i === 0; // المباراة الأولى في القائمة تظهر بشكل متميز دوماً
 
         const homeWin = isFinished && m.hg > m.ag;
@@ -1160,6 +1187,38 @@ function App() {
                   {t.cvBtn}
                 </a>
               </div>
+
+              {/* Changelog Timeline */}
+              <hr style={{ border:"none", borderTop:"1px solid var(--border)", margin:"28px 0 24px" }}/>
+              <div style={{ textAlign:"left" }}>
+                <p style={{ fontWeight:700, fontSize:13, color:"var(--text3)", letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:20, textAlign:"center" }}>
+                  {t.changelogTitle}
+                </p>
+                {t.changelog.map((item, i, arr) => (
+                  <div key={item.v} style={{ display:"flex", gap:14, marginBottom:i===arr.length-1?0:20 }}>
+                    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", flexShrink:0 }}>
+                      <div style={{
+                        width:10, height:10, borderRadius:"50%", flexShrink:0,
+                        background: i===0?"var(--accent)":"var(--border)",
+                        border: i===0?"2px solid var(--accent)":"2px solid var(--text4)",
+                        marginTop:3,
+                      }}/>
+                      {i < arr.length-1 && (
+                        <div style={{ width:1, flex:1, background:"var(--border)", marginTop:4 }}/>
+                      )}
+                    </div>
+                    <div style={{ paddingBottom:i===arr.length-1?0:4 }}>
+                      <div style={{ display:"flex", alignItems:"baseline", gap:8, marginBottom:2 }}>
+                        <span style={{ fontWeight:700, fontSize:12, color:i===0?"var(--accent)":"var(--text2)" }}>{item.v}</span>
+                        <span style={{ fontSize:10, color:"var(--text4)" }}>{item.date}</span>
+                        <span style={{ fontSize:12, fontWeight:600, color:"var(--text)" }}>{item.title}</span>
+                      </div>
+                      <p style={{ margin:0, fontSize:11, color:"var(--text3)", lineHeight:1.5 }}>{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
             </div>
           )}
         </div>
