@@ -808,13 +808,10 @@ function ScheduleTab({ lang }) {
   const GC_MAP = {};
   Object.keys(GROUPS_RAW).forEach((g, i) => { GC_MAP[g] = GC[i]; });
 
-  // دالة لحساب الوقت المتبقي المرتبط كلياً بـ وقت آخر تحديث ناجح
   const getStaticCountdown = (matchDate, matchTime) => {
-    if (!window.__lastApiSuccessTime) return null;
     const matchDT = toLocalDT(matchDate, matchTime);
-    const diffMs = matchDT - window.__lastApiSuccessTime;
+    const diffMs = matchDT - new Date();
     if (diffMs <= 0) return null;
-    
     const diffMins = Math.floor(diffMs / 60000);
     const hours = Math.floor(diffMins / 60);
     const mins = diffMins % 60;
@@ -825,8 +822,13 @@ function ScheduleTab({ lang }) {
     <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", flexDirection: "column", gap: 14 }}>
       {sortedList.map((m, i) => {
         const color = GC_MAP[m.groupKey];
-        const isLive = m.status === "LIVE" || m.status === "IN_PLAY";
-        const isFinished = m.status === "FINISHED" || (!isLive && m.hg !== null && m.ag !== null);
+        const now = new Date();
+        const matchDT = toLocalDT(m.date, m.time);
+        const matchEndDT = new Date(matchDT.getTime() + 3 * 60 * 60 * 1000); // +3 ساعات
+        const isLive = m.status === "IN_PLAY" || m.status === "LIVE" ||
+          (!m.status && now >= matchDT && now < matchEndDT);
+        const isFinished = m.status === "FINISHED" || m.hg !== null ||
+          (!m.status && now >= matchEndDT);
         const isFeatured = i === 0; // المباراة الأولى في القائمة تظهر بشكل متميز دوماً
 
         const homeWin = isFinished && m.hg > m.ag;
