@@ -39,9 +39,11 @@ const T = {
     dir: "rtl",
     title: "كأس العالم 2026",
     subtitle: "كندا · المكسيك · الولايات المتحدة · 11 يونيو – 19 يوليو",
-    tabGroups: "دور المجموعات",
+    tabGroups: "⚽",
+    tabGroupsSub: "دور المجموعات",
     tabKnockout: "مرحلة الإقصاءات",
-    tabAbout: "حول",
+    tabFacts: "💡",
+    tabAbout: "ⓘ",
     group: "المجموعة",
     team: "المنتخب",
     lost: "خ", drawn: "ت", won: "ف", pts: "نق", gd: "لـ/عليه", played: "ل",
@@ -60,6 +62,7 @@ const T = {
     cvBtn: "🔍 استعرض السيرة الذاتية للمطور ←",
     changelogTitle: "سجل التغييرات",
     changelog: [
+      { v:"v3.0", date:"17 يونيو 2026", title:"Tournament Hub", desc:"دمج تاب المجموعات والإقصاءات في تاب واحد مع sub-navigation. إضافة تاب المعلومات بأرقام قياسية وحقائق من كأس العالم." },
       { v:"v2.2", date:"16 يونيو 2026", title:"تحديث تلقائي",        desc:"نتائج مباشرة عبر API رسمي من خلال Cloudflare Worker. تحديث كل دقيقة تلقائياً." },
       { v:"v2.1", date:"15 يونيو 2026", title:"توقيت ذكي",           desc:"الأوقات تتحول تلقائياً لتوقيت المستخدم أياً كان موقعه." },
       { v:"v2.0", date:"14 يونيو 2026", title:"جدول المباريات",       desc:"تاب جديد بكل المباريات بالتسلسل الزمني — مباشر، قادم، منتهي." },
@@ -108,9 +111,11 @@ const T = {
     dir: "ltr",
     title: "FIFA World Cup 2026",
     subtitle: "Canada · Mexico · United States · June 11 – July 19",
-    tabGroups: "Group Stage",
+    tabGroups: "⚽",
+    tabGroupsSub: "Group Stage",
     tabKnockout: "Knockout Stage",
-    tabAbout: "About",
+    tabFacts: "💡",
+    tabAbout: "ⓘ",
     group: "Group",
     team: "Team",
     lost: "L", drawn: "D", won: "W", pts: "Pts", gd: "GD", played: "P",
@@ -129,6 +134,7 @@ const T = {
     cvBtn: "🔍 View Developer's Portfolio & CV →",
     changelogTitle: "Changelog",
     changelog: [
+      { v:"v3.0", date:"17 Jun 2026", title:"Tournament Hub", desc:"Merged groups & knockout into one tab with sub-navigation. Added Fun Facts tab with live World Cup records and milestones." },
       { v:"v2.2", date:"16 Jun 2026", title:"Auto-Updates",          desc:"Live results via official API through Cloudflare Worker. Updates every minute automatically." },
       { v:"v2.1", date:"15 Jun 2026", title:"Smart Timezone",        desc:"All times auto-convert to the user's local timezone, wherever they are." },
       { v:"v2.0", date:"14 Jun 2026", title:"Schedule Tab",          desc:"New tab with all matches in chronological order — live, upcoming, then finished." },
@@ -177,9 +183,11 @@ const T = {
     dir: "ltr",
     title: "FIFA Dünya Kupası 2026",
     subtitle: "Kanada · Meksika · Amerika Birleşik Devletleri · 11 Haziran – 19 Temmuz",
-    tabGroups: "Grup Aşaması",
+    tabGroups: "⚽",
+    tabGroupsSub: "Grup Aşaması",
     tabKnockout: "Eleme Aşaması",
-    tabAbout: "Hakkında",
+    tabFacts: "💡",
+    tabAbout: "ⓘ",
     group: "Grup",
     team: "Takım",
     lost: "M", drawn: "B", won: "G", pts: "Puan", gd: "A:Y", played: "O",
@@ -383,7 +391,7 @@ window.GROUPS_RAW = {
 const FLAGS = {
   "Mexico":"🇲🇽","South Africa":"🇿🇦","Korea Republic":"🇰🇷","Czechia":"🇨🇿",
   "Canada":"🇨🇦","Bosnia and Herzegovina":"🇧🇦","Qatar":"🇶🇦","Switzerland":"🇨🇭",
-  "Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳كوِتلندِا",
+  "Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
   "USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Türkiye":"🇹🇷",
   "Germany":"🇩🇪","Curaçao":"🇨🇼","Côte d'Ivoire":"🇨🇮","Ecuador":"🇪🇨",
   "Netherlands":"🇳🇱","Japan":"🇯🇵","Sweden":"🇸🇪","Tunisia":"🇹🇳",
@@ -1059,10 +1067,94 @@ function LastUpdatedTimestamp({ lang }) {
   );
 }
 
+const FACTS = [
+  {
+    ar: "كوراساو — بعدد سكان 150,000 — أصغر دولة تسجل هدفاً في تاريخ كأس العالم، وذلك في خسارتهم 1–7 أمام ألمانيا.",
+    en: "Curaçao — population 150,000 — became the smallest nation ever to score at a World Cup, despite losing 7–1 to Germany.",
+    tr: "Curaçao — 150.000 nüfusuyla — Almanya'ya 1-7 kaybetmesine rağmen Dünya Kupası tarihinde gol atan en küçük ülke oldu."
+  },
+  {
+    ar: "مدرب كوراساو Dick Advocaat (78 سنة) أصبح أكبر مدرب في تاريخ كأس العالم.",
+    en: "Curaçao coach Dick Advocaat (age 78) became the oldest manager in World Cup history.",
+    tr: "Curaçao teknik direktörü Dick Advocaat (78 yaşında) Dünya Kupası tarihinin en yaşlı teknik direktörü oldu."
+  },
+  {
+    ar: "ميسي سجل أول هاتريك في مسيرته بكأس العالم (38 سنة) ضد الجزائر — أكبر لاعب يسجل ثلاثية في تاريخ البطولة.",
+    en: "Messi scored his first-ever World Cup hat-trick (age 38) vs Algeria — the oldest player to score a treble in World Cup history.",
+    tr: "Messi, Cezayir'e karşı kariyer ilk Dünya Kupası hat-trick'ini attı (38 yaşında) — turnuva tarihinin en yaşlı hat-trick gol atıcısı."
+  },
+  {
+    ar: "مبابي تجاوز رقم Just Fontaine (13 هدف) وأصبح أكثر هداف في تاريخ فرنسا بكأس العالم.",
+    en: "Mbappé surpassed Just Fontaine's record (13 goals) to become France's all-time top scorer at the World Cup.",
+    tr: "Mbappé, Just Fontaine'nin rekorunu (13 gol) geçerek Fransa'nın Dünya Kupası tarihinin en golcü oyuncusu oldu."
+  },
+  {
+    ar: "هالاند سجل هدفين في أول ظهور لنرويج بكأس العالم منذ 1998 — أول لاعب نرويجي يسجل ضربة مزدوجة في البطولة.",
+    en: "Haaland scored a brace in Norway's first World Cup appearance since 1998 — the first Norwegian to ever score twice in a World Cup match.",
+    tr: "Haaland, Norveç'in 1998'den bu yana ilk Dünya Kupası maçında çift gol attı — turnuvada çift gol atan ilk Norveçli."
+  },
+  {
+    ar: "كندا حصلت على أول نقطة في تاريخها بكأس العالم بعد التعادل 1–1 مع البوسنة.",
+    en: "Canada earned their first-ever World Cup point after drawing 1–1 with Bosnia and Herzegovina.",
+    tr: "Kanada, Bosna Hersek ile 1–1 berabere kalarak Dünya Kupası tarihinde ilk puanını kazandı."
+  },
+  {
+    ar: "Craig Gordon (43 سنة) حارس اسكتلندا هو أكبر لاعب في البطولة.",
+    en: "Scotland's Craig Gordon (43) is the oldest player at this tournament.",
+    tr: "İskoçya kalecisi Craig Gordon (43 yaşında) turnuvanın en yaşlı oyuncusu."
+  },
+  {
+    ar: "المكسيك أول دولة تستضيف كأس العالم 3 مرات (1970، 1986، 2026)، وحارسها أوتشوا في كأسه السادس (40 سنة).",
+    en: "Mexico became the first country to host the World Cup three times (1970, 1986, 2026). Goalkeeper Ochoa (40) is in his sixth World Cup.",
+    tr: "Meksika, Dünya Kupası'na üç kez ev sahipliği yapan ilk ülke oldu (1970, 1986, 2026). Kaleci Ochoa (40) altıncı Dünya Kupası'nda."
+  },
+  {
+    ar: "البرازيل المنتخب الوحيد الذي شارك في جميع نسخ كأس العالم منذ 1930 حتى 2026 — 22 نسخة متتالية.",
+    en: "Brazil is the only nation to have participated in every single World Cup from 1930 to 2026 — 22 consecutive editions.",
+    tr: "Brezilya, 1930'dan 2026'ya kadar her Dünya Kupası'na katılan tek ülke — 22 arka arkaya turnuva."
+  },
+  {
+    ar: "2026 هو أول كأس عالم تشارك فيه 48 منتخباً في 104 مباراة عبر 3 دول مضيفة: أمريكا، كندا، والمكسيك.",
+    en: "2026 is the first World Cup with 48 teams, 104 matches, and 3 host nations: USA, Canada, and Mexico.",
+    tr: "2026, 48 takım, 104 maç ve 3 ev sahibi ülkeyle (ABD, Kanada, Meksika) ilk Dünya Kupası."
+  },
+];
+
+
+function FunFactsTab({ lang }) {
+  const isRtl = lang === "ar";
+  return (
+    <div style={{ maxWidth:720, margin:"0 auto" }}>
+      {FACTS.map((f, i) => (
+        <div key={i} style={{
+          display:"flex", gap:14, padding:"14px 16px",
+          borderBottom:"1px solid var(--border2)",
+          background:"var(--surface)",
+          alignItems:"flex-start",
+          direction: isRtl ? "rtl" : "ltr",
+        }}>
+          <div style={{
+            flexShrink:0, width:28, height:28, borderRadius:"50%",
+            background:"var(--accent)" + "22",
+            border:"1px solid var(--accent)" + "44",
+            display:"flex", alignItems:"center", justifyContent:"center",
+            fontSize:13,
+          }}>💡</div>
+          <p style={{ margin:0, fontSize:13, color:"var(--text2)", lineHeight:1.6 }}>
+            {f[lang]}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+
 function App() {
   const [tab, setTab] = useState("schedule"); // الأساسي والافتراضي الآن هو جدول المباريات (Home)
   const [lang, setLang] = useState("en"); // لغة البداية الافتراضية
   const [tick, setTick] = useState(0);
+  const [subTab, setSubTab] = useState("groups");
   
   useEffect(() => {
     window.__forceUpdate = () => setTick(t => t + 1);
@@ -1109,35 +1201,51 @@ function App() {
             fontSize:16, transition:"all .2s"
           }}>🏠</button>
           
-          {[["groups",t.tabGroups],["knockout",t.tabKnockout],["about",t.tabAbout]].map(([k,l])=>(
+          {[["tournament",t.tabGroups],["facts",t.tabFacts],["about",t.tabAbout]].map(([k,l])=>(
             <button key={k} onClick={()=>setTab(k)} style={{
               padding:"12px 20px", border:"none", background:"none", cursor:"pointer",
               color:tab===k?"var(--accent)":"var(--text3)",
               borderBottom:tab===k?"2px solid var(--accent)":"2px solid transparent",
-              fontFamily:"inherit", fontSize:13, fontWeight:tab===k?600:400, transition:"all .2s"
+              fontFamily:"inherit", fontSize:tab===k?18:16, fontWeight:tab===k?600:400, transition:"all .2s"
             }}>{l}</button>
           ))}
         </div>
 
-        <div style={{ padding:"20px 16px", maxWidth:tab==="knockout"?1700:(tab==="schedule"?760:1100), margin:"0 auto" }}>
-          {tab==="groups" && (
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))", gap:16 }}>
-              {Object.keys(GROUPS_RAW).map((g,gi)=>(
-                <GroupCard key={g} groupKey={g} color={GC[gi]} lang={lang}/>
-              ))}
-            </div>
-          )}
-          {tab==="knockout" && (
+        <div style={{ padding:"20px 16px", maxWidth:(tab==="tournament"&&subTab==="knockout")?1700:(tab==="schedule"?760:1100), margin:"0 auto" }}>
+          {tab==="tournament" && (
             <div>
-              <div style={{ fontSize:11, color:"var(--text3)", marginBottom:14, textAlign:"center" }}>{t.knockoutNote}</div>
-              <SymmetricBracket lang={lang}/>
-              <div style={{ marginTop:20, padding:"10px 16px", background:"var(--ko-footer)", borderRadius:8,
-                border:"1px solid var(--border)", fontSize:11, color:"var(--text3)", textAlign:"center" }}>
-                {t.koFooter}
+              {/* Sub-tabs */}
+              <div style={{ display:"flex", gap:8, marginBottom:20, borderBottom:"1px solid var(--border2)", paddingBottom:0 }}>
+                {[["groups", t.tabGroupsSub],["knockout", t.tabKnockout]].map(([k,l])=>(
+                  <button key={k} onClick={()=>setSubTab(k)} style={{
+                    padding:"8px 16px", border:"none", background:"none", cursor:"pointer",
+                    color:subTab===k?"var(--accent)":"var(--text3)",
+                    borderBottom:subTab===k?"2px solid var(--accent)":"2px solid transparent",
+                    fontFamily:"inherit", fontSize:12, fontWeight:subTab===k?600:400, transition:"all .2s"
+                  }}>{l}</button>
+                ))}
               </div>
+              {subTab==="groups" && (
+                <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))", gap:16 }}>
+                  {Object.keys(GROUPS_RAW).map((g,gi)=>(
+                    <GroupCard key={g} groupKey={g} color={GC[gi]} lang={lang}/>
+                  ))}
+                </div>
+              )}
+              {subTab==="knockout" && (
+                <div>
+                  <div style={{ fontSize:11, color:"var(--text3)", marginBottom:14, textAlign:"center" }}>{t.knockoutNote}</div>
+                  <SymmetricBracket lang={lang}/>
+                  <div style={{ marginTop:20, padding:"10px 16px", background:"var(--ko-footer)", borderRadius:8,
+                    border:"1px solid var(--border)", fontSize:11, color:"var(--text3)", textAlign:"center" }}>
+                    {t.koFooter}
+                  </div>
+                </div>
+              )}
             </div>
           )}
           {tab==="schedule" && <ScheduleTab lang={lang}/>}
+          {tab==="facts" && <FunFactsTab lang={lang}/>}
           {tab==="about" && (
             <div style={{ maxWidth:640, margin:"0 auto", background:"var(--surface)", border:"1px solid var(--border)",
               borderRadius:10, padding:"28px 24px", color:"var(--text)", textAlign:"center" }}>
