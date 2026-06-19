@@ -1416,9 +1416,7 @@ let autoUpdateInterval = null;
 
 async function fetchResults() {
   try {
-    const res = await fetch(API_URL, {
-      headers: { "X-Auth-Token": API_TOKEN }
-    });
+    const res = await fetch(API_URL);
     const data = await res.json();
 
     if (!data.matches) return;
