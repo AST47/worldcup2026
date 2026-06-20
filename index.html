@@ -810,9 +810,6 @@ const CSS_VARS = `
     50% { opacity: 0.85; }
     100% { opacity: 0.3; }
   }
-  .live-progress-bar-fill {
-    animation: slow-pulse 3s infinite ease-in-out;
-  }
 `;
 
 function ScheduleTab({ lang }) {
@@ -899,7 +896,7 @@ function ScheduleTab({ lang }) {
             style={{
               borderRadius: 10, 
               overflow: "hidden", 
-              border: isLive ? "2px solid var(--live-pulse)" : (isFeatured && color ? `1px dashed ${color}` : "1px solid var(--border)"),
+              border: isLive ? `2px solid ${color}` : (isFeatured && color ? `1px dashed ${color}` : "1px solid var(--border)"),
               boxShadow: isLive ? "0 4px 16px rgba(16, 185, 129, 0.12)" : "none",
               background: "var(--surface)",
               opacity: isFinished ? 0.68 : 1,
@@ -907,20 +904,7 @@ function ScheduleTab({ lang }) {
               transition: "all 0.3s ease"
             }}
           >
-            {/* شريط التقدم النبضي للمباراة الـ Live */}
-            {isLive && (
-              <div style={{ width: "100%", height: "4px", background: "var(--border2)", position: "relative" }}>
-                <div 
-                  className="live-progress-bar-fill"
-                  style={{ 
-                    position: "absolute", 
-                    top: 0, left: 0, bottom: 0, 
-                    width: `${Math.min(100, Math.max(5, ((m.minute || 45) / 90) * 100))}%`, 
-                    background: "var(--live-pulse)" 
-                  }} 
-                />
-              </div>
-            )}
+
 
             <div style={{ padding: isFeatured ? "16px" : "12px 14px" }}>
               {/* السطر العلوي للمعلومات */}
@@ -939,12 +923,7 @@ function ScheduleTab({ lang }) {
 
                 {/* شارات الحالة والعداد المرتبط بالتحديث */}
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  {isLive && (
-                    <span style={{ 
-                      background: "var(--live-pulse)", color: "#fff", 
-                      fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 4 
-                    }}>{t.live}</span>
-                  )}
+
                   {!isLive && !isFinished && isFeatured && (
                     <span style={{ 
                       background: "var(--bg2)", color: "var(--text3)", 
@@ -1000,19 +979,7 @@ function ScheduleTab({ lang }) {
                     </span>
                   )}
                   
-                  {/* دقائق المباراة Live + منطقة التوسيعات المستقبلية */}
-                  {isLive && (
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 4 }}>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: "var(--live-pulse)" }}>
-                        {m.minute || 0}'
-                      </span>
-                      {m.injuryTime && (
-                        <span style={{ fontSize: 10, fontWeight: 600, color: "var(--text3)" }}>
-                          +{m.injuryTime}
-                        </span>
-                      )}
-                    </div>
-                  )}
+
                 </div>
 
                 <div style={{
