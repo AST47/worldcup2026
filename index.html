@@ -44,6 +44,7 @@ const T = {
     tabKnockout: "مرحلة الإقصاءات",
     tabFacts: "💡",
     tabGoals: "🥅",
+    tabStats: "📊",
     tabAbout: "ⓘ",
     team: "المنتخب",
     lost: "خ", drawn: "ت", won: "ف", pts: "نق", gd: "لـ/عليه", played: "ل",
@@ -117,6 +118,7 @@ const T = {
     tabKnockout: "Knockout Stage",
     tabFacts: "💡",
     tabGoals: "🥅",
+    tabStats: "📊",
     tabAbout: "ⓘ",
     group: "Group",
     team: "Team",
@@ -191,6 +193,7 @@ const T = {
     tabKnockout: "Eleme Aşaması",
     tabFacts: "💡",
     tabGoals: "🥅",
+    tabStats: "📊",
     tabAbout: "ⓘ",
     group: "Grup",
     team: "Takım",
@@ -1211,6 +1214,260 @@ function FunFactsTab({ lang }) {
 }
 
 
+
+function StatsTab({ lang }) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const isRtl = lang === "ar";
+
+  const L = {
+    ar: {
+      loading: "جارٍ التحميل...",
+      totalGoals: "إجمالي أهداف البطولة",
+      avgGoals: "متوسط الأهداف لكل مباراة",
+      penGoals: "أهداف من ركلات الجزاء",
+      ogGoals: "أهداف مرمى",
+      zeroZero: "مباريات انتهت بدون أهداف",
+      topScorer: "هداف البطولة",
+      topAttack: "أكثر فريق تسجيلاً",
+      bestDefense: "أفضل دفاع",
+      fastestGoal: "أسرع هدف",
+      latestGoal: "أبطأ هدف",
+      topMatch: "أكثر المباريات أهدافاً",
+      goals: "هدف",
+      min: "د",
+      vs: "ضد",
+      conceded: "هدف مستقبل",
+    },
+    en: {
+      loading: "Loading...",
+      totalGoals: "Total Goals",
+      avgGoals: "Avg Goals per Match",
+      penGoals: "Penalty Goals",
+      ogGoals: "Own Goals",
+      zeroZero: "Goalless Matches",
+      topScorer: "Top Scorer",
+      topAttack: "Best Attack",
+      bestDefense: "Best Defense",
+      fastestGoal: "Fastest Goal",
+      latestGoal: "Latest Goal",
+      topMatch: "Highest Scoring Match",
+      goals: "goals",
+      min: "'",
+      vs: "vs",
+      conceded: "conceded",
+    },
+    tr: {
+      loading: "Yükleniyor...",
+      totalGoals: "Toplam Gol",
+      avgGoals: "Maç Başına Ortalama Gol",
+      penGoals: "Penaltı Golleri",
+      ogGoals: "Kendi Kalesine Goller",
+      zeroZero: "Golsüz Maçlar",
+      topScorer: "Gol Krallığı",
+      topAttack: "En İyi Hücum",
+      bestDefense: "En İyi Savunma",
+      fastestGoal: "En Erken Gol",
+      latestGoal: "En Geç Gol",
+      topMatch: "En Golcü Maç",
+      goals: "gol",
+      min: "'",
+      vs: "vs",
+      conceded: "yenilen",
+    },
+  }[lang];
+
+  useEffect(() => {
+    fetch("https://nameless-bird-6db7.salehzuh.workers.dev/")
+      .then(r => r.json())
+      .then(json => {
+        const matches = (json.matches || []).filter(m => m.score);
+
+        let totalGoals = 0, penGoals = 0, ogGoals = 0, zeroZero = 0;
+        const teamScored = {}, teamConceded = {}, playerGoals = {};
+        let fastestGoal = null, latestGoal = null, topMatch = null;
+
+        const parseMin = (str) => {
+          if (!str) return 0;
+          const m = str.match(/(\d+)(?:\+(\d+))?/);
+          if (!m) return 0;
+          return parseInt(m[1]) + (m[2] ? parseInt(m[2]) : 0);
+        };
+
+        matches.forEach(m => {
+          const t1 = normalizeTeam(m.team1);
+          const t2 = normalizeTeam(m.team2);
+          const g1 = m.score.ft[0], g2 = m.score.ft[1];
+          const matchTotal = g1 + g2;
+
+          totalGoals += matchTotal;
+          if (matchTotal === 0) zeroZero++;
+
+          if (!teamScored[t1]) teamScored[t1] = 0;
+          if (!teamScored[t2]) teamScored[t2] = 0;
+          if (!teamConceded[t1]) teamConceded[t1] = 0;
+          if (!teamConceded[t2]) teamConceded[t2] = 0;
+          teamScored[t1] += g1;
+          teamScored[t2] += g2;
+          teamConceded[t1] += g2;
+          teamConceded[t2] += g1;
+
+          if (!topMatch || matchTotal > topMatch.total) {
+            topMatch = { total: matchTotal, t1, t2, g1, g2, date: m.date };
+          }
+
+          const allGoals = [
+            ...(m.goals1 || []).map(g => ({ ...g, scoringTeam: t1, opponent: t2 })),
+            ...(m.goals2 || []).map(g => ({ ...g, scoringTeam: t2, opponent: t1 })),
+          ];
+
+          allGoals.forEach(g => {
+            if (g.penalty) penGoals++;
+            if (g.owngoal) { ogGoals++; return; }
+
+            const min = parseMin(g.minute);
+            if (!fastestGoal || min < fastestGoal.min) {
+              fastestGoal = { min, name: g.name, scoringTeam: g.scoringTeam, opponent: g.opponent, minute: g.minute };
+            }
+            if (!latestGoal || min > latestGoal.min) {
+              latestGoal = { min, name: g.name, scoringTeam: g.scoringTeam, opponent: g.opponent, minute: g.minute };
+            }
+
+            if (!playerGoals[g.name]) playerGoals[g.name] = 0;
+            playerGoals[g.name]++;
+          });
+        });
+
+        const finishedMatches = matches.length;
+        const avgGoals = finishedMatches > 0 ? (totalGoals / finishedMatches).toFixed(2) : 0;
+
+        const topScorerName = Object.entries(playerGoals).sort((a,b) => b[1]-a[1])[0];
+        const topAttackTeam = Object.entries(teamScored).sort((a,b) => b[1]-a[1])[0];
+        const bestDefenseTeam = Object.entries(teamConceded).sort((a,b) => a[1]-b[1])[0];
+
+        // top 3 for ranked stats
+        const topScorers = Object.entries(playerGoals).sort((a,b) => b[1]-a[1]).slice(0,3);
+        const topAttacks = Object.entries(teamScored).sort((a,b) => b[1]-a[1]).slice(0,3);
+        const bestDefenses = Object.entries(teamConceded).sort((a,b) => a[1]-b[1]).slice(0,3);
+
+        setData({ totalGoals, avgGoals, penGoals, ogGoals, zeroZero,
+          topScorers, topAttacks, bestDefenses,
+          fastestGoal, latestGoal, topMatch });
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  if (loading) return <div style={{ textAlign:"center", padding:40, color:"var(--text3)", fontSize:13 }}>{L.loading}</div>;
+  if (!data) return null;
+
+  const medals = ["🥇","🥈","🥉"];
+
+  const StatCard = ({ label, value, sub }) => (
+    <div style={{
+      background:"var(--surface)", border:"1px solid var(--border)", borderRadius:10,
+      padding:"14px 18px", marginBottom:10,
+      display:"flex", justifyContent:"space-between", alignItems:"center"
+    }}>
+      <span style={{ fontSize:13, color:"var(--text2)" }}>{label}</span>
+      <div style={{ textAlign: isRtl ? "left" : "right" }}>
+        <span style={{ fontSize:18, fontWeight:700, color:"var(--accent)" }}>{value}</span>
+        {sub && <div style={{ fontSize:11, color:"var(--text3)" }}>{sub}</div>}
+      </div>
+    </div>
+  );
+
+  const RankedStat = ({ label, entries, renderEntry }) => (
+    <div style={{ background:"var(--surface)", border:"1px solid var(--border)", borderRadius:10, marginBottom:10, overflow:"hidden" }}>
+      <div style={{ padding:"10px 18px", borderBottom:"1px solid var(--border2)", fontSize:13, fontWeight:600, color:"var(--text2)" }}>{label}</div>
+      {entries.map(([key, val], i) => (
+        <div key={key} style={{
+          display:"flex", alignItems:"center", justifyContent:"space-between",
+          padding:"10px 18px", borderBottom: i < entries.length-1 ? "1px solid var(--border2)" : "none"
+        }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+            <span style={{ fontSize:18 }}>{medals[i]}</span>
+            <span style={{ fontSize:13, color:"var(--text)" }}>{renderEntry ? renderEntry(key) : key}</span>
+          </div>
+          <span style={{ fontSize:15, fontWeight:700, color:"var(--accent)" }}>{val}</span>
+        </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <div style={{ maxWidth:680, margin:"0 auto" }} dir={isRtl ? "rtl" : "ltr"}>
+      <StatCard label={L.totalGoals} value={data.totalGoals} />
+      <StatCard label={L.avgGoals} value={data.avgGoals} />
+      <StatCard label={L.penGoals} value={data.penGoals} />
+      <StatCard label={L.ogGoals} value={data.ogGoals} />
+      <StatCard label={L.zeroZero} value={data.zeroZero} />
+
+      <RankedStat
+        label={L.topScorer}
+        entries={data.topScorers}
+        renderEntry={name => {
+          const pNames = window._pn || {};
+          return (pNames[name] && pNames[name][lang]) || name;
+        }}
+      />
+
+      <RankedStat
+        label={L.topAttack}
+        entries={data.topAttacks}
+        renderEntry={key => `${FLAGS[key]||"🏳️"} ${tn(lang, key)}`}
+      />
+
+      <RankedStat
+        label={L.bestDefense}
+        entries={data.bestDefenses}
+        renderEntry={key => `${FLAGS[key]||"🏳️"} ${tn(lang, key)}`}
+      />
+
+      {data.fastestGoal && (
+        <div style={{ background:"var(--surface)", border:"1px solid var(--border)", borderRadius:10, marginBottom:10, overflow:"hidden" }}>
+          <div style={{ padding:"10px 18px", borderBottom:"1px solid var(--border2)", fontSize:13, fontWeight:600, color:"var(--text2)" }}>{L.fastestGoal}</div>
+          <div style={{ padding:"12px 18px", display:"flex", alignItems:"center", gap:12 }}>
+            <span style={{ fontSize:22 }}>🥇</span>
+            <div>
+              <div style={{ fontSize:13, color:"var(--text)", fontWeight:600 }}>{data.fastestGoal.name}</div>
+              <div style={{ fontSize:11, color:"var(--text3)" }}>{data.fastestGoal.minute}{L.min} · {FLAGS[data.fastestGoal.scoringTeam]||""} {tn(lang, data.fastestGoal.scoringTeam)} {L.vs} {FLAGS[data.fastestGoal.opponent]||""} {tn(lang, data.fastestGoal.opponent)}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {data.latestGoal && (
+        <div style={{ background:"var(--surface)", border:"1px solid var(--border)", borderRadius:10, marginBottom:10, overflow:"hidden" }}>
+          <div style={{ padding:"10px 18px", borderBottom:"1px solid var(--border2)", fontSize:13, fontWeight:600, color:"var(--text2)" }}>{L.latestGoal}</div>
+          <div style={{ padding:"12px 18px", display:"flex", alignItems:"center", gap:12 }}>
+            <span style={{ fontSize:22 }}>🥇</span>
+            <div>
+              <div style={{ fontSize:13, color:"var(--text)", fontWeight:600 }}>{data.latestGoal.name}</div>
+              <div style={{ fontSize:11, color:"var(--text3)" }}>{data.latestGoal.minute}{L.min} · {FLAGS[data.latestGoal.scoringTeam]||""} {tn(lang, data.latestGoal.scoringTeam)} {L.vs} {FLAGS[data.latestGoal.opponent]||""} {tn(lang, data.latestGoal.opponent)}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {data.topMatch && (
+        <div style={{ background:"var(--surface)", border:"1px solid var(--border)", borderRadius:10, marginBottom:10, overflow:"hidden" }}>
+          <div style={{ padding:"10px 18px", borderBottom:"1px solid var(--border2)", fontSize:13, fontWeight:600, color:"var(--text2)" }}>{L.topMatch}</div>
+          <div style={{ padding:"12px 18px", display:"flex", alignItems:"center", gap:12 }}>
+            <span style={{ fontSize:22 }}>🥇</span>
+            <div>
+              <div style={{ fontSize:13, color:"var(--text)", fontWeight:600 }}>
+                {FLAGS[data.topMatch.t1]||""} {tn(lang, data.topMatch.t1)} {data.topMatch.g1}–{data.topMatch.g2} {FLAGS[data.topMatch.t2]||""} {tn(lang, data.topMatch.t2)}
+              </div>
+              <div style={{ fontSize:11, color:"var(--text3)" }}>{data.topMatch.total} {L.goals}</div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const GOALS_WORKER_URL = "https://nameless-bird-6db7.salehzuh.workers.dev/";
 
 // اسم الفريق في openfootball → مفتاح الفريق عندنا
@@ -1468,7 +1725,7 @@ function App() {
             fontSize:16, transition:"all .2s"
           }}>🏠</button>
           
-          {[["tournament",t.tabGroups],["goals",t.tabGoals],["facts",t.tabFacts],["about",t.tabAbout]].map(([k,l])=>(
+          {[["tournament",t.tabGroups],["goals",t.tabGoals],["stats",t.tabStats],["facts",t.tabFacts],["about",t.tabAbout]].map(([k,l])=>(
             <button key={k} onClick={()=>setTab(k)} style={{
               padding:"12px 20px", border:"none", background:"none", cursor:"pointer",
               color:tab===k?"var(--accent)":"var(--text3)",
@@ -1513,6 +1770,7 @@ function App() {
           )}
           {tab==="schedule" && <ScheduleTab lang={lang}/>}
           {tab==="goals" && <GoalsTab lang={lang}/>}
+          {tab==="stats" && <StatsTab lang={lang}/>}
           {tab==="facts" && <FunFactsTab lang={lang}/>}
           {tab==="about" && (
             <div style={{ maxWidth:640, margin:"0 auto", background:"var(--surface)", border:"1px solid var(--border)",
