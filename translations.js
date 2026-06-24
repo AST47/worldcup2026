@@ -30,7 +30,6 @@ const PLAYER_NAMES = {
   "Nedim Bajrami":         { ar: "نيديم بايرامي",         tr: "Nedim Bajrami" },
   "Ivan Schranz":          { ar: "إيفان سشرانز",          tr: "Ivan Schranz" },
   "Ondrej Duda":           { ar: "أوندريي دودا",          tr: "Ondrej Duda" },
-  "Harry Kane":            { ar: "هاري كين",              tr: "Harry Kane" },
   "Luka Jović":            { ar: "لوكا يوفيتش",           tr: "Luka Jović" },
   "Georges Mikautadze":    { ar: "جورج ميكاوتادزي",       tr: "Georges Mikautadze" },
   "Khvicha Kvaratskhelia": { ar: "خفيتشا كفاراتسخيليا",   tr: "Khvicha Kvaratskhelia" },
