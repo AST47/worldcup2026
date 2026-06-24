@@ -810,6 +810,9 @@ const CSS_VARS = `
     50% { opacity: 0.85; }
     100% { opacity: 0.3; }
   }
+  .live-progress-bar-fill {
+    animation: slow-pulse 3s infinite ease-in-out;
+  }
 `;
 
 function ScheduleTab({ lang }) {
@@ -896,7 +899,7 @@ function ScheduleTab({ lang }) {
             style={{
               borderRadius: 10, 
               overflow: "hidden", 
-              border: isLive ? `2px solid ${color}` : (isFeatured && color ? `1px dashed ${color}` : "1px solid var(--border)"),
+              border: isLive ? "2px solid var(--live-pulse)" : (isFeatured && color ? `1px dashed ${color}` : "1px solid var(--border)"),
               boxShadow: isLive ? "0 4px 16px rgba(16, 185, 129, 0.12)" : "none",
               background: "var(--surface)",
               opacity: isFinished ? 0.68 : 1,
@@ -904,7 +907,20 @@ function ScheduleTab({ lang }) {
               transition: "all 0.3s ease"
             }}
           >
-
+            {/* شريط التقدم النبضي للمباراة الـ Live */}
+            {isLive && (
+              <div style={{ width: "100%", height: "4px", background: "var(--border2)", position: "relative" }}>
+                <div 
+                  className="live-progress-bar-fill"
+                  style={{ 
+                    position: "absolute", 
+                    top: 0, left: 0, bottom: 0, 
+                    width: `${Math.min(100, Math.max(5, ((m.minute || 45) / 90) * 100))}%`, 
+                    background: "var(--live-pulse)" 
+                  }} 
+                />
+              </div>
+            )}
 
             <div style={{ padding: isFeatured ? "16px" : "12px 14px" }}>
               {/* السطر العلوي للمعلومات */}
@@ -923,7 +939,12 @@ function ScheduleTab({ lang }) {
 
                 {/* شارات الحالة والعداد المرتبط بالتحديث */}
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-
+                  {isLive && (
+                    <span style={{ 
+                      background: "var(--live-pulse)", color: "#fff", 
+                      fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 4 
+                    }}>{t.live}</span>
+                  )}
                   {!isLive && !isFinished && isFeatured && (
                     <span style={{ 
                       background: "var(--bg2)", color: "var(--text3)", 
@@ -979,7 +1000,19 @@ function ScheduleTab({ lang }) {
                     </span>
                   )}
                   
-
+                  {/* دقائق المباراة Live + منطقة التوسيعات المستقبلية */}
+                  {isLive && (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 4 }}>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: "var(--live-pulse)" }}>
+                        {m.minute || 0}'
+                      </span>
+                      {m.injuryTime && (
+                        <span style={{ fontSize: 10, fontWeight: 600, color: "var(--text3)" }}>
+                          +{m.injuryTime}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div style={{
@@ -1040,6 +1073,66 @@ function LastUpdatedTimestamp({ lang }) {
 
 const FACTS = [
   {
+    ar: "رونالدو أول لاعب في تاريخ كأس العالم يسجل في 6 نسخ مختلفة — حقق الرقم في الدقيقة الخامسة أمام أوزبكستان (23 يونيو).",
+    en: "Ronaldo became the first player in World Cup history to score in 6 different editions — he achieved the record in the 5th minute against Uzbekistan (June 23).",
+    tr: "Ronaldo, Dünya Kupası tarihinde 6 farklı turnuvada gol atan ilk oyuncu oldu — rekoru Özbekistan'a karşı 5. dakikada kırdı (23 Haziran)."
+  },
+  {
+    ar: "ميسي أصبح أكثر هداف في تاريخ كأس العالم رجالاً ونساءً بـ18 هدفاً — متجاوزاً البرازيلية مارتا (17) والألماني كلوزه (16).",
+    en: "Messi became the all-time top scorer in World Cup history — men's and women's combined — with 18 goals, surpassing Brazil's Marta (17) and Germany's Klose (16).",
+    tr: "Messi, 18 golle Dünya Kupası tarihinin erkekler ve kadınlar dahil en fazla gol atan oyuncusu oldu — Brezilyalı Marta'yı (17) ve Klose'yi (16) geride bıraktı."
+  },
+  {
+    ar: "ميسي سجل أول هاتريك في مسيرته بكأس العالم (38 سنة) ضد الجزائر — أكبر لاعب يسجل ثلاثية في تاريخ البطولة.",
+    en: "Messi scored his first-ever World Cup hat-trick (age 38) vs Algeria — the oldest player to score a treble in World Cup history.",
+    tr: "Messi, Cezayir'e karşı kariyer ilk Dünya Kupası hat-trick'ini attı (38 yaşında) — turnuva tarihinin en yaşlı hat-trick gol atıcısı."
+  },
+  {
+    ar: "مصر انتظرت 92 سنة لأول فوز لها في كأس العالم — فازت على نيوزيلندا 3–1 بعد مشاركات خاسرة في 1934 و1990 و2018.",
+    en: "Egypt waited 92 years for their first-ever World Cup win — beating New Zealand 3–1 after winless appearances in 1934, 1990, and 2018.",
+    tr: "Mısır, ilk Dünya Kupası galibiyeti için 92 yıl bekledi — 1934, 1990 ve 2018'deki galibiyet alamayan turnuvaların ardından Yeni Zelanda'yı 3–1 yendi."
+  },
+  {
+    ar: "صلاح سجل وصنع هدفاً ضد نيوزيلندا — أكبر لاعب أفريقي يسجل ويصنع هدفاً في نفس مباراة بكأس العالم.",
+    en: "Salah scored and assisted against New Zealand — the oldest African player on record to both score and assist in the same World Cup match.",
+    tr: "Salah, Yeni Zelanda'ya karşı gol attı ve asist yaptı — aynı Dünya Kupası maçında hem gol atan hem asist yapan en yaşlı Afrikalı oyuncu oldu."
+  },
+  {
+    ar: "اليابان 4–0 تونس — أول منتخب آسيوي يسجل 4 أهداف في مباراة واحدة في تاريخ كأس العالم.",
+    en: "Japan 4–0 Tunisia — the first Asian team to ever score 4 goals in a single World Cup match.",
+    tr: "Japonya 4–0 Tunus — Dünya Kupası'nda tek bir maçta 4 gol atan ilk Asya takımı."
+  },
+  {
+    ar: "المكسيك تأهلت من دور المجموعات بعد فوزها 1–0 على كوريا الجنوبية — أول منتخب مضيف يتأهل للدور القادم في نسخة يستضيفها منذ فرنسا 1998.",
+    en: "Mexico qualified from the group stage after beating South Korea 1–0 — the first host nation to advance in their own tournament since France 1998.",
+    tr: "Meksika, Güney Kore'yi 1–0 yenerek grup aşamasını geçti — Fransa 1998'den bu yana kendi turnuvasında tur atlayan ilk ev sahibi ülke."
+  },
+  {
+    ar: "كندا حققت أول فوز في تاريخها بكأس العالم بسحق قطر 6–0 — أكبر فوز لمنتخب من خارج أوروبا وأمريكا الجنوبية في تاريخ البطولة.",
+    en: "Canada secured their first-ever World Cup win by thrashing Qatar 6–0 — the biggest victory by a team from outside Europe and South America in tournament history.",
+    tr: "Kanada, Katar'ı 6–0 yenerek Dünya Kupası tarihindeki ilk galibiyetini aldı — turnuva tarihinde Avrupa ve Güney Amerika dışından bir takımın kazandığı en büyük galibiyet."
+  },
+  {
+    ar: "جوناثان ديفيد سجّل هاتريك ضد قطر — أول هاتريك لهداف منتخب مضيف في كأس العالم منذ جيف هيرست مع إنجلترا عام 1966.",
+    en: "Jonathan David scored a hat-trick against Qatar — the first hat-trick by a host nation's player since Geoff Hurst for England in 1966.",
+    tr: "Jonathan David, Katar'a karşı hat-trick yaptı — 1966'da İngiltere'den Geoff Hurst'ten bu yana bir ev sahibi ülke oyuncusunun attığı ilk hat-trick."
+  },
+  {
+    ar: "إبراهيم مباي من السنغال (18 سنة) أصغر لاعب أفريقي يسجل في تاريخ كأس العالم.",
+    en: "Senegal's Ibrahim Mbaye (age 18) became the youngest African player to score in World Cup history.",
+    tr: "Senegal'in İbrahim Mbaye (18 yaşında) Dünya Kupası tarihinin en genç Afrikalı gol atıcısı oldu."
+  },
+  {
+    ar: "4 منتخبات سجّلت أول هدف في تاريخها بكأس العالم في نفس النسخة: الكونغو، الأردن، كوراساو، وأوزبكستان — رقم قياسي منذ 2006.",
+    en: "4 teams scored their first-ever World Cup goal in the same edition: Congo DR, Jordan, Curaçao, and Uzbekistan — a record not seen since 2006.",
+    tr: "4 takım aynı turnuvada Dünya Kupası tarihlerindeki ilk golü attı: Kongo, Ürdün, Curaçao ve Özbekistan — 2006'dan bu yana görülmeyen bir rekor."
+  },
+  {
+    ar: "إنجلترا فازت 4–2 على كرواتيا — أول فوز إنجليزي على منتخب من أفضل 15 في تصنيف الفيفا منذ الفوز على الأرجنتين عام 2002.",
+    en: "England beat Croatia 4–2 — their first win against a FIFA top-15 ranked side since defeating Argentina in 2002.",
+    tr: "İngiltere, Hırvatistan'ı 4–2 yendi — 2002'de Arjantin'i yenmelerinden bu yana FIFA'nın ilk 15 takımına karşı ilk galibiyetleri."
+  },
+  {
     ar: "كوراساو — بعدد سكان 150,000 — أصغر دولة تسجل هدفاً في تاريخ كأس العالم، وذلك في خسارتهم 1–7 أمام ألمانيا.",
     en: "Curaçao — population 150,000 — became the smallest nation ever to score at a World Cup, despite losing 7–1 to Germany.",
     tr: "Curaçao — 150.000 nüfusuyla — Almanya'ya 1-7 kaybetmesine rağmen Dünya Kupası tarihinde gol atan en küçük ülke oldu."
@@ -1048,11 +1141,6 @@ const FACTS = [
     ar: "مدرب كوراساو Dick Advocaat (78 سنة) أصبح أكبر مدرب في تاريخ كأس العالم.",
     en: "Curaçao coach Dick Advocaat (age 78) became the oldest manager in World Cup history.",
     tr: "Curaçao teknik direktörü Dick Advocaat (78 yaşında) Dünya Kupası tarihinin en yaşlı teknik direktörü oldu."
-  },
-  {
-    ar: "ميسي سجل أول هاتريك في مسيرته بكأس العالم (38 سنة) ضد الجزائر — أكبر لاعب يسجل ثلاثية في تاريخ البطولة.",
-    en: "Messi scored his first-ever World Cup hat-trick (age 38) vs Algeria — the oldest player to score a treble in World Cup history.",
-    tr: "Messi, Cezayir'e karşı kariyer ilk Dünya Kupası hat-trick'ini attı (38 yaşında) — turnuva tarihinin en yaşlı hat-trick gol atıcısı."
   },
   {
     ar: "مبابي تجاوز رقم Just Fontaine (13 هدف) وأصبح أكثر هداف في تاريخ فرنسا بكأس العالم.",
@@ -1383,7 +1471,9 @@ let autoUpdateInterval = null;
 
 async function fetchResults() {
   try {
-    const res = await fetch(API_URL);
+    const res = await fetch(API_URL, {
+      headers: { "X-Auth-Token": API_TOKEN }
+    });
     const data = await res.json();
 
     if (!data.matches) return;
