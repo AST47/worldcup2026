@@ -1218,7 +1218,20 @@ function FunFactsTab({ lang }) {
 function StatsTab({ lang }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [playerNames, setPlayerNames] = useState({});
   const isRtl = lang === "ar";
+
+  useEffect(() => {
+    fetch("https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js?v=2")
+      .then(r => r.text())
+      .then(code => {
+        try {
+          const fn = new Function(code + "; return PLAYER_NAMES;");
+          setPlayerNames(fn());
+        } catch(e) {}
+      })
+      .catch(() => {});
+  }, []);
 
   const L = {
     ar: {
@@ -1406,10 +1419,7 @@ function StatsTab({ lang }) {
       <RankedStat
         label={L.topScorer}
         entries={data.topScorers}
-        renderEntry={name => {
-          const pNames = window._pn || {};
-          return (pNames[name] && pNames[name][lang]) || name;
-        }}
+        renderEntry={name => (playerNames[name]?.[lang]) || name}
       />
 
       <RankedStat
@@ -1427,12 +1437,9 @@ function StatsTab({ lang }) {
       {data.fastestGoal && (
         <div style={{ background:"var(--surface)", border:"1px solid var(--border)", borderRadius:10, marginBottom:10, overflow:"hidden" }}>
           <div style={{ padding:"10px 18px", borderBottom:"1px solid var(--border2)", fontSize:13, fontWeight:600, color:"var(--text2)" }}>{L.fastestGoal}</div>
-          <div style={{ padding:"12px 18px", display:"flex", alignItems:"center", gap:12 }}>
-            <span style={{ fontSize:22 }}>🥇</span>
-            <div>
-              <div style={{ fontSize:13, color:"var(--text)", fontWeight:600 }}>{data.fastestGoal.name}</div>
-              <div style={{ fontSize:11, color:"var(--text3)" }}>{data.fastestGoal.minute}{L.min} · {FLAGS[data.fastestGoal.scoringTeam]||""} {tn(lang, data.fastestGoal.scoringTeam)} {L.vs} {FLAGS[data.fastestGoal.opponent]||""} {tn(lang, data.fastestGoal.opponent)}</div>
-            </div>
+          <div style={{ padding:"12px 18px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+            <span style={{ fontSize:13, color:"var(--text)", fontWeight:600 }}>{playerNames[data.fastestGoal.name]?.[lang] || data.fastestGoal.name}</span>
+            <span style={{ fontSize:11, color:"var(--text3)" }}>{data.fastestGoal.minute}{L.min} · {FLAGS[data.fastestGoal.scoringTeam]||""} {tn(lang, data.fastestGoal.scoringTeam)} {L.vs} {FLAGS[data.fastestGoal.opponent]||""} {tn(lang, data.fastestGoal.opponent)}</span>
           </div>
         </div>
       )}
@@ -1440,12 +1447,9 @@ function StatsTab({ lang }) {
       {data.latestGoal && (
         <div style={{ background:"var(--surface)", border:"1px solid var(--border)", borderRadius:10, marginBottom:10, overflow:"hidden" }}>
           <div style={{ padding:"10px 18px", borderBottom:"1px solid var(--border2)", fontSize:13, fontWeight:600, color:"var(--text2)" }}>{L.latestGoal}</div>
-          <div style={{ padding:"12px 18px", display:"flex", alignItems:"center", gap:12 }}>
-            <span style={{ fontSize:22 }}>🥇</span>
-            <div>
-              <div style={{ fontSize:13, color:"var(--text)", fontWeight:600 }}>{data.latestGoal.name}</div>
-              <div style={{ fontSize:11, color:"var(--text3)" }}>{data.latestGoal.minute}{L.min} · {FLAGS[data.latestGoal.scoringTeam]||""} {tn(lang, data.latestGoal.scoringTeam)} {L.vs} {FLAGS[data.latestGoal.opponent]||""} {tn(lang, data.latestGoal.opponent)}</div>
-            </div>
+          <div style={{ padding:"12px 18px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+            <span style={{ fontSize:13, color:"var(--text)", fontWeight:600 }}>{playerNames[data.latestGoal.name]?.[lang] || data.latestGoal.name}</span>
+            <span style={{ fontSize:11, color:"var(--text3)" }}>{data.latestGoal.minute}{L.min} · {FLAGS[data.latestGoal.scoringTeam]||""} {tn(lang, data.latestGoal.scoringTeam)} {L.vs} {FLAGS[data.latestGoal.opponent]||""} {tn(lang, data.latestGoal.opponent)}</span>
           </div>
         </div>
       )}
@@ -1453,14 +1457,11 @@ function StatsTab({ lang }) {
       {data.topMatch && (
         <div style={{ background:"var(--surface)", border:"1px solid var(--border)", borderRadius:10, marginBottom:10, overflow:"hidden" }}>
           <div style={{ padding:"10px 18px", borderBottom:"1px solid var(--border2)", fontSize:13, fontWeight:600, color:"var(--text2)" }}>{L.topMatch}</div>
-          <div style={{ padding:"12px 18px", display:"flex", alignItems:"center", gap:12 }}>
-            <span style={{ fontSize:22 }}>🥇</span>
-            <div>
-              <div style={{ fontSize:13, color:"var(--text)", fontWeight:600 }}>
-                {FLAGS[data.topMatch.t1]||""} {tn(lang, data.topMatch.t1)} {data.topMatch.g1}–{data.topMatch.g2} {FLAGS[data.topMatch.t2]||""} {tn(lang, data.topMatch.t2)}
-              </div>
-              <div style={{ fontSize:11, color:"var(--text3)" }}>{data.topMatch.total} {L.goals}</div>
-            </div>
+          <div style={{ padding:"12px 18px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+            <span style={{ fontSize:13, color:"var(--text)", fontWeight:600 }}>
+              {FLAGS[data.topMatch.t1]||""} {tn(lang, data.topMatch.t1)} {data.topMatch.g1}–{data.topMatch.g2} {FLAGS[data.topMatch.t2]||""} {tn(lang, data.topMatch.t2)}
+            </span>
+            <span style={{ fontSize:13, fontWeight:700, color:"var(--accent)" }}>{data.topMatch.total} {L.goals}</span>
           </div>
         </div>
       )}
@@ -1552,7 +1553,7 @@ function GoalsTab({ lang }) {
   const L = labels[lang];
 
   useEffect(() => {
-    fetch("https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js")
+    fetch("https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js?v=2")
       .then(r => r.text())
       .then(code => {
         try {
