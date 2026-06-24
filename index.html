@@ -26,7 +26,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -1285,6 +1284,7 @@ function GoalsTab({ lang }) {
   const [error, setError] = useState(null);
   const [openTeams, setOpenTeams] = useState({});
   const [openPlayers, setOpenPlayers] = useState({});
+  const [playerNames, setPlayerNames] = useState({});
   const isRtl = lang === "ar";
 
   const labels = {
@@ -1293,6 +1293,20 @@ function GoalsTab({ lang }) {
     tr: { title: "Gol Krallığı", loading: "Yükleniyor...", error: "Veriler yüklenemedi", goals: "gol", penalty: "pen", owngoal: "KK", vs: "vs", min: "'" },
   };
   const L = labels[lang];
+
+  useEffect(() => {
+    fetch("https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js")
+      .then(r => r.text())
+      .then(code => {
+        try {
+          const fn = new Function(code + "; return PLAYER_NAMES;");
+          setPlayerNames(fn());
+        } catch(e) {}
+      })
+      .catch(() => {});
+  }, []);
+
+  const pn = (name) => (playerNames[name] && playerNames[name][lang]) || name;
 
   useEffect(() => {
     setLoading(true);
@@ -1362,7 +1376,7 @@ function GoalsTab({ lang }) {
                           padding:"9px 20px", cursor:"pointer", userSelect:"none",
                         }}
                       >
-                        <span style={{ fontSize:13, color:"var(--text2)" }}>⚽ {(window.PLAYER_NAMES && window.PLAYER_NAMES[name] && window.PLAYER_NAMES[name][lang]) || name}</span>
+                        <span style={{ fontSize:13, color:"var(--text2)" }}>⚽ {pn(name)}</span>
                         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
                           <span style={{
                             background:"var(--accent)" + "22", color:"var(--accent)",
