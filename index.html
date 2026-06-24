@@ -43,8 +43,8 @@ const T = {
     tabGroupsSub: "دور المجموعات",
     tabKnockout: "مرحلة الإقصاءات",
     tabFacts: "💡",
+    tabGoals: "🥅",
     tabAbout: "ⓘ",
-    group: "المجموعة",
     team: "المنتخب",
     lost: "خ", drawn: "ت", won: "ف", pts: "نق", gd: "لـ/عليه", played: "ل",
     notPlayed: "لم تُلعب بعد",
@@ -116,6 +116,7 @@ const T = {
     tabGroupsSub: "Group Stage",
     tabKnockout: "Knockout Stage",
     tabFacts: "💡",
+    tabGoals: "🥅",
     tabAbout: "ⓘ",
     group: "Group",
     team: "Team",
@@ -189,6 +190,7 @@ const T = {
     tabGroupsSub: "Grup Aşaması",
     tabKnockout: "Eleme Aşaması",
     tabFacts: "💡",
+    tabGoals: "🥅",
     tabAbout: "ⓘ",
     group: "Grup",
     team: "Takım",
@@ -1209,6 +1211,197 @@ function FunFactsTab({ lang }) {
 }
 
 
+const GOALS_WORKER_URL = "https://nameless-bird-6db7.salehzuh.workers.dev/";
+
+// اسم الفريق في openfootball → مفتاح الفريق عندنا
+const OF_TEAM_MAP = {
+  "Mexico": "Mexico", "South Africa": "South Africa", "South Korea": "Korea Republic",
+  "Czech Republic": "Czechia", "Canada": "Canada", "Bosnia & Herzegovina": "Bosnia and Herzegovina",
+  "Qatar": "Qatar", "Switzerland": "Switzerland", "Brazil": "Brazil", "Morocco": "Morocco",
+  "Haiti": "Haiti", "Scotland": "Scotland", "USA": "USA", "Paraguay": "Paraguay",
+  "Australia": "Australia", "Turkey": "Türkiye", "Germany": "Germany", "Curaçao": "Curaçao",
+  "Ivory Coast": "Côte d'Ivoire", "Ecuador": "Ecuador", "Netherlands": "Netherlands",
+  "Japan": "Japan", "Sweden": "Sweden", "Tunisia": "Tunisia", "Belgium": "Belgium",
+  "Egypt": "Egypt", "Iran": "IR Iran", "New Zealand": "New Zealand", "Spain": "Spain",
+  "Cape Verde": "Cabo Verde", "Saudi Arabia": "Saudi Arabia", "Uruguay": "Uruguay",
+  "France": "France", "Senegal": "Senegal", "Iraq": "Iraq", "Norway": "Norway",
+  "Argentina": "Argentina", "Algeria": "Algeria", "Austria": "Austria", "Jordan": "Jordan",
+  "Portugal": "Portugal", "DR Congo": "Congo DR", "Uzbekistan": "Uzbekistan",
+  "Colombia": "Colombia", "England": "England", "Croatia": "Croatia", "Ghana": "Ghana",
+  "Panama": "Panama",
+};
+
+function normalizeTeam(name) {
+  return OF_TEAM_MAP[name] || name;
+}
+
+function buildGoalsData(matches) {
+  // teamKey → { players: { playerName → [{ minute, opponent, owngoal, penalty }] } }
+  const teams = {};
+
+  matches.forEach(m => {
+    if (!m.score) return;
+    const t1 = normalizeTeam(m.team1);
+    const t2 = normalizeTeam(m.team2);
+
+    const addGoal = (goals, scoringTeam, opponent, isOwnGoal) => {
+      if (!goals || !goals.length) return;
+      goals.forEach(g => {
+        // own goal: يُضاف للفريق الخصم
+        const actualTeam = g.owngoal ? opponent : scoringTeam;
+        const actualOpponent = g.owngoal ? scoringTeam : opponent;
+        if (!teams[actualTeam]) teams[actualTeam] = {};
+        const playerName = g.owngoal ? `${g.name} (OG)` : g.name;
+        if (!teams[actualTeam][playerName]) teams[actualTeam][playerName] = [];
+        teams[actualTeam][playerName].push({
+          minute: g.minute,
+          opponent: actualOpponent,
+          penalty: g.penalty || false,
+          owngoal: g.owngoal || false,
+        });
+      });
+    };
+
+    addGoal(m.goals1, t1, t2, false);
+    addGoal(m.goals2, t2, t1, false);
+  });
+
+  // حوّل لقائمة مرتبة
+  return Object.entries(teams)
+    .map(([teamKey, players]) => {
+      const totalGoals = Object.values(players).reduce((s, g) => s + g.length, 0);
+      const playerList = Object.entries(players)
+        .map(([name, goals]) => ({ name, goals }))
+        .sort((a, b) => b.goals.length - a.goals.length || a.name.localeCompare(b.name));
+      return { teamKey, totalGoals, players: playerList };
+    })
+    .sort((a, b) => b.totalGoals - a.totalGoals || a.teamKey.localeCompare(b.teamKey));
+}
+
+function GoalsTab({ lang }) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [openTeams, setOpenTeams] = useState({});
+  const [openPlayers, setOpenPlayers] = useState({});
+  const isRtl = lang === "ar";
+
+  const labels = {
+    ar: { title: "الهدافون", loading: "جارٍ التحميل...", error: "تعذّر تحميل البيانات", goals: "هدف", penalty: "ركلة جزاء", owngoal: "هدف مرمى", vs: "ضد", min: "د" },
+    en: { title: "Top Scorers", loading: "Loading...", error: "Failed to load data", goals: "goal", penalty: "pen", owngoal: "OG", vs: "vs", min: "'" },
+    tr: { title: "Gol Krallığı", loading: "Yükleniyor...", error: "Veriler yüklenemedi", goals: "gol", penalty: "pen", owngoal: "KK", vs: "vs", min: "'" },
+  };
+  const L = labels[lang];
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(GOALS_WORKER_URL)
+      .then(r => r.json())
+      .then(json => {
+        const built = buildGoalsData(json.matches || []);
+        setData(built);
+        setLoading(false);
+      })
+      .catch(() => { setError(true); setLoading(false); });
+  }, []);
+
+  const toggleTeam = (key) => setOpenTeams(p => ({ ...p, [key]: !p[key] }));
+  const togglePlayer = (key) => setOpenPlayers(p => ({ ...p, [key]: !p[key] }));
+
+  if (loading) return (
+    <div style={{ textAlign:"center", padding:40, color:"var(--text3)", fontSize:13 }}>{L.loading}</div>
+  );
+  if (error) return (
+    <div style={{ textAlign:"center", padding:40, color:"var(--text3)", fontSize:13 }}>{L.error}</div>
+  );
+
+  return (
+    <div style={{ maxWidth:720, margin:"0 auto" }} dir={isRtl ? "rtl" : "ltr"}>
+      {data.map(({ teamKey, totalGoals, players }) => {
+        const flag = FLAGS[teamKey] || "🏳️";
+        const teamOpen = openTeams[teamKey];
+        return (
+          <div key={teamKey} style={{ marginBottom:8, border:"1px solid var(--border)", borderRadius:10, overflow:"hidden" }}>
+            {/* Team row */}
+            <div
+              onClick={() => toggleTeam(teamKey)}
+              style={{
+                display:"flex", alignItems:"center", justifyContent:"space-between",
+                padding:"12px 16px", cursor:"pointer", background:"var(--surface)",
+                userSelect:"none",
+              }}
+            >
+              <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                <span style={{ fontSize:20 }}>{flag}</span>
+                <span style={{ fontWeight:600, fontSize:14, color:"var(--text)" }}>{tn(lang, teamKey)}</span>
+              </div>
+              <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                <span style={{
+                  background:"var(--accent)", color:"#fff",
+                  borderRadius:20, fontSize:12, fontWeight:700,
+                  padding:"2px 10px", minWidth:28, textAlign:"center"
+                }}>{totalGoals}</span>
+                <span style={{ color:"var(--text3)", fontSize:13 }}>{teamOpen ? "▲" : "▼"}</span>
+              </div>
+            </div>
+
+            {/* Players */}
+            {teamOpen && (
+              <div style={{ borderTop:"1px solid var(--border2)", background:"var(--surface2)" }}>
+                {players.map(({ name, goals }) => {
+                  const playerKey = teamKey + "|" + name;
+                  const playerOpen = openPlayers[playerKey];
+                  return (
+                    <div key={name} style={{ borderBottom:"1px solid var(--border2)" }}>
+                      {/* Player row */}
+                      <div
+                        onClick={() => togglePlayer(playerKey)}
+                        style={{
+                          display:"flex", alignItems:"center", justifyContent:"space-between",
+                          padding:"9px 20px", cursor:"pointer", userSelect:"none",
+                        }}
+                      >
+                        <span style={{ fontSize:13, color:"var(--text2)" }}>⚽ {name}</span>
+                        <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                          <span style={{
+                            background:"var(--accent)" + "22", color:"var(--accent)",
+                            borderRadius:12, fontSize:11, fontWeight:700,
+                            padding:"1px 8px"
+                          }}>{goals.length}</span>
+                          <span style={{ color:"var(--text4)", fontSize:11 }}>{playerOpen ? "▲" : "▼"}</span>
+                        </div>
+                      </div>
+
+                      {/* Goals detail */}
+                      {playerOpen && (
+                        <div style={{ padding:"4px 32px 10px", background:"var(--bg2)" }}>
+                          {goals.map((g, gi) => (
+                            <div key={gi} style={{
+                              display:"flex", alignItems:"center", gap:8,
+                              padding:"5px 0",
+                              borderBottom: gi < goals.length-1 ? "1px solid var(--border2)" : "none",
+                              fontSize:12, color:"var(--text3)",
+                            }}>
+                              <span style={{ fontWeight:700, color:"var(--accent)", minWidth:32 }}>{g.minute}{L.min}</span>
+                              <span>{L.vs} {tn(lang, g.opponent)}</span>
+                              {g.penalty && <span style={{ fontSize:10, background:"#f59e0b22", color:"#f59e0b", borderRadius:4, padding:"1px 5px" }}>{L.penalty}</span>}
+                              {g.owngoal && <span style={{ fontSize:10, background:"#ef444422", color:"#ef4444", borderRadius:4, padding:"1px 5px" }}>{L.owngoal}</span>}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function App() {
   const [tab, setTab] = useState("schedule"); // الأساسي والافتراضي الآن هو جدول المباريات (Home)
   const [lang, setLang] = useState("en"); // لغة البداية الافتراضية
@@ -1260,7 +1453,7 @@ function App() {
             fontSize:16, transition:"all .2s"
           }}>🏠</button>
           
-          {[["tournament",t.tabGroups],["facts",t.tabFacts],["about",t.tabAbout]].map(([k,l])=>(
+          {[["tournament",t.tabGroups],["goals",t.tabGoals],["facts",t.tabFacts],["about",t.tabAbout]].map(([k,l])=>(
             <button key={k} onClick={()=>setTab(k)} style={{
               padding:"12px 20px", border:"none", background:"none", cursor:"pointer",
               color:tab===k?"var(--accent)":"var(--text3)",
@@ -1304,6 +1497,7 @@ function App() {
             </div>
           )}
           {tab==="schedule" && <ScheduleTab lang={lang}/>}
+          {tab==="goals" && <GoalsTab lang={lang}/>}
           {tab==="facts" && <FunFactsTab lang={lang}/>}
           {tab==="about" && (
             <div style={{ maxWidth:640, margin:"0 auto", background:"var(--surface)", border:"1px solid var(--border)",
