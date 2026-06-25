@@ -1934,8 +1934,48 @@ const TEAM_MAP = {
   "Panama":                    "Panama",
 };
 
-window.__lastApiSuccessTime = null; 
+window.__lastApiSuccessTime = null;
+fillKOFromStandings();
+
 let autoUpdateInterval = null;
+
+
+function fillKOFromStandings() {
+  if (!window.KO) return;
+
+  // احسب ترتيب كل مجموعة
+  const groupWinner  = {}; // A → "Mexico"
+  const groupRunnerUp = {};
+  Object.keys(GROUPS_RAW).forEach(gKey => {
+    const st = calcStandings(gKey, "en");
+    if (st.length >= 1) groupWinner[gKey]   = st[0].key;
+    if (st.length >= 2) groupRunnerUp[gKey] = st[1].key;
+  });
+
+  // دالة تحصل على اسم الفريق بناءً على النوع والمجموعة
+  const resolveTeam = (type, group) => {
+    // المجموعة قد تكون "A/B/C/D/F" للثوالث — نتجاهلها حالياً
+    if (type === "W")  return groupWinner[group]   || null;
+    if (type === "RU") return groupRunnerUp[group] || null;
+    return null; // ثالث مجموعات: صعب التحديد قبل نهاية الدور
+  };
+
+  // املأ مباريات الـ R32 فقط (هي المرتبطة بالمجموعات)
+  const r32Stages = ["L_r32", "R_r32"];
+  r32Stages.forEach(stage => {
+    (window.KO[stage] || []).forEach(koMatch => {
+      // لا تمسح فريقاً حقيقياً موجود
+      if (!koMatch.home && koMatch.homeType) {
+        const t = resolveTeam(koMatch.homeType, koMatch.homeGroup);
+        if (t) koMatch.home = t;
+      }
+      if (!koMatch.away && koMatch.awayType) {
+        const t = resolveTeam(koMatch.awayType, koMatch.awayGroup);
+        if (t) koMatch.away = t;
+      }
+    });
+  });
+}
 
 async function fetchResults() {
   try {
@@ -1997,6 +2037,7 @@ async function fetchResults() {
 
     window.__lastApiSuccessTime = new Date();
     if (window.__updateStampComponent) window.__updateStampComponent();
+    fillKOFromStandings();
     window.__forceUpdate && window.__forceUpdate();
 
   } catch (err) {
