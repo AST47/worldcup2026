@@ -505,7 +505,7 @@ window.KO = {
     mkP("Lr32_0","RU","A","RU","B",           "28 Jun","19:00","SoFi Stadium, Inglewood"),
     mkP("Lr32_1","W","C","RU","F",            "29 Jun","17:00","NRG Stadium, Houston"),
     mkP("Lr32_2","W","E","3","A/B/C/D/F",    "29 Jun","20:30","Gillette Stadium, Foxboro"),
-    mkP("Lr32_3","W","F","W","C",             "30 Jun","01:00","Estadio Akron, Monterrey"),
+    mkP("Lr32_3","W","F","RU","C",             "30 Jun","01:00","Estadio Akron, Monterrey"),
     mkP("Lr32_4","RU","E","RU","I",           "30 Jun","17:00","AT&T Stadium, Arlington"),
     mkP("Lr32_5","W","I","3","C/D/F/G/H",    "30 Jun","21:00","MetLife Stadium, New Jersey"),
     mkP("Lr32_6","W","A","3","C/E/F/H/I",    "1 Jul","01:00","Azteca Stadium, Mexico City"),
@@ -1947,12 +1947,12 @@ function fillKOFromStandings() {
   const r32Stages = ["L_r32", "R_r32"];
   r32Stages.forEach(stage => {
     (window.KO[stage] || []).forEach(koMatch => {
-      // لا تمسح فريقاً حقيقياً موجود
-      if (!koMatch.home && koMatch.homeType) {
+      // أعد الحساب دايماً بناءً على النوع والمجموعة
+      if (koMatch.homeType) {
         const t = resolveTeam(koMatch.homeType, koMatch.homeGroup);
         if (t) koMatch.home = t;
       }
-      if (!koMatch.away && koMatch.awayType) {
+      if (koMatch.awayType) {
         const t = resolveTeam(koMatch.awayType, koMatch.awayGroup);
         if (t) koMatch.away = t;
       }
@@ -1999,8 +1999,7 @@ async function fetchResults() {
       if (m.stage && m.stage !== "GROUP_STAGE") {
         Object.values(KO).forEach(stageMatches => {
           stageMatches.forEach(koMatch => {
-            if ((koMatch.home === homeKey && koMatch.away === awayKey) || 
-                (koMatch.home === "" && koMatch.away === "" && status === "SCHEDULED")) {
+            if (koMatch.home === homeKey && koMatch.away === awayKey) {
               
               koMatch.home = homeKey;
               koMatch.away = awayKey;
