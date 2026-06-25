@@ -42,6 +42,7 @@ const T = {
     tabGroups: "⚽",
     tabGroupsSub: "دور المجموعات",
     tabKnockout: "مرحلة الإقصاءات",
+    tabMatches: "المباريات",
     tabFacts: "💡",
     tabGoals: "🥅",
     tabStats: "📊",
@@ -63,6 +64,10 @@ const T = {
     cvBtn: "🔍 استعرض السيرة الذاتية للمطور ←",
     changelogTitle: "سجل التغييرات",
     changelog: [
+      { v:"v3.5", date:"25 يونيو 2026", title:"إعادة هيكلة التبويبات", desc:"إعادة هيكلة التبويبات ودمج المباريات والمجموعات والإقصاءات ضمن تاب واحد مع تبويبات ثانوية. إصلاحات عامة ورتوشات." },
+      { v:"v3.4", date:"24 يونيو 2026", title:"ترجمة أسماء اللاعبين",       desc:"إضافة ترجمة أسماء اللاعبين للعربية والتركية عبر ملف translations.js على GitHub." },
+      { v:"v3.3", date:"23 يونيو 2026", title:"تبويب الإحصائيات",            desc:"إضافة تاب الإحصائيات مع أرقام عامة وتصنيفات الهجوم والدفاع والهدافين." },
+      { v:"v3.2", date:"22 يونيو 2026", title:"تبويب الأهداف",               desc:"إضافة تاب الأهداف مع قائمة مفصلة بكل هداف مرتبين بحسب الفريق واللاعب." },
       { v:"v3.1", date:"18 يونيو 2026", title:"تبويب حقائق ومعلومات",  desc:"إضافة تاب المعلومات بأرقام قياسية وحقائق من كأس العالم." },
       { v:"v3.0", date:"17 يونيو 2026", title:"مركز البطولة",        desc:"دمج تاب المجموعات والإقصاءات في تاب واحد مع sub-navigation." },
       { v:"v2.2", date:"16 يونيو 2026", title:"تحديث تلقائي",         desc:"نتائج مباشرة عبر API رسمي من خلال Cloudflare Worker. تحديث كل دقيقة تلقائياً." },
@@ -116,6 +121,7 @@ const T = {
     tabGroups: "⚽",
     tabGroupsSub: "Group Stage",
     tabKnockout: "Knockout Stage",
+    tabMatches: "Matches",
     tabFacts: "💡",
     tabGoals: "🥅",
     tabStats: "📊",
@@ -138,6 +144,10 @@ const T = {
     cvBtn: "🔍 View Developer's Portfolio & CV →",
     changelogTitle: "Changelog",
     changelog: [
+      { v:"v3.5", date:"25 Jun 2026", title:"Tab Restructure & General Fixes", desc:"Restructured tabs: Matches, Groups, and Knockout merged under one tab with sub-navigation. General fixes and polish." },
+      { v:"v3.4", date:"24 Jun 2026", title:"Player Name Translations",          desc:"Added Arabic and Turkish player name translations via translations.js on GitHub." },
+      { v:"v3.3", date:"23 Jun 2026", title:"Statistics Tab",                    desc:"Added Statistics tab with general totals and ranked attack, defense, and scorer standings." },
+      { v:"v3.2", date:"22 Jun 2026", title:"Goals Tab",                         desc:"Added Goals tab with detailed breakdown of all scorers sorted by team and player." },
       { v:"v3.1", date:"18 Jun 2026", title:"Fun Facts Tab",         desc:"Added Fun Facts tab with live World Cup records and milestones." },
       { v:"v3.0", date:"17 Jun 2026", title:"Tournament Hub",        desc:"Merged groups & knockout into one tab with sub-navigation." },
       { v:"v2.2", date:"16 Jun 2026", title:"Auto-Updates",          desc:"Live results via official API through Cloudflare Worker. Updates every minute automatically." },
@@ -191,6 +201,7 @@ const T = {
     tabGroups: "⚽",
     tabGroupsSub: "Grup Aşaması",
     tabKnockout: "Eleme Aşaması",
+    tabMatches: "Maçlar",
     tabFacts: "💡",
     tabGoals: "🥅",
     tabStats: "📊",
@@ -213,6 +224,10 @@ const T = {
     cvBtn: "🔍 Geliştiricinin Özgeçmişini Görüntüle →",
     changelogTitle: "Sürüm Geçmişi",
     changelog: [
+      { v:"v3.5", date:"25 Haz 2026", title:"Sekme Yeniden Yapılandırması & Genel Düzeltmeler", desc:"Sekmeler yeniden yapılandırıldı: Maçlar, Gruplar ve Eleme alt gezinmeyle tek sekmede birleştirildi. Genel düzeltmeler ve iyileştirmeler." },
+      { v:"v3.4", date:"24 Haz 2026", title:"Oyuncu Adı Çevirileri",                    desc:"GitHub'daki translations.js aracılığıyla Arapça ve Türkçe oyuncu adı çevirileri eklendi." },
+      { v:"v3.3", date:"23 Haz 2026", title:"İstatistik Sekmesi",                       desc:"Genel toplamlar ve saldırı, savunma ile gol kralı sıralamaları içeren İstatistik sekmesi eklendi." },
+      { v:"v3.2", date:"22 Haz 2026", title:"Goller Sekmesi",                           desc:"Takım ve oyuncuya göre sıralanmış tüm gol atıcıların ayrıntılı dökümünü içeren Goller sekmesi eklendi." },
       { v:"v3.1", date:"18 Haz 2026", title:"İlginç Bilgiler Sekmesi", desc:"Dünya Kupası rekorları ve önemli başarılarını içeren Eğlenceli Bilgiler sekmesi eklendi." },
       { v:"v3.0", date:"17 Haz 2026", title:"Turnuva Merkezi",         desc:"Grupları ve Knockout'u alt gezinme menüsüyle tek bir sekmede birleştirin." },
       { v:"v2.2", date:"16 Haz 2026", title:"Otomatik Güncelleme",     desc:"Cloudflare Worker üzerinden resmi API ile canlı sonuçlar. Her dakika otomatik güncelleme." },
@@ -938,18 +953,13 @@ function ScheduleTab({ lang }) {
                     fontSize: 10, fontWeight: 700, color,
                   }}>{m.stageLabel || m.groupKey}</div>
                   <div style={{ fontSize: 11, color: "var(--text3)", fontWeight: 600 }}>
-                    {fmtDate(lang, m.date, m.time)} · <span style={{ color: "var(--text2)" }}>{fmtTime(m.date, m.time)}</span>
+                    {fmtDate(lang, m.date, m.time)}
                   </div>
                 </div>
 
                 {/* شارات الحالة والعداد المرتبط بالتحديث */}
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  {isLive && (
-                    <span style={{ 
-                      background: "var(--live-pulse)", color: "#fff", 
-                      fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 4 
-                    }}>{t.live}</span>
-                  )}
+
                   {!isLive && !isFinished && isFeatured && (
                     <span style={{ 
                       background: "var(--bg2)", color: "var(--text3)", 
@@ -1541,7 +1551,6 @@ function GoalsTab({ lang }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openTeams, setOpenTeams] = useState({});
-  const [openPlayers, setOpenPlayers] = useState({});
   const [playerNames, setPlayerNames] = useState({});
   const isRtl = lang === "ar";
 
@@ -1579,7 +1588,6 @@ function GoalsTab({ lang }) {
   }, []);
 
   const toggleTeam = (key) => setOpenTeams(p => ({ ...p, [key]: !p[key] }));
-  const togglePlayer = (key) => setOpenPlayers(p => ({ ...p, [key]: !p[key] }));
 
   if (loading) return (
     <div style={{ textAlign:"center", padding:40, color:"var(--text3)", fontSize:13 }}>{L.loading}</div>
@@ -1621,51 +1629,35 @@ function GoalsTab({ lang }) {
             {/* Players */}
             {teamOpen && (
               <div style={{ borderTop:"1px solid var(--border2)", background:"var(--surface2)" }}>
-                {players.map(({ name, goals }) => {
-                  const playerKey = teamKey + "|" + name;
-                  const playerOpen = openPlayers[playerKey];
-                  return (
-                    <div key={name} style={{ borderBottom:"1px solid var(--border2)" }}>
-                      {/* Player row */}
-                      <div
-                        onClick={() => togglePlayer(playerKey)}
-                        style={{
-                          display:"flex", alignItems:"center", justifyContent:"space-between",
-                          padding:"9px 20px", cursor:"pointer", userSelect:"none",
-                        }}
-                      >
-                        <span style={{ fontSize:13, color:"var(--text2)" }}>⚽ {pn(name)}</span>
-                        <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                          <span style={{
-                            background:"var(--accent)" + "22", color:"var(--accent)",
-                            borderRadius:12, fontSize:11, fontWeight:700,
-                            padding:"1px 8px"
-                          }}>{goals.length}</span>
-                          <span style={{ color:"var(--text4)", fontSize:11 }}>{playerOpen ? "▲" : "▼"}</span>
-                        </div>
-                      </div>
-
-                      {/* Goals detail */}
-                      {playerOpen && (
-                        <div style={{ padding:"4px 32px 10px", background:"var(--bg2)" }}>
-                          {goals.map((g, gi) => (
-                            <div key={gi} style={{
-                              display:"flex", alignItems:"center", gap:8,
-                              padding:"5px 0",
-                              borderBottom: gi < goals.length-1 ? "1px solid var(--border2)" : "none",
-                              fontSize:12, color:"var(--text3)",
-                            }}>
-                              <span style={{ fontWeight:700, color:"var(--accent)", minWidth:32 }}>{g.minute}{L.min}</span>
-                              <span>{L.vs} {tn(lang, g.opponent)}</span>
-                              {g.penalty && <span style={{ fontSize:10, background:"#f59e0b22", color:"#f59e0b", borderRadius:4, padding:"1px 5px" }}>{L.penalty}</span>}
-                              {g.owngoal && <span style={{ fontSize:10, background:"#ef444422", color:"#ef4444", borderRadius:4, padding:"1px 5px" }}>{L.owngoal}</span>}
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                {players.map(({ name, goals }) => (
+                  <div key={name} style={{ borderBottom:"1px solid var(--border2)" }}>
+                    <div style={{
+                      display:"flex", alignItems:"center", justifyContent:"space-between",
+                      padding:"9px 20px 4px",
+                    }}>
+                      <span style={{ fontSize:13, color:"var(--text2)", fontWeight:600 }}>⚽ {pn(name)}</span>
+                      <span style={{
+                        background:"var(--accent)" + "22", color:"var(--accent)",
+                        borderRadius:12, fontSize:11, fontWeight:700, padding:"1px 8px"
+                      }}>{goals.length}</span>
                     </div>
-                  );
-                })}
+                    <div style={{ padding:"0 32px 8px", background:"var(--bg2)" }}>
+                      {goals.map((g, gi) => (
+                        <div key={gi} style={{
+                          display:"flex", alignItems:"center", gap:8,
+                          padding:"4px 0",
+                          borderBottom: gi < goals.length-1 ? "1px solid var(--border2)" : "none",
+                          fontSize:12, color:"var(--text3)",
+                        }}>
+                          <span style={{ fontWeight:700, color:"var(--accent)", minWidth:32 }}>{g.minute}{L.min}</span>
+                          <span>{L.vs} {tn(lang, g.opponent)}</span>
+                          {g.penalty && <span style={{ fontSize:10, background:"#f59e0b22", color:"#f59e0b", borderRadius:4, padding:"1px 5px" }}>{L.penalty}</span>}
+                          {g.owngoal && <span style={{ fontSize:10, background:"#ef444422", color:"#ef4444", borderRadius:4, padding:"1px 5px" }}>{L.owngoal}</span>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -1676,10 +1668,10 @@ function GoalsTab({ lang }) {
 }
 
 function App() {
-  const [tab, setTab] = useState("schedule"); // الأساسي والافتراضي الآن هو جدول المباريات (Home)
-  const [lang, setLang] = useState("en"); // لغة البداية الافتراضية
+  const [tab, setTab] = useState("tournament");
+  const [subTab, setSubTab] = useState("schedule");
+  const [lang, setLang] = useState("en");
   const [tick, setTick] = useState(0);
-  const [subTab, setSubTab] = useState("groups");
   
   useEffect(() => {
     window.__forceUpdate = () => setTick(t => t + 1);
@@ -1717,18 +1709,10 @@ function App() {
         </div>
 
         {/* Tabs */}
-        <div style={{ display:"flex", borderBottom:"1px solid var(--border)", background:"var(--tab-bg)" }}>
-          {/* التاب الأول تحول إلى أيقونة منزل مريحة للموبايل */}
-          <button onClick={()=>setTab("schedule")} style={{
-            padding:"12px 24px", border:"none", background:"none", cursor:"pointer",
-            color:tab==="schedule"?"var(--accent)":"var(--text3)",
-            borderBottom:tab==="schedule"?"2px solid var(--accent)":"2px solid transparent",
-            fontSize:16, transition:"all .2s"
-          }}>🏠</button>
-          
+        <div style={{ display:"flex", borderBottom:"1px solid var(--border)", background:"var(--tab-bg)", overflowX:"auto" }}>
           {[["tournament",t.tabGroups],["goals",t.tabGoals],["stats",t.tabStats],["facts",t.tabFacts],["about",t.tabAbout]].map(([k,l])=>(
             <button key={k} onClick={()=>setTab(k)} style={{
-              padding:"12px 20px", border:"none", background:"none", cursor:"pointer",
+              padding:"12px 16px", border:"none", background:"none", cursor:"pointer", whiteSpace:"nowrap",
               color:tab===k?"var(--accent)":"var(--text3)",
               borderBottom:tab===k?"2px solid var(--accent)":"2px solid transparent",
               fontFamily:"inherit", fontSize:tab===k?18:16, fontWeight:tab===k?600:400, transition:"all .2s"
@@ -1736,20 +1720,20 @@ function App() {
           ))}
         </div>
 
-        <div style={{ padding:"20px 16px", maxWidth:(tab==="tournament"&&subTab==="knockout")?1700:(tab==="schedule"?760:1100), margin:"0 auto" }}>
+        <div style={{ padding:"20px 16px", maxWidth:(tab==="tournament"&&subTab==="knockout")?1700:(tab==="tournament"&&subTab==="schedule"?760:1100), margin:"0 auto" }}>
           {tab==="tournament" && (
             <div>
-              {/* Sub-tabs */}
-              <div style={{ display:"flex", gap:8, marginBottom:20, borderBottom:"1px solid var(--border2)", paddingBottom:0 }}>
-                {[["groups", t.tabGroupsSub],["knockout", t.tabKnockout]].map(([k,l])=>(
+              <div style={{ display:"flex", gap:0, marginBottom:20, borderBottom:"1px solid var(--border2)" }}>
+                {[["schedule",t.tabMatches],["groups",t.tabGroupsSub],["knockout",t.tabKnockout]].map(([k,l])=>(
                   <button key={k} onClick={()=>setSubTab(k)} style={{
-                    padding:"8px 16px", border:"none", background:"none", cursor:"pointer",
+                    padding:"8px 16px", border:"none", background:"none", cursor:"pointer", whiteSpace:"nowrap",
                     color:subTab===k?"var(--accent)":"var(--text3)",
                     borderBottom:subTab===k?"2px solid var(--accent)":"2px solid transparent",
                     fontFamily:"inherit", fontSize:12, fontWeight:subTab===k?600:400, transition:"all .2s"
                   }}>{l}</button>
                 ))}
               </div>
+              {subTab==="schedule" && <ScheduleTab lang={lang}/>}
               {subTab==="groups" && (
                 <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))", gap:16 }}>
                   {Object.keys(GROUPS_RAW).map((g,gi)=>(
@@ -1769,7 +1753,6 @@ function App() {
               )}
             </div>
           )}
-          {tab==="schedule" && <ScheduleTab lang={lang}/>}
           {tab==="goals" && <GoalsTab lang={lang}/>}
           {tab==="stats" && <StatsTab lang={lang}/>}
           {tab==="facts" && <FunFactsTab lang={lang}/>}
