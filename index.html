@@ -892,9 +892,18 @@ function ScheduleTab({ lang }) {
   allMatches.sort((a, b) => parseSort(a.date, a.time) - parseSort(b.date, b.time));
 
   // الفرز التلقائي: المباريات المباشرة والقادمة في الأعلى، المنتهية تنزل لأسفل
-  const liveMatches = allMatches.filter(m => m.status === "LIVE" || m.status === "IN_PLAY");
-  const upcomingMatches = allMatches.filter(m => m.status === "SCHEDULED");
-  const finishedMatches = allMatches.filter(m => m.status === "FINISHED" || (m.hg !== null && m.ag !== null && m.status !== "LIVE" && m.status !== "IN_PLAY"));
+  const now = new Date();
+  const liveMatches    = allMatches.filter(m => m.status === "LIVE" || m.status === "IN_PLAY");
+  const finishedMatches = allMatches.filter(m => {
+    if (m.status === "FINISHED" || (m.hg !== null && m.ag !== null && m.status !== "LIVE" && m.status !== "IN_PLAY")) return true;
+    const matchEndDT = new Date(toLocalDT(m.date, m.time).getTime() + 3 * 60 * 60 * 1000);
+    return now >= matchEndDT;
+  });
+  const finishedKeys   = new Set(finishedMatches.map(m => m.home + m.away + m.date));
+  const upcomingMatches = allMatches.filter(m =>
+    m.status !== "LIVE" && m.status !== "IN_PLAY" &&
+    !finishedKeys.has(m.home + m.away + m.date)
+  );
 
   const sortedList = [...liveMatches, ...upcomingMatches, ...finishedMatches];
 
