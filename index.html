@@ -432,13 +432,30 @@ const GC = ["#e74c3c","#e67e22","#f1c40f","#2ecc71","#1abc9c","#3498db","#9b59b6
 function tn(lang, key) { return T[lang].teams[key] || key; }
 function vn(lang, key) { return T[lang].venues[key] || key; }
 
-// البيانات بتوقيت UTC — نحول لتوقيت المتصفح
+// البيانات بتوقيت محلي مع offset — نحول لـ UTC ثم لتوقيت المتصفح
 function toLocalDT(dateStr, timeStr) {
+  // timeStr ممكن يكون "20:00 UTC-7" أو "12:00 UTC-4" أو "13:00" (بدون offset)
   const [d, mo] = dateStr.split(" ");
   const monthMap = { Jun: "06", Jul: "07" };
   const dayStr = String(parseInt(d)).padStart(2, "0");
   const monthStr = monthMap[mo];
-  return new Date(`2026-${monthStr}-${dayStr}T${timeStr}:00Z`);
+
+  const timeParts = timeStr.split(" ");
+  const time = timeParts[0]; // "20:00"
+  const offsetStr = timeParts[1]; // "UTC-7" أو undefined
+
+  let offsetHours = 0;
+  if (offsetStr) {
+    const match = offsetStr.match(/UTC([+-]\d+)/);
+    if (match) offsetHours = parseInt(match[1]);
+  }
+
+  // اطرح الـ offset عشان نوصل لـ UTC
+  const [h, m] = time.split(":").map(Number);
+  const utcHours = h - offsetHours;
+  const utcTimeStr = String(utcHours).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+
+  return new Date(`2026-${monthStr}-${dayStr}T${utcTimeStr}:00Z`);
 }
 
 function fmtDate(lang, date, time) {
