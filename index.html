@@ -432,44 +432,25 @@ const GC = ["#e74c3c","#e67e22","#f1c40f","#2ecc71","#1abc9c","#3498db","#9b59b6
 function tn(lang, key) { return T[lang].teams[key] || key; }
 function vn(lang, key) { return T[lang].venues[key] || key; }
 
-// البيانات بتوقيت محلي مع offset — نحول لـ UTC ثم لتوقيت المتصفح
+// البيانات بتوقيت UTC — نحول لتوقيت المتصفح
 function toLocalDT(dateStr, timeStr) {
-  // timeStr ممكن يكون "20:00 UTC-7" أو "12:00 UTC-4" أو "13:00" (بدون offset)
   const [d, mo] = dateStr.split(" ");
   const monthMap = { Jun: "06", Jul: "07" };
   const dayStr = String(parseInt(d)).padStart(2, "0");
   const monthStr = monthMap[mo];
-
-  const timeParts = timeStr.split(" ");
-  const time = timeParts[0]; // "20:00"
-  const offsetStr = timeParts[1]; // "UTC-7" أو undefined
-
-  let offsetHours = 0;
-  if (offsetStr) {
-    const match = offsetStr.match(/UTC([+-]\d+)/);
-    if (match) offsetHours = parseInt(match[1]);
-  }
-
-  // اطرح الـ offset عشان نوصل لـ UTC
-  const [h, m] = time.split(":").map(Number);
-  const utcHours = h - offsetHours;
-  const utcTimeStr = String(utcHours).padStart(2, "0") + ":" + String(m).padStart(2, "0");
-
-  return new Date(`2026-${monthStr}-${dayStr}T${utcTimeStr}:00Z`);
+  return new Date(`2026-${monthStr}-${dayStr}T${timeStr}:00Z`);
 }
 
 function fmtDate(lang, date, time) {
   const dt = toLocalDT(date, time);
-  const day = dt.getDate();
-  const moKeys = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const moKey = moKeys[dt.getMonth()];
-  if (lang === "ar") return day + " " + (T.ar.months[moKey] || moKey);
-  if (lang === "tr") return day + " " + (T.tr.months[moKey] || moKey);
-  return day + " " + moKey;
+  const locale = lang === "ar" ? "ar-EG" : lang === "tr" ? "tr-TR" : "en-US";
+  const local = dt.toLocaleDateString(locale, { day: "numeric", month: "short" });
+  return local;
 }
 
 function fmtTime(date, time) {
-  return toLocalDT(date, time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+  const dt = toLocalDT(date, time);
+  return dt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
 }
 
 function calcStandings(groupKey, lang) {
@@ -892,18 +873,9 @@ function ScheduleTab({ lang }) {
   allMatches.sort((a, b) => parseSort(a.date, a.time) - parseSort(b.date, b.time));
 
   // الفرز التلقائي: المباريات المباشرة والقادمة في الأعلى، المنتهية تنزل لأسفل
-  const now = new Date();
-  const liveMatches    = allMatches.filter(m => m.status === "LIVE" || m.status === "IN_PLAY");
-  const finishedMatches = allMatches.filter(m => {
-    if (m.status === "FINISHED" || (m.hg !== null && m.ag !== null && m.status !== "LIVE" && m.status !== "IN_PLAY")) return true;
-    const matchEndDT = new Date(toLocalDT(m.date, m.time).getTime() + 3 * 60 * 60 * 1000);
-    return now >= matchEndDT;
-  });
-  const finishedKeys   = new Set(finishedMatches.map(m => m.home + m.away + m.date));
-  const upcomingMatches = allMatches.filter(m =>
-    m.status !== "LIVE" && m.status !== "IN_PLAY" &&
-    !finishedKeys.has(m.home + m.away + m.date)
-  );
+  const liveMatches = allMatches.filter(m => m.status === "LIVE" || m.status === "IN_PLAY");
+  const upcomingMatches = allMatches.filter(m => m.status === "SCHEDULED");
+  const finishedMatches = allMatches.filter(m => m.status === "FINISHED" || (m.hg !== null && m.ag !== null && m.status !== "LIVE" && m.status !== "IN_PLAY"));
 
   const sortedList = [...liveMatches, ...upcomingMatches, ...finishedMatches];
 
