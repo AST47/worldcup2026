@@ -438,19 +438,19 @@ function toLocalDT(dateStr, timeStr) {
   const monthMap = { Jun: "06", Jul: "07" };
   const dayStr = String(parseInt(d)).padStart(2, "0");
   const monthStr = monthMap[mo];
-  return new Date(`2026-${monthStr}-${dayStr}T${timeStr}:00Z`);
+  const time = timeStr.split(" ")[0]; // يشيل أي offset قديم إذا موجود
+  return new Date(`2026-${monthStr}-${dayStr}T${time}:00Z`);
 }
 
 function fmtDate(lang, date, time) {
   const dt = toLocalDT(date, time);
   const locale = lang === "ar" ? "ar-EG" : lang === "tr" ? "tr-TR" : "en-US";
-  const local = dt.toLocaleDateString(locale, { day: "numeric", month: "short" });
-  return local;
+  return dt.toLocaleDateString(locale, { day: "numeric", month: "short", timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
 }
 
 function fmtTime(date, time) {
   const dt = toLocalDT(date, time);
-  return dt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+  return dt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
 }
 
 function calcStandings(groupKey, lang) {
@@ -872,10 +872,17 @@ function ScheduleTab({ lang }) {
 
   allMatches.sort((a, b) => parseSort(a.date, a.time) - parseSort(b.date, b.time));
 
-  // الفرز التلقائي: المباريات المباشرة والقادمة في الأعلى، المنتهية تنزل لأسفل
-  const liveMatches = allMatches.filter(m => m.status === "LIVE" || m.status === "IN_PLAY");
-  const upcomingMatches = allMatches.filter(m => m.status === "SCHEDULED");
-  const finishedMatches = allMatches.filter(m => m.status === "FINISHED" || (m.hg !== null && m.ag !== null && m.status !== "LIVE" && m.status !== "IN_PLAY"));
+  const _now = new Date();
+  const _isFinished = m => {
+    if (m.status === "FINISHED" || (m.hg !== null && m.ag !== null && m.status !== "LIVE" && m.status !== "IN_PLAY")) return true;
+    const endDT = new Date(toLocalDT(m.date, m.time).getTime() + 3 * 60 * 60 * 1000);
+    return _now >= endDT;
+  };
+  const _isLive = m => m.status === "LIVE" || m.status === "IN_PLAY";
+
+  const liveMatches     = allMatches.filter(m => _isLive(m));
+  const finishedMatches = allMatches.filter(m => !_isLive(m) && _isFinished(m));
+  const upcomingMatches = allMatches.filter(m => !_isLive(m) && !_isFinished(m));
 
   const sortedList = [...liveMatches, ...upcomingMatches, ...finishedMatches];
 
