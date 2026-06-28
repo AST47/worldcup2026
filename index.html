@@ -1680,7 +1680,6 @@ function App() {
   
   useEffect(() => {
     window.__forceUpdate = () => setTick(t => t + 1);
-    // إعادة تعبئة KO بعد تركيب المكوّن — على حال كانت البيانات وصلت قبل التركيب
     fillKOFromStandings();
     setTick(t => t + 1);
     return () => { window.__forceUpdate = null; };
