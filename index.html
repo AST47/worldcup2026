@@ -500,24 +500,24 @@ const mk = (id, date="", time="", venue="") => ({
 
 window.KO = {
   L_r32: [
-    mkP("Lr32_0","RU","A","RU","B",           "28 Jun","19:00","SoFi Stadium, Inglewood"),
+    mkP("Lr32_0","RU","A","RU","B",           "28 Jun","23:00","SoFi Stadium, Inglewood"),
     mkP("Lr32_1","W","C","RU","F",            "29 Jun","17:00","NRG Stadium, Houston"),
-    mkP("Lr32_2","W","E","3","A/B/C/D/F",    "29 Jun","20:30","Gillette Stadium, Foxboro"),
+    mk("Lr32_2",                             "29 Jun","20:30","Gillette Stadium, Foxboro"),
     mkP("Lr32_3","W","F","RU","C",             "30 Jun","01:00","Estadio Akron, Monterrey"),
     mkP("Lr32_4","RU","E","RU","I",           "30 Jun","17:00","AT&T Stadium, Arlington"),
-    mkP("Lr32_5","W","I","3","C/D/F/G/H",    "30 Jun","21:00","MetLife Stadium, New Jersey"),
-    mkP("Lr32_6","W","A","3","C/E/F/H/I",    "1 Jul","01:00","Azteca Stadium, Mexico City"),
-    mkP("Lr32_7","W","L","3","E/H/I/J/K",    "1 Jul","16:00","Mercedes-Benz Stadium, Atlanta"),
+    mk("Lr32_5",                             "30 Jun","21:00","MetLife Stadium, New Jersey"),
+    mk("Lr32_6",                             "1 Jul","01:00","Azteca Stadium, Mexico City"),
+    mk("Lr32_7",                             "1 Jul","16:00","Mercedes-Benz Stadium, Atlanta"),
   ],
   R_r32: [
-    mkP("Rr32_0","W","G","3","A/E/H/I/J",    "1 Jul","20:00","Lumen Field, Seattle"),
-    mkP("Rr32_1","W","D","3","B/E/F/I/J",    "2 Jul","00:00","Levi's Stadium, Santa Clara"),
-    mkP("Rr32_2","W","H","RU","J",            "2 Jul","19:00","SoFi Stadium, Inglewood"),
-    mkP("Rr32_3","RU","K","RU","L",           "2 Jul","23:00","BMO Field, Toronto"),
-    mkP("Rr32_4","W","B","3","E/F/G/I/J",    "3 Jul","03:00","BC Place, Vancouver"),
+    mk("Rr32_0",                             "2 Jul","03:00","Lumen Field, Seattle"),
+    mk("Rr32_1",                             "2 Jul","19:00","Levi's Stadium, Santa Clara"),
+    mkP("Rr32_2","W","H","RU","J",            "2 Jul","23:00","SoFi Stadium, Inglewood"),
+    mkP("Rr32_3","RU","K","RU","L",           "3 Jul","03:00","BMO Field, Toronto"),
+    mk("Rr32_4",                             "3 Jul","18:00","BC Place, Vancouver"),
     mkP("Rr32_5","RU","D","RU","G",           "3 Jul","18:00","AT&T Stadium, Arlington"),
     mkP("Rr32_6","W","J","RU","H",            "3 Jul","22:00","Hard Rock Stadium, Miami"),
-    mkP("Rr32_7","W","K","3","D/E/I/J/L",    "4 Jul","01:30","Arrowhead Stadium, Kansas City"),
+    mk("Rr32_7",                             "4 Jul","01:30","Arrowhead Stadium, Kansas City"),
   ],
   L_r16:[
     mk("Lr16_0","4 Jul","17:00","NRG Stadium, Houston"),
@@ -527,17 +527,17 @@ window.KO = {
   ],
   R_r16:[
     mk("Rr16_0","6 Jul","19:00","AT&T Stadium, Arlington"),
-    mk("Rr16_1","7 Jul","00:00","Lumen Field, Seattle"),
+    mk("Rr16_1","6 Jul","23:00","Lumen Field, Seattle"),
     mk("Rr16_2","7 Jul","16:00","Mercedes-Benz Stadium, Atlanta"),
     mk("Rr16_3","7 Jul","20:00","BC Place, Vancouver"),
   ],
   L_qf:[
-    mk("Lqf_0","9 Jul","20:00","Gillette Stadium, Foxboro"),
-    mk("Lqf_1","11 Jul","21:00","Hard Rock Stadium, Miami"),
+    mk("Lqf_0","9 Jul","23:00","Gillette Stadium, Foxboro"),
+    mk("Lqf_1","12 Jul","00:00","Hard Rock Stadium, Miami"),
   ],
   R_qf:[
     mk("Rqf_0","10 Jul","19:00","SoFi Stadium, Inglewood"),
-    mk("Rqf_1","12 Jul","01:00","Arrowhead Stadium, Kansas City"),
+    mk("Rqf_1","11 Jul","23:00","Arrowhead Stadium, Kansas City"),
   ],
   L_sf:[mk("Lsf_0","14 Jul","19:00","AT&T Stadium, Arlington")],
   R_sf:[mk("Rsf_0","15 Jul","19:00","Mercedes-Benz Stadium, Atlanta")],
@@ -1680,6 +1680,9 @@ function App() {
   
   useEffect(() => {
     window.__forceUpdate = () => setTick(t => t + 1);
+    // إعادة تعبئة KO بعد تركيب المكوّن — على حال كانت البيانات وصلت قبل التركيب
+    fillKOFromStandings();
+    setTick(t => t + 1);
     return () => { window.__forceUpdate = null; };
   }, []);
   
@@ -1948,11 +1951,10 @@ function fillKOFromStandings() {
     return null; // ثالث مجموعات: صعب التحديد قبل نهاية الدور
   };
 
-  // املأ مباريات الـ R32 فقط (هي المرتبطة بالمجموعات)
+  // أملأ مباريات الـ R32 المرتبطة بالمجموعات
   const r32Stages = ["L_r32", "R_r32"];
   r32Stages.forEach(stage => {
     (window.KO[stage] || []).forEach(koMatch => {
-      // أعد الحساب دايماً بناءً على النوع والمجموعة
       if (koMatch.homeType) {
         const t = resolveTeam(koMatch.homeType, koMatch.homeGroup);
         if (t) koMatch.home = t;
@@ -1960,6 +1962,26 @@ function fillKOFromStandings() {
       if (koMatch.awayType) {
         const t = resolveTeam(koMatch.awayType, koMatch.awayGroup);
         if (t) koMatch.away = t;
+      }
+    });
+  });
+
+  // أملأ مباريات أفضل الثوالث المعروفين
+  const knownThirds = {
+    "Lr32_2": ["Germany",   "Paraguay"],
+    "Lr32_5": ["France",    "Sweden"],
+    "Lr32_6": ["Mexico",    "Ecuador"],
+    "Lr32_7": ["England",   "Congo DR"],
+    "Rr32_0": ["Belgium",   "Senegal"],
+    "Rr32_1": ["USA",       "Bosnia and Herzegovina"],
+    "Rr32_4": ["Switzerland","Algeria"],
+    "Rr32_7": ["Colombia",  "Ghana"],
+  };
+  ["L_r32","R_r32"].forEach(stage => {
+    (window.KO[stage] || []).forEach(koMatch => {
+      if (knownThirds[koMatch.id]) {
+        koMatch.home = knownThirds[koMatch.id][0];
+        koMatch.away = knownThirds[koMatch.id][1];
       }
     });
   });
