@@ -1681,6 +1681,7 @@ function App() {
   useEffect(() => {
     window.__forceUpdate = () => setTick(t => t + 1);
     fillKOFromStandings();
+    propagateKOWinners();
     setTick(t => t + 1);
     return () => { window.__forceUpdate = null; };
   }, []);
@@ -1926,6 +1927,7 @@ const TEAM_MAP = {
 
 window.__lastApiSuccessTime = null;
 fillKOFromStandings();
+propagateKOWinners();
 
 let autoUpdateInterval = null;
 
@@ -1995,6 +1997,58 @@ function fillKOFromStandings() {
   });
 }
 
+function propagateKOWinners() {
+  if (!window.KO) return;
+
+  // دالة ترجع الفايز من مباراة إقصاء
+  const winner = (stageKey, idx) => {
+    const m = (window.KO[stageKey] || [])[idx];
+    if (!m || m.hg === null || m.ag === null) return "";
+    if (m.hg > m.ag) return m.home;
+    if (m.ag > m.hg) return m.away;
+    return ""; // تعادل — ما بيصير في إقصاء (بدون penalties)
+  };
+  const loser = (stageKey, idx) => {
+    const m = (window.KO[stageKey] || [])[idx];
+    if (!m || m.hg === null || m.ag === null) return "";
+    if (m.hg > m.ag) return m.away;
+    if (m.ag > m.hg) return m.home;
+    return "";
+  };
+  const setSlot = (stageKey, idx, home, away) => {
+    const m = (window.KO[stageKey] || [])[idx];
+    if (!m) return;
+    if (home) m.home = home;
+    if (away) m.away = away;
+  };
+
+  // R16 ← فوازي R32
+  setSlot("L_r16", 0, winner("L_r32",0), winner("L_r32",2));
+  setSlot("L_r16", 1, winner("L_r32",1), winner("L_r32",3));
+  setSlot("L_r16", 2, winner("L_r32",4), winner("L_r32",5));
+  setSlot("L_r16", 3, winner("L_r32",6), winner("L_r32",7));
+  setSlot("R_r16", 0, winner("R_r32",2), winner("R_r32",3));
+  setSlot("R_r16", 1, winner("R_r32",0), winner("R_r32",1));
+  setSlot("R_r16", 2, winner("R_r32",5), winner("R_r32",7));
+  setSlot("R_r16", 3, winner("R_r32",4), winner("R_r32",6));
+
+  // QF ← فوازي R16
+  setSlot("L_qf", 0, winner("L_r16",0), winner("L_r16",1));
+  setSlot("L_qf", 1, winner("L_r16",2), winner("L_r16",3));
+  setSlot("R_qf", 0, winner("R_r16",0), winner("R_r16",1));
+  setSlot("R_qf", 1, winner("R_r16",2), winner("R_r16",3));
+
+  // SF ← فوازي QF
+  setSlot("L_sf", 0, winner("L_qf",0), winner("L_qf",1));
+  setSlot("R_sf", 0, winner("R_qf",0), winner("R_qf",1));
+
+  // النهائي ← فوازي SF
+  setSlot("final", 0, winner("L_sf",0), winner("R_sf",0));
+
+  // مباراة المركز الثالث ← الخاسرين من SF
+  setSlot("third", 0, loser("L_sf",0), loser("R_sf",0));
+}
+
 async function fetchResults() {
   try {
     const res = await fetch(API_URL, {
@@ -2055,6 +2109,7 @@ async function fetchResults() {
     window.__lastApiSuccessTime = new Date();
     if (window.__updateStampComponent) window.__updateStampComponent();
     fillKOFromStandings();
+    propagateKOWinners();
     window.__forceUpdate && window.__forceUpdate();
 
   } catch (err) {
