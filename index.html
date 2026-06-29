@@ -2144,6 +2144,29 @@ async function fetchResults() {
     window.__lastApiSuccessTime = new Date();
     if (window.__updateStampComponent) window.__updateStampComponent();
     fillKOFromStandings();
+
+    // 3. تحديث الإقصائيات مرة ثانية بعد fillKOFromStandings (عشان R16+ تتطابق)
+    data.matches.forEach(m => {
+      if (!m.stage || m.stage === "GROUP_STAGE") return;
+      const homeKey = TEAM_MAP[m.homeTeam?.name];
+      const awayKey = TEAM_MAP[m.awayTeam?.name];
+      if (!homeKey || !awayKey) return;
+      const hg = m.score?.fullTime?.home;
+      const ag = m.score?.fullTime?.away;
+      const status = m.status || "SCHEDULED";
+      Object.values(KO).forEach(stageMatches => {
+        stageMatches.forEach(koMatch => {
+          if (koMatch.home === homeKey && koMatch.away === awayKey) {
+            koMatch.status = status;
+            if (hg !== null && ag !== null && hg !== undefined) {
+              koMatch.hg = hg;
+              koMatch.ag = ag;
+            }
+          }
+        });
+      });
+    });
+
     window.__forceUpdate && window.__forceUpdate();
 
   } catch (err) {
