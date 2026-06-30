@@ -549,6 +549,11 @@ const getWinner = m => {
   if (m.hg===null||m.ag===null) return null;
   if (m.hg>m.ag) return m.home;
   if (m.ag>m.hg) return m.away;
+  // تعادل بعد الوقت الإضافي → افحص البنالتي
+  if (m.pHg !== undefined && m.pHg !== null && m.pAg !== undefined && m.pAg !== null) {
+    if (m.pHg > m.pAg) return m.home;
+    if (m.pAg > m.pHg) return m.away;
+  }
   return null;
 };
 
@@ -564,8 +569,8 @@ function KOCard({ match, accent, lang }) {
   };
 
   const sides = [
-    { ...sideLabel(match.home, match.homeType, match.homeGroup), score:match.hg, isW:winner===match.home },
-    { ...sideLabel(match.away, match.awayType, match.awayGroup), score:match.ag, isW:winner===match.away },
+    { ...sideLabel(match.home, match.homeType, match.homeGroup), score:match.hg, pScore:match.pHg, isW:winner===match.home },
+    { ...sideLabel(match.away, match.awayType, match.awayGroup), score:match.ag, pScore:match.pAg, isW:winner===match.away },
   ];
   return (
     <div style={{ background:"var(--surface)", border:"1px solid var(--border)", borderRadius:6, overflow:"hidden", minWidth:138 }}>
@@ -580,7 +585,8 @@ function KOCard({ match, accent, lang }) {
             <span style={{overflow:"hidden",textOverflow:"ellipsis"}}>{s.text}</span>
           </span>
           <span style={{ fontSize:12, fontWeight:700, minWidth:14, textAlign:"center", marginLeft:4,
-            color:s.isW?ac:(s.score!==null?"var(--text)":"var(--border)") }}>
+            color:s.isW?ac:(s.score!==null?"var(--text)":"var(--border)"), display:"flex", alignItems:"center", gap:3 }}>
+            {s.pScore!==null && s.pScore!==undefined && <span style={{ fontSize:9, color:"var(--text3)" }}>({s.pScore})</span>}
             {s.score!==null?s.score:"–"}
           </span>
         </div>
@@ -2100,6 +2106,8 @@ async function fetchResults() {
 
       const hg = m.score?.fullTime?.home;
       const ag = m.score?.fullTime?.away;
+      const pHg = m.score?.penalties?.home;
+      const pAg = m.score?.penalties?.away;
       const status = m.status || "SCHEDULED";
       const minute = m.minute || null;
       const injuryTime = m.injuryTime || null;
@@ -2135,6 +2143,10 @@ async function fetchResults() {
                 koMatch.hg = hg;
                 koMatch.ag = ag;
               }
+              if (pHg !== null && pAg !== null && pHg !== undefined) {
+                koMatch.pHg = pHg;
+                koMatch.pAg = pAg;
+              }
             }
           });
         });
@@ -2153,6 +2165,8 @@ async function fetchResults() {
       if (!homeKey || !awayKey) return;
       const hg = m.score?.fullTime?.home;
       const ag = m.score?.fullTime?.away;
+      const pHg = m.score?.penalties?.home;
+      const pAg = m.score?.penalties?.away;
       const status = m.status || "SCHEDULED";
       Object.values(KO).forEach(stageMatches => {
         stageMatches.forEach(koMatch => {
@@ -2161,6 +2175,10 @@ async function fetchResults() {
             if (hg !== null && ag !== null && hg !== undefined) {
               koMatch.hg = hg;
               koMatch.ag = ag;
+            }
+            if (pHg !== null && pAg !== null && pHg !== undefined) {
+              koMatch.pHg = pHg;
+              koMatch.pAg = pAg;
             }
           }
         });
