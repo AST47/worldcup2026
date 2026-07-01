@@ -1937,122 +1937,7 @@ let autoUpdateInterval = null;
 function fillKOFromStandings() {
   if (!window.KO) return;
 
-  // احسب ترتيب كل مجموعة
-  const groupWinner  = {}; // A → "Mexico"
-  const groupRunnerUp = {};
-  Object.keys(GROUPS_RAW).forEach(gKey => {
-    const st = calcStandings(gKey, "en");
-    if (st.length >= 1) groupWinner[gKey]   = st[0].key;
-    if (st.length >= 2) groupRunnerUp[gKey] = st[1].key;
-  });
-
-  // دالة تحصل على اسم الفريق بناءً على النوع والمجموعة
-  const resolveTeam = (type, group) => {
-    // المجموعة قد تكون "A/B/C/D/F" للثوالث — نتجاهلها حالياً
-    if (type === "W")  return groupWinner[group]   || null;
-    if (type === "RU") return groupRunnerUp[group] || null;
-    return null; // ثالث مجموعات: صعب التحديد قبل نهاية الدور
-  };
-
-  // أملأ مباريات الـ R32 المرتبطة بالمجموعات
-  const r32Stages = ["L_r32", "R_r32"];
-  r32Stages.forEach(stage => {
-    (window.KO[stage] || []).forEach(koMatch => {
-      if (koMatch.homeType) {
-        const t = resolveTeam(koMatch.homeType, koMatch.homeGroup);
-        if (t) koMatch.home = t;
-      }
-      if (koMatch.awayType) {
-        const t = resolveTeam(koMatch.awayType, koMatch.awayGroup);
-        if (t) koMatch.away = t;
-      }
-    });
-  });
-
-  // ملء R16 بالفائزين من R32
-  const r32ToR16 = {
-    "Lr16_0": ["Lr32_0", "Lr32_3"],
-    "Lr16_1": ["Lr32_2", "Lr32_5"],
-    "Lr16_2": ["Lr32_1", "Lr32_4"],
-    "Lr16_3": ["Lr32_6", "Lr32_7"],
-    "Rr16_0": ["Rr32_3", "Rr32_2"],
-    "Rr16_1": ["Rr32_1", "Rr32_0"],
-    "Rr16_2": ["Rr32_5", "Rr32_6"],
-    "Rr16_3": ["Rr32_7", "Rr32_4"],
-  };
-
-  const getKOMatch = (id) => {
-    for (const stage of Object.values(window.KO)) {
-      const m = stage.find(m => m.id === id);
-      if (m) return m;
-    }
-    return null;
-  };
-
-  // ملء QF بالفائزين من R16
-  const r16ToQF = {
-    "Lqf_0": ["Lr16_0", "Lr16_1"],
-    "Lqf_1": ["Lr16_2", "Lr16_3"],
-    "Rqf_0": ["Rr16_0", "Rr16_1"],
-    "Rqf_1": ["Rr16_2", "Rr16_3"],
-  };
-  ["L_qf","R_qf"].forEach(stage => {
-    (window.KO[stage] || []).forEach(qfMatch => {
-      const [homeId, awayId] = r16ToQF[qfMatch.id] || [];
-      if (!homeId) return;
-      const homeR16 = getKOMatch(homeId);
-      const awayR16 = getKOMatch(awayId);
-      if (homeR16) { const w = getWinner(homeR16); if (w) qfMatch.home = w; }
-      if (awayR16) { const w = getWinner(awayR16); if (w) qfMatch.away = w; }
-    });
-  });
-
-  // ملء SF بالفائزين من QF
-  const qfToSF = {
-    "Lsf_0": ["Lqf_0", "Lqf_1"],
-    "Rsf_0": ["Rqf_0", "Rqf_1"],
-  };
-  ["L_sf","R_sf"].forEach(stage => {
-    (window.KO[stage] || []).forEach(sfMatch => {
-      const [homeId, awayId] = qfToSF[sfMatch.id] || [];
-      if (!homeId) return;
-      const homeQF = getKOMatch(homeId);
-      const awayQF = getKOMatch(awayId);
-      if (homeQF) { const w = getWinner(homeQF); if (w) sfMatch.home = w; }
-      if (awayQF) { const w = getWinner(awayQF); if (w) sfMatch.away = w; }
-    });
-  });
-
-  // ملء النهائي ومباراة الثالث
-  const lsf = getKOMatch("Lsf_0");
-  const rsf = getKOMatch("Rsf_0");
-  if (lsf && rsf) {
-    const lsfW = getWinner(lsf); const lsfL = lsf.hg !== null ? (lsfW === lsf.home ? lsf.away : lsf.home) : null;
-    const rsfW = getWinner(rsf); const rsfL = rsf.hg !== null ? (rsfW === rsf.home ? rsf.away : rsf.home) : null;
-    const final = getKOMatch("final_0");
-    const third = getKOMatch("third_0");
-    if (final) { if (lsfW) final.home = lsfW; if (rsfW) final.away = rsfW; }
-    if (third) { if (lsfL) third.home = lsfL; if (rsfL) third.away = rsfL; }
-  }
-
-  ["L_r16","R_r16"].forEach(stage => {
-    (window.KO[stage] || []).forEach(r16Match => {
-      const [homeId, awayId] = r32ToR16[r16Match.id] || [];
-      if (!homeId) return;
-      const homeR32 = getKOMatch(homeId);
-      const awayR32 = getKOMatch(awayId);
-      if (homeR32) {
-        const w = getWinner(homeR32);
-        if (w) r16Match.home = w;
-      }
-      if (awayR32) {
-        const w = getWinner(awayR32);
-        if (w) r16Match.away = w;
-      }
-    });
-  });
-
-  // كل مباريات R32 مكتملة
+  // 1. أسماء R32 الثابتة أولاً (لازم تكون موجودة قبل ما نحسب R16)
   const allR32 = {
     "Lr32_2": ["Germany",        "Paraguay"],
     "Rr32_1": ["Mexico",         "Ecuador"],
@@ -2072,6 +1957,112 @@ function fillKOFromStandings() {
       }
     });
   });
+
+  // 2. R32 المرتبطة بالمجموعات (W/RU) من ترتيب المجموعات
+  const groupWinner  = {};
+  const groupRunnerUp = {};
+  Object.keys(GROUPS_RAW).forEach(gKey => {
+    const st = calcStandings(gKey, "en");
+    if (st.length >= 1) groupWinner[gKey]   = st[0].key;
+    if (st.length >= 2) groupRunnerUp[gKey] = st[1].key;
+  });
+
+  const resolveTeam = (type, group) => {
+    if (type === "W")  return groupWinner[group]   || null;
+    if (type === "RU") return groupRunnerUp[group] || null;
+    return null;
+  };
+
+  const r32Stages = ["L_r32", "R_r32"];
+  r32Stages.forEach(stage => {
+    (window.KO[stage] || []).forEach(koMatch => {
+      if (koMatch.homeType) {
+        const t = resolveTeam(koMatch.homeType, koMatch.homeGroup);
+        if (t) koMatch.home = t;
+      }
+      if (koMatch.awayType) {
+        const t = resolveTeam(koMatch.awayType, koMatch.awayGroup);
+        if (t) koMatch.away = t;
+      }
+    });
+  });
+
+  // helper
+  const getKOMatch = (id) => {
+    for (const stage of Object.values(window.KO)) {
+      const m = stage.find(m => m.id === id);
+      if (m) return m;
+    }
+    return null;
+  };
+
+  // 3. R16 من فائزي R32
+  const r32ToR16 = {
+    "Lr16_0": ["Lr32_0", "Lr32_3"],
+    "Lr16_1": ["Lr32_2", "Lr32_5"],
+    "Lr16_2": ["Lr32_1", "Lr32_4"],
+    "Lr16_3": ["Lr32_6", "Lr32_7"],
+    "Rr16_0": ["Rr32_3", "Rr32_2"],
+    "Rr16_1": ["Rr32_1", "Rr32_0"],
+    "Rr16_2": ["Rr32_5", "Rr32_6"],
+    "Rr16_3": ["Rr32_7", "Rr32_4"],
+  };
+  ["L_r16","R_r16"].forEach(stage => {
+    (window.KO[stage] || []).forEach(r16Match => {
+      const [homeId, awayId] = r32ToR16[r16Match.id] || [];
+      if (!homeId) return;
+      const homeR32 = getKOMatch(homeId);
+      const awayR32 = getKOMatch(awayId);
+      if (homeR32) { const w = getWinner(homeR32); if (w) r16Match.home = w; }
+      if (awayR32) { const w = getWinner(awayR32); if (w) r16Match.away = w; }
+    });
+  });
+
+  // 4. QF من فائزي R16
+  const r16ToQF = {
+    "Lqf_0": ["Lr16_0", "Lr16_1"],
+    "Lqf_1": ["Lr16_2", "Lr16_3"],
+    "Rqf_0": ["Rr16_0", "Rr16_1"],
+    "Rqf_1": ["Rr16_2", "Rr16_3"],
+  };
+  ["L_qf","R_qf"].forEach(stage => {
+    (window.KO[stage] || []).forEach(qfMatch => {
+      const [homeId, awayId] = r16ToQF[qfMatch.id] || [];
+      if (!homeId) return;
+      const homeR16 = getKOMatch(homeId);
+      const awayR16 = getKOMatch(awayId);
+      if (homeR16) { const w = getWinner(homeR16); if (w) qfMatch.home = w; }
+      if (awayR16) { const w = getWinner(awayR16); if (w) qfMatch.away = w; }
+    });
+  });
+
+  // 5. SF من فائزي QF
+  const qfToSF = {
+    "Lsf_0": ["Lqf_0", "Lqf_1"],
+    "Rsf_0": ["Rqf_0", "Rqf_1"],
+  };
+  ["L_sf","R_sf"].forEach(stage => {
+    (window.KO[stage] || []).forEach(sfMatch => {
+      const [homeId, awayId] = qfToSF[sfMatch.id] || [];
+      if (!homeId) return;
+      const homeQF = getKOMatch(homeId);
+      const awayQF = getKOMatch(awayId);
+      if (homeQF) { const w = getWinner(homeQF); if (w) sfMatch.home = w; }
+      if (awayQF) { const w = getWinner(awayQF); if (w) sfMatch.away = w; }
+    });
+  });
+
+  // 6. النهائي ومباراة الثالث
+  const lsf = getKOMatch("Lsf_0");
+  const rsf = getKOMatch("Rsf_0");
+  if (lsf && rsf) {
+    const lsfW = getWinner(lsf); const lsfL = lsf.hg !== null ? (lsfW === lsf.home ? lsf.away : lsf.home) : null;
+    const rsfW = getWinner(rsf); const rsfL = rsf.hg !== null ? (rsfW === rsf.home ? rsf.away : rsf.home) : null;
+    const final = getKOMatch("final_0");
+    const third = getKOMatch("third_0");
+    if (final) { if (lsfW) final.home = lsfW; if (rsfW) final.away = rsfW; }
+    if (third) { if (lsfL) third.home = lsfL; if (rsfL) third.away = rsfL; }
+  }
 }
 
 async function fetchResults(isRetry = false) {
