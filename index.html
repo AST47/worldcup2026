@@ -501,23 +501,23 @@ const mk = (id, date="", time="", venue="") => ({
 window.KO = {
   L_r32: [
     mkP("Lr32_0","RU","A","RU","B",           "28 Jun","19:00","SoFi Stadium, Inglewood"),
-    mk("Lr32_1",                             "2 Jul","00:00","Levi's Stadium, Santa Clara"),
-    mk("Lr32_2",                             "29 Jun","20:30","Gillette Stadium, Foxboro"),
     mkP("Lr32_3","W","F","RU","C",             "30 Jun","01:00","BBVA Stadium, Monterrey"),
-    mk("Lr32_4",                             "1 Jul","20:00","Lumen Field, Seattle"),
+    mk("Lr32_2",                             "29 Jun","20:30","Gillette Stadium, Foxboro"),
     mk("Lr32_5",                             "30 Jun","21:00","MetLife Stadium, New Jersey"),
+    mk("Lr32_1",                             "2 Jul","00:00","Levi's Stadium, Santa Clara"),
+    mk("Lr32_4",                             "1 Jul","20:00","Lumen Field, Seattle"),
     mk("Lr32_6",                             "2 Jul","23:00","BMO Field, Toronto"),
     mkP("Lr32_7","W","H","RU","J",             "2 Jul","19:00","SoFi Stadium, Inglewood"),
   ],
   R_r32: [
-    mk("Rr32_0",                             "1 Jul","16:00","Mercedes-Benz Stadium, Atlanta"),
-    mk("Rr32_1",                             "1 Jul","01:00","Azteca Stadium, Mexico City"),
-    mkP("Rr32_2","RU","E","RU","I",           "30 Jun","17:00","AT&T Stadium, Arlington"),
     mkP("Rr32_3","W","C","RU","F",            "29 Jun","17:00","NRG Stadium, Houston"),
-    mk("Rr32_4",                             "4 Jul","01:30","Arrowhead Stadium, Kansas City"),
+    mkP("Rr32_2","RU","E","RU","I",           "30 Jun","17:00","AT&T Stadium, Arlington"),
+    mk("Rr32_1",                             "1 Jul","01:00","Azteca Stadium, Mexico City"),
+    mk("Rr32_0",                             "1 Jul","16:00","Mercedes-Benz Stadium, Atlanta"),
     mkP("Rr32_5","W","J","RU","H",            "3 Jul","22:00","Hard Rock Stadium, Miami"),
     mkP("Rr32_6","RU","D","RU","G",           "3 Jul","18:00","AT&T Stadium, Arlington"),
     mk("Rr32_7",                             "3 Jul","03:00","BC Place, Vancouver"),
+    mk("Rr32_4",                             "4 Jul","01:30","Arrowhead Stadium, Kansas City"),
   ],
   L_r16:[
     mk("Lr16_0","4 Jul","17:00","NRG Stadium, Houston"),
@@ -533,10 +533,10 @@ window.KO = {
   ],
   L_qf:[
     mk("Lqf_0","9 Jul","20:00","Gillette Stadium, Foxboro"),
-    mk("Lqf_1","11 Jul","21:00","Hard Rock Stadium, Miami"),
+    mk("Lqf_1","10 Jul","19:00","SoFi Stadium, Inglewood"),
   ],
   R_qf:[
-    mk("Rqf_0","10 Jul","19:00","SoFi Stadium, Inglewood"),
+    mk("Rqf_0","11 Jul","21:00","Hard Rock Stadium, Miami"),
     mk("Rqf_1","12 Jul","01:00","Arrowhead Stadium, Kansas City"),
   ],
   L_sf:[mk("Lsf_0","14 Jul","19:00","AT&T Stadium, Arlington")],
@@ -1971,14 +1971,14 @@ function fillKOFromStandings() {
 
   // ملء R16 بالفائزين من R32
   const r32ToR16 = {
-    "Lr16_0": ["Lr32_0", "Lr32_1"],
-    "Lr16_1": ["Lr32_2", "Lr32_3"],
-    "Lr16_2": ["Lr32_4", "Lr32_5"],
+    "Lr16_0": ["Lr32_0", "Lr32_3"],
+    "Lr16_1": ["Lr32_2", "Lr32_5"],
+    "Lr16_2": ["Lr32_1", "Lr32_4"],
     "Lr16_3": ["Lr32_6", "Lr32_7"],
-    "Rr16_0": ["Rr32_0", "Rr32_1"],
-    "Rr16_1": ["Rr32_2", "Rr32_3"],
-    "Rr16_2": ["Rr32_4", "Rr32_5"],
-    "Rr16_3": ["Rr32_6", "Rr32_7"],
+    "Rr16_0": ["Rr32_3", "Rr32_2"],
+    "Rr16_1": ["Rr32_1", "Rr32_0"],
+    "Rr16_2": ["Rr32_5", "Rr32_6"],
+    "Rr16_3": ["Rr32_7", "Rr32_4"],
   };
 
   const getKOMatch = (id) => {
@@ -2074,11 +2074,15 @@ function fillKOFromStandings() {
   });
 }
 
-async function fetchResults() {
+async function fetchResults(isRetry = false) {
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000); // timeout 10 ثواني
     const res = await fetch(API_URL, {
-      headers: { "X-Auth-Token": API_TOKEN }
+      headers: { "X-Auth-Token": API_TOKEN },
+      signal: controller.signal
     });
+    clearTimeout(timeout);
     const data = await res.json();
 
     if (!data.matches) return;
@@ -2173,6 +2177,9 @@ async function fetchResults() {
 
   } catch (err) {
     console.error("Fetch error:", err);
+    if (!isRetry) {
+      setTimeout(() => fetchResults(true), 8000); // retry بعد 8 ثواني لو فشل الأول
+    }
   }
 }
 
