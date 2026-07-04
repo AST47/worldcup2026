@@ -1099,6 +1099,21 @@ function LastUpdatedTimestamp({ lang }) {
 
 const FACTS = [
   {
+    ar: "رونالدو أصبح أكبر لاعب ميداني يشارك في مرحلة الإقصاء بتاريخ كأس العالم — عمره 41 سنة و147 يوماً في مباراة البرتغال وكرواتيا.",
+    en: "Ronaldo became the oldest outfield player to feature in a World Cup knockout match — aged 41 years and 147 days vs Croatia.",
+    tr: "Ronaldo, Hırvatistan maçında 41 yaş 147 günlükken Dünya Kupası eleme turunda oynayan en yaşlı alan oyuncusu oldu."
+  },
+  {
+    ar: "رونالدو سجّل أول هدف إقصائي في كأس العالم بمسيرته كلها ضد كرواتيا — بعد 20 سنة من المشاركة في البطولة وبعد 8 مباريات إقصائية بدون هدف.",
+    en: "Ronaldo scored his first-ever World Cup knockout goal vs Croatia — after 20 years at the tournament and 8 knockout games without scoring.",
+    tr: "Ronaldo, Hırvatistan'a karşı Dünya Kupası'ndaki ilk eleme golünü attı — turnuvada 20 yıl ve gol atmadan geçirilen 8 eleme maçının ardından."
+  },
+  {
+    ar: "سويسرا حققت أول فوز إقصائي في كأس العالم منذ عام 1938 بفوزها على الجزائر 2-0 — انتظار دام 88 سنة.",
+    en: "Switzerland won their first World Cup knockout match since 1938, beating Algeria 2-0 — an 88-year wait finally over.",
+    tr: "İsviçre, Cezayir'i 2-0 yenerek 1938'den bu yana ilk Dünya Kupası eleme galibiyetini aldı — 88 yıllık bekleme sona erdi."
+  },
+  {
     ar: "رونالدو أول لاعب في تاريخ كأس العالم يسجل في 6 نسخ مختلفة — حقق الرقم في الدقيقة الخامسة أمام أوزبكستان (23 يونيو).",
     en: "Ronaldo became the first player in World Cup history to score in 6 different editions — he achieved the record in the 5th minute against Uzbekistan (June 23).",
     tr: "Ronaldo, Dünya Kupası tarihinde 6 farklı turnuvada gol atan ilk oyuncu oldu — rekoru Özbekistan'a karşı 5. dakikada kırdı (23 Haziran)."
@@ -2134,9 +2149,11 @@ async function fetchResults(isRetry = false) {
 
     window.__lastApiSuccessTime = new Date();
     if (window.__updateStampComponent) window.__updateStampComponent();
+
+    // المرة الأولى: عشان تتحدد أسماء مباريات R32 المرتبطة بالمجموعات
     fillKOFromStandings();
 
-    // 3. تحديث الإقصائيات مرة ثانية بعد fillKOFromStandings (عشان R16+ تتطابق)
+    // Loop ثاني: هلأ الأسماء معروفة → بيقدر يحط السكور على group-based R32 matches
     data.matches.forEach(m => {
       if (!m.stage || m.stage === "GROUP_STAGE") return;
       const homeKey = TEAM_MAP[m.homeTeam?.name];
@@ -2164,7 +2181,18 @@ async function fetchResults(isRetry = false) {
       });
     });
 
-    window.__forceUpdate && window.__forceUpdate();
+    // المرة الثانية: هلأ كل سكورات R32 جاهزة → احسب R16/QF/SF/Final
+    fillKOFromStandings();
+
+    // استدعي forceUpdate حين يكون React جاهز (يحل race condition مع تسجيل useEffect)
+    const triggerUpdate = () => {
+      if (window.__forceUpdate) {
+        window.__forceUpdate();
+      } else {
+        setTimeout(triggerUpdate, 50);
+      }
+    };
+    triggerUpdate();
 
   } catch (err) {
     console.error("Fetch error:", err);
