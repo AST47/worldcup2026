@@ -27,7 +27,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
 <!-- Translations (UI strings, team/venue names, player names, fun facts, changelog) -->
-<script src="https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js?v=3"></script>
+<script src="https://raw.githubusercontent.com/ast47/worldcup2026/main/translations.js"></script>
 </head>
 <body>
 <div id="root">
@@ -693,7 +693,7 @@ function StatsTab({ lang }) {
   const isRtl = lang === "ar";
 
   useEffect(() => {
-    fetch("https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js?v=3")
+    fetch("https://raw.githubusercontent.com/ast47/worldcup2026/main/translations.js")
       .then(r => r.text())
       .then(code => {
         try {
@@ -1018,7 +1018,7 @@ function GoalsTab({ lang }) {
   const L = labels[lang];
 
   useEffect(() => {
-    fetch("https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js?v=3")
+    fetch("https://raw.githubusercontent.com/ast47/worldcup2026/main/translations.js")
       .then(r => r.text())
       .then(code => {
         try {
