@@ -57,6 +57,58 @@ const FLAGS = {
 
 const GC = ["#e74c3c","#e67e22","#f1c40f","#2ecc71","#1abc9c","#3498db","#9b59b6","#e91e63","#00bcd4","#4caf50","#ff5722","#607d8b"];
 
+// تصنيف الفيفا الرسمي (11 يونيو 2026) + الاتحاد القاري — بيانات مرجعية ثابتة، ما بتتغير خلال البطولة
+const TEAM_INFO = {
+  "Argentina": { rank: 1, confederation: "CONMEBOL" },
+  "Spain": { rank: 2, confederation: "UEFA" },
+  "France": { rank: 3, confederation: "UEFA" },
+  "England": { rank: 4, confederation: "UEFA" },
+  "Portugal": { rank: 5, confederation: "UEFA" },
+  "Brazil": { rank: 6, confederation: "CONMEBOL" },
+  "Morocco": { rank: 7, confederation: "CAF" },
+  "Netherlands": { rank: 8, confederation: "UEFA" },
+  "Belgium": { rank: 9, confederation: "UEFA" },
+  "Germany": { rank: 10, confederation: "UEFA" },
+  "Croatia": { rank: 11, confederation: "UEFA" },
+  "Colombia": { rank: 13, confederation: "CONMEBOL" },
+  "Mexico": { rank: 14, confederation: "CONCACAF" },
+  "Senegal": { rank: 15, confederation: "CAF" },
+  "Uruguay": { rank: 16, confederation: "CONMEBOL" },
+  "USA": { rank: 17, confederation: "CONCACAF" },
+  "Japan": { rank: 18, confederation: "AFC" },
+  "Switzerland": { rank: 19, confederation: "UEFA" },
+  "IR Iran": { rank: 20, confederation: "AFC" },
+  "Türkiye": { rank: 22, confederation: "UEFA" },
+  "Ecuador": { rank: 23, confederation: "CONMEBOL" },
+  "Austria": { rank: 24, confederation: "UEFA" },
+  "Korea Republic": { rank: 25, confederation: "AFC" },
+  "Australia": { rank: 27, confederation: "AFC" },
+  "Algeria": { rank: 28, confederation: "CAF" },
+  "Egypt": { rank: 29, confederation: "CAF" },
+  "Canada": { rank: 30, confederation: "CONCACAF" },
+  "Norway": { rank: 31, confederation: "UEFA" },
+  "Côte d'Ivoire": { rank: 33, confederation: "CAF" },
+  "Panama": { rank: 34, confederation: "CONCACAF" },
+  "Sweden": { rank: 38, confederation: "UEFA" },
+  "Czechia": { rank: 40, confederation: "UEFA" },
+  "Paraguay": { rank: 41, confederation: "CONMEBOL" },
+  "Scotland": { rank: 42, confederation: "UEFA" },
+  "Tunisia": { rank: 45, confederation: "CAF" },
+  "Congo DR": { rank: 46, confederation: "CAF" },
+  "Uzbekistan": { rank: 50, confederation: "AFC" },
+  "Qatar": { rank: 56, confederation: "AFC" },
+  "Iraq": { rank: 57, confederation: "AFC" },
+  "South Africa": { rank: 60, confederation: "CAF" },
+  "Saudi Arabia": { rank: 61, confederation: "AFC" },
+  "Jordan": { rank: 63, confederation: "AFC" },
+  "Bosnia and Herzegovina": { rank: 64, confederation: "UEFA" },
+  "Cabo Verde": { rank: 67, confederation: "CAF" },
+  "Ghana": { rank: 73, confederation: "CAF" },
+  "Curaçao": { rank: 82, confederation: "CONCACAF" },
+  "Haiti": { rank: 83, confederation: "CONCACAF" },
+  "New Zealand": { rank: 85, confederation: "OFC" },
+};
+
 function tn(lang, key) { return T[lang].teams[key] || key; }
 function vn(lang, key) { return T[lang].venues[key] || key; }
 
@@ -74,6 +126,163 @@ function fmtDate(lang, date, time) {
   const dt = toLocalDT(date, time);
   const locale = lang === "ar" ? "ar-EG" : lang === "tr" ? "tr-TR" : "en-US";
   return dt.toLocaleDateString(locale, { day: "numeric", month: "short", timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+}
+
+// ترتيب زمني موحّد (مستخدم بجدول المباريات وبمشوار الفريق)
+const _MONTH_ORDER = { "Jun": 6, "Jul": 7 };
+function parseSortKey(dateStr, timeStr) {
+  const [d, mo] = dateStr.split(" ");
+  const dayNum = parseInt(d, 10);
+  const monthNum = _MONTH_ORDER[mo] || 6;
+  const [h, mi] = timeStr.split(":").map(Number);
+  return (monthNum * 10000) + (dayNum * 100) + h + (mi / 60);
+}
+
+const KO_STAGE_LABELS = {
+  L_r32: "r32", R_r32: "r32", L_r16: "r16", R_r16: "r16",
+  L_qf: "qf", R_qf: "qf", L_sf: "sf", R_sf: "sf",
+  third: "third", final: "final",
+};
+
+// كل مباريات فريق معين (مجموعات + إقصاءات) مرتبة زمنياً — لعرضها بكرت الفريق
+function getTeamMatches(teamKey, lang) {
+  const t = T[lang];
+  const rows = [];
+
+  Object.keys(GROUPS_RAW).forEach(g => {
+    const grp = GROUPS_RAW[g];
+    if (!grp.teams.includes(teamKey)) return;
+    grp.matches.forEach(m => {
+      if (m.home !== teamKey && m.away !== teamKey) return;
+      const isHome = m.home === teamKey;
+      rows.push({
+        stageLabel: `${t.group} ${g}`,
+        opponent: isHome ? m.away : m.home,
+        myScore: isHome ? m.hg : m.ag,
+        oppScore: isHome ? m.ag : m.hg,
+        hg: m.hg, ag: m.ag,
+        sortKey: parseSortKey(m.date, m.time),
+      });
+    });
+  });
+
+  if (window.KO) {
+    Object.keys(window.KO).forEach(stage => {
+      window.KO[stage].forEach(m => {
+        if (m.home !== teamKey && m.away !== teamKey) return;
+        const isHome = m.home === teamKey;
+        rows.push({
+          stageLabel: t[KO_STAGE_LABELS[stage]] || stage,
+          opponent: isHome ? m.away : m.home,
+          myScore: isHome ? m.hg : m.ag,
+          oppScore: isHome ? m.ag : m.hg,
+          hg: m.hg, ag: m.ag,
+          sortKey: parseSortKey(m.date, m.time),
+        });
+      });
+    });
+  }
+
+  rows.sort((a, b) => a.sortKey - b.sortKey);
+  rows.forEach(r => {
+    if (r.hg === null || r.ag === null || r.hg === undefined || r.ag === undefined) { r.result = null; return; }
+    if (r.myScore > r.oppScore) r.result = "W";
+    else if (r.myScore < r.oppScore) r.result = "L";
+    else r.result = "D";
+  });
+  return rows;
+}
+
+function TeamModal({ teamKey, lang, onClose }) {
+  const t = T[lang];
+  if (!teamKey) return null;
+  const info = TEAM_INFO[teamKey] || {};
+  const matches = getTeamMatches(teamKey, lang);
+  const isRtl = lang === "ar";
+
+  return (
+    <div onClick={onClose} style={{
+      position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 1000,
+      display: "flex", alignItems: "center", justifyContent: "center", padding: 16,
+    }}>
+      <div onClick={e => e.stopPropagation()} dir={isRtl ? "rtl" : "ltr"} style={{
+        background: "var(--surface)", borderRadius: 12, maxWidth: 460, width: "100%",
+        maxHeight: "85vh", overflowY: "auto", border: "1px solid var(--border)",
+      }}>
+        <div style={{ padding: "18px 20px", borderBottom: "1px solid var(--border2)",
+          display: "flex", alignItems: "center", gap: 12, position: "sticky", top: 0,
+          background: "var(--surface)" }}>
+          <span style={{ fontSize: 32, flexShrink: 0 }}>{FLAGS[teamKey] || "🏳️"}</span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 17, fontWeight: 700, color: "var(--text)" }}>{tn(lang, teamKey)}</div>
+            <div style={{ fontSize: 11, color: "var(--text3)" }}>
+              {info.confederation ? t.confederations[info.confederation] : ""}
+              {info.rank ? `  ·  ${t.fifaRank}: #${info.rank}` : ""}
+            </div>
+          </div>
+          <button onClick={onClose} style={{
+            background: "none", border: "none", fontSize: 22, color: "var(--text3)",
+            cursor: "pointer", lineHeight: 1, padding: 4, flexShrink: 0,
+          }}>×</button>
+        </div>
+
+        <div style={{ padding: "14px 20px 18px" }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "var(--text3)", marginBottom: 10,
+            textTransform: "uppercase", letterSpacing: .5 }}>{t.roadToHere}</div>
+
+          {matches.length === 0 && (
+            <div style={{ fontSize: 12, color: "var(--text3)", textAlign: "center", padding: "24px 0" }}>
+              {t.noMatchesYet}
+            </div>
+          )}
+
+          {matches.map((m, i) => (
+            <div key={i} style={{
+              display: "flex", alignItems: "center", gap: 8, padding: "8px 0",
+              borderBottom: i < matches.length - 1 ? "1px solid var(--border2)" : "none",
+            }}>
+              <span style={{ fontSize: 10, color: "var(--text4)", minWidth: 44, flexShrink: 0 }}>{m.stageLabel}</span>
+              <span style={{ flex: 1, fontSize: 12, color: "var(--text2)",
+                display: "flex", alignItems: "center", gap: 5, overflow: "hidden" }}>
+                <span style={{ flexShrink: 0 }}>{FLAGS[m.opponent] || "🏳️"}</span>
+                <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{tn(lang, m.opponent)}</span>
+              </span>
+              <span style={{ fontSize: 13, fontWeight: 700, minWidth: 46, textAlign: "center", flexShrink: 0,
+                color: m.result === "W" ? "#2ecc71" : m.result === "L" ? "#e74c3c" : "var(--text3)" }}>
+                {(m.hg !== null && m.hg !== undefined) ? `${m.myScore}–${m.oppScore}` : "–"}
+              </span>
+              <span style={{ fontSize: 10, fontWeight: 700, minWidth: 16, textAlign: "center", flexShrink: 0,
+                color: m.result === "W" ? "#2ecc71" : m.result === "L" ? "#e74c3c" : "var(--text3)" }}>
+                {m.result || ""}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TeamName({ teamKey, lang, style }) {
+  return (
+    <span
+      onClick={(e) => { e.stopPropagation(); if (window.__openTeamModal) window.__openTeamModal(teamKey); }}
+      style={{ cursor: "pointer", ...style }}
+    >
+      {tn(lang, teamKey)}
+    </span>
+  );
+}
+
+function TeamFlag({ teamKey, style }) {
+  return (
+    <span
+      onClick={(e) => { e.stopPropagation(); if (window.__openTeamModal) window.__openTeamModal(teamKey); }}
+      style={{ cursor: "pointer", ...style }}
+    >
+      {FLAGS[teamKey] || "🏳️"}
+    </span>
+  );
 }
 
 function fmtTime(date, time) {
@@ -136,9 +345,9 @@ function KOCard({ match, accent, lang }) {
   const winner = getWinner(match);
 
   const sideLabel = (key, type, group) => {
-    if (key) return { text: tn(lang, key), flag: FLAGS[key]||"🏳️", isReal: true };
-    if (type) return { text: koLabel(lang, type, group), flag: null, isReal: false };
-    return { text: t.unknown||"?", flag: null, isReal: false };
+    if (key) return { text: tn(lang, key), flag: FLAGS[key]||"🏳️", isReal: true, teamKey: key };
+    if (type) return { text: koLabel(lang, type, group), flag: null, isReal: false, teamKey: null };
+    return { text: t.unknown||"?", flag: null, isReal: false, teamKey: null };
   };
 
   const sides = [
@@ -148,9 +357,10 @@ function KOCard({ match, accent, lang }) {
   return (
     <div style={{ background:"var(--surface)", border:"1px solid var(--border)", borderRadius:6, overflow:"hidden", minWidth:138 }}>
       {sides.map((s,si)=>(
-        <div key={si} style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+        <div key={si} onClick={s.isReal ? () => window.__openTeamModal && window.__openTeamModal(s.teamKey) : undefined}
+          style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
           padding:"5px 8px", borderBottom:si===0?"1px solid var(--bg2)":"none",
-          background:s.isW?"var(--win-bg)":"transparent" }}>
+          background:s.isW?"var(--win-bg)":"transparent", cursor:s.isReal?"pointer":"default" }}>
           <span style={{ fontSize: s.isReal?10:9,
             color: s.isReal?(s.isW?"var(--text)":"var(--text2)"):"var(--text4)",
             display:"flex", alignItems:"center", gap:3, overflow:"hidden", whiteSpace:"nowrap" }}>
@@ -280,8 +490,9 @@ function GroupCard({ groupKey, color, lang }) {
                   <span style={{ width:18, height:18, borderRadius:"50%", background:i<2?color:"var(--bg3)",
                     display:"inline-flex", alignItems:"center", justifyContent:"center",
                     fontSize:9, color:i<2?"#fff":"var(--text3)", fontWeight:700, flexShrink:0 }}>{i+1}</span>
-                  <span>{FLAGS[team.key]||"🏳️"}</span>
-                  <span style={{ color:i<2?"var(--text)":"var(--text2)" }}>{tn(lang,team.key)}</span>
+                  <TeamFlag teamKey={team.key}/>
+                  <span onClick={()=>window.__openTeamModal && window.__openTeamModal(team.key)}
+                    style={{ color:i<2?"var(--text)":"var(--text2)", cursor:"pointer" }}>{tn(lang,team.key)}</span>
                 </span>
               </td>
               <td style={{ textAlign:"center", color:"var(--text2)" }}>{team.p}</td>
@@ -306,7 +517,7 @@ function GroupCard({ groupKey, color, lang }) {
               </div>
               <div style={{ flex:1, fontSize:11, color:"var(--text)",
                 display:"flex", alignItems:"center", justifyContent:"flex-end", gap:4 }}>
-                <span>{tn(lang,m.home)}</span><span>{FLAGS[m.home]||"🏳️"}</span>
+                <TeamName teamKey={m.home} lang={lang} style={{cursor:"pointer"}}/><TeamFlag teamKey={m.home}/>
               </div>
               <div style={{ flexShrink:0, minWidth:46, textAlign:"center" }}>
                 {m.hg!==null&&m.ag!==null
@@ -326,7 +537,7 @@ function GroupCard({ groupKey, color, lang }) {
               </div>
               <div style={{ flex:1, fontSize:11, color:"var(--text)",
                 display:"flex", alignItems:"center", gap:4 }}>
-                <span>{FLAGS[m.away]||"🏳️"}</span><span>{tn(lang,m.away)}</span>
+                <TeamFlag teamKey={m.away}/><TeamName teamKey={m.away} lang={lang} style={{cursor:"pointer"}}/>
               </div>
               <div style={{ flexShrink:0, fontSize:9, color:"var(--text4)", textAlign:"left",
                 maxWidth:110, lineHeight:1.3 }}>{vn(lang, m.venue)}</div>
@@ -563,10 +774,10 @@ function ScheduleTab({ lang }) {
 
               {/* أطراف المباراة والنتيجة */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", gap: 4, margin: "6px 0" }}>
-                <div style={{
+                <div onClick={() => window.__openTeamModal && window.__openTeamModal(m.home)} style={{
                   flex: 1, display: "flex", alignItems: "center",
                   justifyContent: isRtl ? "flex-start" : "flex-end",
-                  gap: 8, overflow: "hidden",
+                  gap: 8, overflow: "hidden", cursor: "pointer",
                 }}>
                   <span style={{
                     fontSize: isFeatured ? 15 : 13, fontWeight: (homeWin || isLive) ? 700 : 400,
@@ -614,10 +825,10 @@ function ScheduleTab({ lang }) {
                   )}
                 </div>
 
-                <div style={{
+                <div onClick={() => window.__openTeamModal && window.__openTeamModal(m.away)} style={{
                   flex: 1, display: "flex", alignItems: "center",
                   justifyContent: isRtl ? "flex-end" : "flex-start",
-                  gap: 8, overflow: "hidden",
+                  gap: 8, overflow: "hidden", cursor: "pointer",
                 }}>
                   <span style={{ flexShrink: 0, fontSize: isFeatured ? 22 : 18 }}>{FLAGS[m.away] || "🏳️"}</span>
                   <span style={{
@@ -1130,12 +1341,18 @@ function App() {
   const [subTab, setSubTab] = useState("schedule");
   const [lang, setLang] = useState("en");
   const [tick, setTick] = useState(0);
-  
+  const [selectedTeam, setSelectedTeam] = useState(null);
+
   useEffect(() => {
     window.__forceUpdate = () => setTick(t => t + 1);
     return () => { window.__forceUpdate = null; };
   }, []);
-  
+
+  useEffect(() => {
+    window.__openTeamModal = (teamKey) => setSelectedTeam(teamKey);
+    return () => { window.__openTeamModal = null; };
+  }, []);
+
   const t = T[lang];
 
   return (
@@ -1299,6 +1516,7 @@ function App() {
           )}
         </div>
       </div>
+      <TeamModal teamKey={selectedTeam} lang={lang} onClose={() => setSelectedTeam(null)}/>
     </>
   );
 }

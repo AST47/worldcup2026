@@ -183,6 +183,14 @@ const T = {
     final: "النهائي", third: "مباراة المركز الثالث",
     r32: "دور الـ32", r16: "دور الـ16", qf: "ربع النهائي", sf: "نصف النهائي",
     unknown: "؟",
+    fifaRank: "تصنيف الفيفا",
+    roadToHere: "مشوار الفريق بالبطولة",
+    noMatchesYet: "لسا ما لعب أي مباراة",
+    confederations: {
+      UEFA: "الاتحاد الأوروبي", CONMEBOL: "اتحاد أمريكا الجنوبية",
+      CAF: "الاتحاد الأفريقي", AFC: "الاتحاد الآسيوي",
+      CONCACAF: "اتحاد أمريكا الشمالية والوسطى", OFC: "اتحاد أوقيانوسيا",
+    },
     teams: {
       "Mexico": "المكسيك", "South Africa": "جنوب أفريقيا", "Korea Republic": "كوريا الجنوبية", "Czechia": "تشيكيا",
       "Canada": "كندا", "Bosnia and Herzegovina": "البوسنة والهرسك", "Qatar": "قطر", "Switzerland": "سويسرا",
@@ -263,6 +271,14 @@ const T = {
     final: "Final", third: "Third Place",
     r32: "Round of 32", r16: "Round of 16", qf: "Quarter-finals", sf: "Semi-finals",
     unknown: "?",
+    fifaRank: "FIFA Ranking",
+    roadToHere: "Road to Here",
+    noMatchesYet: "No matches played yet",
+    confederations: {
+      UEFA: "UEFA (Europe)", CONMEBOL: "CONMEBOL (South America)",
+      CAF: "CAF (Africa)", AFC: "AFC (Asia)",
+      CONCACAF: "CONCACAF (North & Central America)", OFC: "OFC (Oceania)",
+    },
     teams: {
       "Mexico": "Mexico", "South Africa": "South Africa", "Korea Republic": "South Korea", "Czechia": "Czechia",
       "Canada": "Canada", "Bosnia and Herzegovina": "Bosnia and Herzegovina", "Qatar": "Qatar", "Switzerland": "Switzerland",
@@ -343,6 +359,14 @@ const T = {
     final: "Final", third: "Üçüncülük Maçı",
     r32: "Son 32", r16: "Son 16", qf: "Çeyrek Final", sf: "Yarı Final",
     unknown: "?",
+    fifaRank: "FIFA Sıralaması",
+    roadToHere: "Buraya Kadarki Yolculuk",
+    noMatchesYet: "Henüz maç oynamadı",
+    confederations: {
+      UEFA: "UEFA (Avrupa)", CONMEBOL: "CONMEBOL (Güney Amerika)",
+      CAF: "CAF (Afrika)", AFC: "AFC (Asya)",
+      CONCACAF: "CONCACAF (Kuzey ve Orta Amerika)", OFC: "OFC (Okyanusya)",
+    },
     teams: {
       "Mexico": "Meksika", "South Africa": "Güney Afrika", "Korea Republic": "Güney Kore", "Czechia": "Çekya",
       "Canada": "Kanada", "Bosnia and Herzegovina": "Bosna-Hersek", "Qatar": "Katar", "Switzerland": "İsviçre",
