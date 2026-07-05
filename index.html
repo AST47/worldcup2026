@@ -26,392 +26,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<!-- Translations (UI strings, team/venue names, player names, fun facts, changelog) -->
+<script src="https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js?v=3"></script>
 </head>
 <body>
-<div id="root"></div>
+<div id="root">
+  <div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#888;">Loading…</div>
+</div>
 
 <script type="text/babel" data-presets="env,react">
 const { useState, useEffect } = React;
 
-// ─── TRANSLATIONS ─────────────────────────────────────────────
-const T = {
-  ar: {
-    dir: "rtl",
-    title: "كأس العالم 2026",
-    subtitle: "كندا · المكسيك · الولايات المتحدة · 11 يونيو – 19 يوليو",
-    tabGroups: "⚽",
-    tabGroupsSub: "دور المجموعات",
-    tabKnockout: "مرحلة الإقصاءات",
-    tabMatches: "المباريات",
-    tabFacts: "💡",
-    tabGoals: "🥅",
-    tabStats: "📊",
-    tabAbout: "ⓘ",
-    team: "المنتخب",
-    lost: "خ", drawn: "ت", won: "ف", pts: "نق", gd: "لـ/عليه", played: "ل",
-    notPlayed: "لم تُلعب بعد",
-    notStarted: "لم تبدأ",
-    live: "مباشر",
-    remaining: "متبقي",
-    hour: "ساعة", minute: "دقيقة",
-    knockoutNote: "يُحدَّث الجدول بعد كل مباراة",
-    koFooter: "أسماء المنتخبات في دور الإقصاء تُضاف تباعاً بعد انتهاء دور المجموعات ويتم تحديثها تلقائياً",
-    dedicationL1: "إهداء إلى أبي ومعلمي الأول — محمد زهدي ❤️",
-    dedicationL2: "من علّمني كيف تقرأ جداول المباريات وكيف يُبنى نظام نهائيات كأس العالم لكرة القدم ⚽",
-    aboutBody: "مرحبًا بكم في تطبيق تتبع بطولة كأس العالم لكرة القدم ٢٠٢٦. يتيح لكم هذا التطبيق متابعة المجموعات، نتائج المباريات، وجداول الترتيب بالإضافة إلى شجرة الأدوار الإقصائية المحدثة ديناميكيًا طوال فترة البطولة.",
-    madeBy: "صُنع بواسطة ",
-    authorName: "Ahmad Saleh Tuffaha",
-    cvBtn: "🔍 استعرض السيرة الذاتية للمطور ←",
-    changelogTitle: "سجل التغييرات",
-    changelog: [
-      { v:"v3.5", date:"25 يونيو 2026", title:"إعادة هيكلة التبويبات", desc:"إعادة هيكلة التبويبات ودمج المباريات والمجموعات والإقصاءات ضمن تاب واحد مع تبويبات ثانوية. إصلاحات عامة ورتوشات." },
-      { v:"v3.4", date:"24 يونيو 2026", title:"ترجمة أسماء اللاعبين",       desc:"إضافة ترجمة أسماء اللاعبين للعربية والتركية عبر ملف translations.js على GitHub." },
-      { v:"v3.3", date:"23 يونيو 2026", title:"تبويب الإحصائيات",            desc:"إضافة تاب الإحصائيات مع أرقام عامة وتصنيفات الهجوم والدفاع والهدافين." },
-      { v:"v3.2", date:"22 يونيو 2026", title:"تبويب الأهداف",               desc:"إضافة تاب الأهداف مع قائمة مفصلة بكل هداف مرتبين بحسب الفريق واللاعب." },
-      { v:"v3.1", date:"18 يونيو 2026", title:"تبويب حقائق ومعلومات",  desc:"إضافة تاب المعلومات بأرقام قياسية وحقائق من كأس العالم." },
-      { v:"v3.0", date:"17 يونيو 2026", title:"مركز البطولة",        desc:"دمج تاب المجموعات والإقصاءات في تاب واحد مع sub-navigation." },
-      { v:"v2.2", date:"16 يونيو 2026", title:"تحديث تلقائي",         desc:"نتائج مباشرة عبر API رسمي من خلال Cloudflare Worker. تحديث كل دقيقة تلقائياً." },
-      { v:"v2.1", date:"15 يونيو 2026", title:"توقيت ذكي",          desc:"الأوقات تتحول تلقائياً لتوقيت المستخدم أياً كان موقعه." },
-      { v:"v2.0", date:"14 يونيو 2026", title:"جدول المباريات",       desc:"تاب جديد بكل المباريات بالتسلسل الزمني — مباشر، قادم، منتهي." },
-      { v:"v1.2", date:"13 يونيو 2026", title:"الإقصاءات والترجمات",   desc:"تصحيح تسميات جولات الإقصاء وتوقيتاتها. تحديث المصطلحات الرسمية لـ FIFA بكل اللغات." },
-      { v:"v1.1", date:"12 يونيو 2026", title:"تحسينات وإصلاحات",    desc:"دارك مود، أعلام Emoji، تصحيح أخطاء إملائية عربية وتركية، ترقية لـ GitHub Pages." },
-      { v:"v1.0", date:"11 يونيو 2026", title:"الإصدار الأول",        desc:"Tracker كامل: 12 مجموعة، 48 فريق، ترتيب تلقائي، براكيت الإقصاء. ثلاث لغات: عربي، إنجليزي، تركي." },
-    ],
-    final: "النهائي", third: "مباراة المركز الثالث",
-    r32: "دور الـ32", r16: "دور الـ16", qf: "ربع النهائي", sf: "نصف النهائي",
-    unknown: "؟",
-    teams: {
-      "Mexico": "المكسيك", "South Africa": "جنوب أفريقيا", "Korea Republic": "كوريا الجنوبية", "Czechia": "تشيكيا",
-      "Canada": "كندا", "Bosnia and Herzegovina": "البوسنة والهرسك", "Qatar": "قطر", "Switzerland": "سويسرا",
-      "Brazil": "البرازيل", "Morocco": "المغرب", "Haiti": "هاييتي", "Scotland": "أسكتلندا",
-      "USA": "الولايات المتحدة", "Paraguay": "باراغواي", "Australia": "أستراليا", "Türkiye": "تركيا",
-      "Germany": "ألمانيا", "Curaçao": "كوراساو", "Côte d'Ivoire": "ساحل العاج", "Ecuador": "الإكوادور",
-      "Netherlands": "هولندا", "Japan": "اليابان", "Sweden": "سويد", "Tunisia": "تونس",
-      "Belgium": "بلجيكا", "Egypt": "مصر", "IR Iran": "إيران", "New Zealand": "نيوزيلندا",
-      "Spain": "إسبانيا", "Cabo Verde": "الرأس الأخضر", "Saudi Arabia": "السعودية", "Uruguay": "أوروغواي",
-      "France": "فرنسا", "Senegal": "السنغال", "Iraq": "العراق", "Norway": "النرويج",
-      "Argentina": "الأرجنتين", "Algeria": "الجزائر", "Austria": "النمسا", "Jordan": "الأردن",
-      "Portugal": "البرتغال", "Congo DR": "الكونغو الديمقراطية", "Uzbekistan": "أوزبكستان", "Colombia": "كولومبيا",
-      "England": "إنجلترا", "Croatia": "كرواتيا", "Ghana": "غانا", "Panama": "بنما",
-    },
-    venues: {
-      "Azteca Stadium, Mexico City": "ملعب أزتيكا، مكسيكو سيتي",
-      "Akron Stadium, Guadalajara": "ملعب غوادالاخارا، غوادالاخارا",
-      "Mercedes-Benz Stadium, Atlanta": "مرسيدس-بنز ستيديوم، أتلانتا",
-      "BBVA Stadium, Monterrey": "ملعب BBVA، مونتيري",
-      "BMO Field, Toronto": "BMO فيلد، تورنتو",
-      "Levi's Stadium, Santa Clara": "ملعب ليفايز، سانتا كلارا",
-      "SoFi Stadium, Inglewood": "SoFi ستيديوم، إنجلوود",
-      "BC Place, Vancouver": "BC بليس، فانكوفر",
-      "Lumen Field, Seattle": "لومن فيلد، سياتل",
-      "MetLife Stadium, New Jersey": "ملعب ميتلايف، نيوجيرسي",
-      "Gillette Stadium, Foxboro": "جيليت ستيديوم، فوكسبورو",
-      "Lincoln Financial, Philadelphia": "لينكولن فاينانشيال فيلد، فيلادلفيا",
-      "Hard Rock Stadium, Miami": "هارد روك ستيديوم، ميامي",
-      "NRG Stadium, Houston": "NRG ستيديوم، هيوستن",
-      "AT&T Stadium, Arlington": "AT&T ستيديوم، أرلينجتون",
-      "Arrowhead Stadium, Kansas City": "أروهيد ستيديوم، كانساس سيتي",
-    },
-    months: { "Jun": "يونيو", "Jul": "يوليو" },
-  },
-  en: {
-    dir: "ltr",
-    title: "FIFA World Cup 2026",
-    subtitle: "Canada · Mexico · United States · June 11 – July 19",
-    tabGroups: "⚽",
-    tabGroupsSub: "Group Stage",
-    tabKnockout: "Knockout Stage",
-    tabMatches: "Matches",
-    tabFacts: "💡",
-    tabGoals: "🥅",
-    tabStats: "📊",
-    tabAbout: "ⓘ",
-    group: "Group",
-    team: "Team",
-    lost: "L", drawn: "D", won: "W", pts: "Pts", gd: "GD", played: "P",
-    notPlayed: "Not played",
-    notStarted: "Not started",
-    live: "LIVE",
-    remaining: "Rem.",
-    hour: "h", minute: "m",
-    knockoutNote: "Updated after every match",
-    koFooter: "Knockout teams will be added and updated dynamically after the group stage concludes",
-    dedicationL1: "Dedicated to my father and first teacher — Muhammad Zuhdi ❤️",
-    dedicationL2: "The one who taught me how to read match tables and how the World Cup finals are structured ⚽",
-    aboutBody: "Welcome to the FIFA World Cup 2026 tournament tracker app. Follow live standings, groups, individual match schedules, and a dynamically linked knockout bracket layout as the tournament results progress.",
-    madeBy: "Made by ",
-    authorName: "Ahmad Saleh Tuffaha",
-    cvBtn: "🔍 View Developer's Portfolio & CV →",
-    changelogTitle: "Changelog",
-    changelog: [
-      { v:"v3.5", date:"25 Jun 2026", title:"Tab Restructure & General Fixes", desc:"Restructured tabs: Matches, Groups, and Knockout merged under one tab with sub-navigation. General fixes and polish." },
-      { v:"v3.4", date:"24 Jun 2026", title:"Player Name Translations",          desc:"Added Arabic and Turkish player name translations via translations.js on GitHub." },
-      { v:"v3.3", date:"23 Jun 2026", title:"Statistics Tab",                    desc:"Added Statistics tab with general totals and ranked attack, defense, and scorer standings." },
-      { v:"v3.2", date:"22 Jun 2026", title:"Goals Tab",                         desc:"Added Goals tab with detailed breakdown of all scorers sorted by team and player." },
-      { v:"v3.1", date:"18 Jun 2026", title:"Fun Facts Tab",         desc:"Added Fun Facts tab with live World Cup records and milestones." },
-      { v:"v3.0", date:"17 Jun 2026", title:"Tournament Hub",        desc:"Merged groups & knockout into one tab with sub-navigation." },
-      { v:"v2.2", date:"16 Jun 2026", title:"Auto-Updates",          desc:"Live results via official API through Cloudflare Worker. Updates every minute automatically." },
-      { v:"v2.1", date:"15 Jun 2026", title:"Smart Timezone",        desc:"All times auto-convert to the user's local timezone, wherever they are." },
-      { v:"v2.0", date:"14 Jun 2026", title:"Schedule Tab",          desc:"New tab with all matches in chronological order — live, upcoming, then finished." },
-      { v:"v1.2", date:"13 Jun 2026", title:"Bracket & Translations",desc:"Fixed knockout round labels and official FIFA venue times. Updated terminology across all languages." },
-      { v:"v1.1", date:"12 Jun 2026", title:"UI & Bug Fixes",        desc:"Dark mode, emoji flags, Arabic/Turkish typo fixes, migrated to GitHub Pages." },
-      { v:"v1.0", date:"11 Jun 2026", title:"Initial Release",       desc:"Full tracker: 12 groups, 48 teams, live standings, knockout bracket. Trilingual: Arabic, English, Turkish." },
-    ],
-    final: "Final", third: "Third Place",
-    r32: "Round of 32", r16: "Round of 16", qf: "Quarter-finals", sf: "Semi-finals",
-    unknown: "?",
-    teams: {
-      "Mexico": "Mexico", "South Africa": "South Africa", "Korea Republic": "South Korea", "Czechia": "Czechia",
-      "Canada": "Canada", "Bosnia and Herzegovina": "Bosnia and Herzegovina", "Qatar": "Qatar", "Switzerland": "Switzerland",
-      "Brazil": "Brazil", "Morocco": "Morocco", "Haiti": "Haiti", "Scotland": "Scotland",
-      "USA": "USA", "Paraguay": "Paraguay", "Australia": "Australia", "Türkiye": "Türkiye",
-      "Germany": "Germany", "Curaçao": "Curaçao", "Côte d'Ivoire": "Ivory Coast", "Ecuador": "Ecuador",
-      "Netherlands": "Netherlands", "Japan": "Japan", "Sweden": "Sweden", "Tunisia": "Tunisia",
-      "Belgium": "Belgium", "Egypt": "Egypt", "IR Iran": "Iran", "New Zealand": "New Zealand",
-      "Spain": "Spain", "Cabo Verde": "Cape Verde", "Saudi Arabia": "Saudi Arabia", "Uruguay": "Uruguay",
-      "France": "France", "Senegal": "Senegal", "Iraq": "Iraq", "Norway": "Norway",
-      "Argentina": "Argentina", "Algeria": "Algeria", "Austria": "Austria", "Jordan": "Jordan",
-      "Portugal": "Portugal", "Congo DR": "DR Congo", "Uzbekistan": "Uzbekistan", "Colombia": "Colombia",
-      "England": "England", "Croatia": "Croatia", "Ghana": "Ghana", "Panama": "Panama",
-    },
-    venues: {
-      "Azteca Stadium, Mexico City": "Azteca Stadium, Mexico City",
-      "Akron Stadium, Guadalajara": "Akron Stadium, Guadalajara",
-      "Mercedes-Benz Stadium, Atlanta": "Mercedes-Benz Stadium, Atlanta",
-      "BBVA Stadium, Monterrey": "BBVA Stadium, Monterrey",
-      "BMO Field, Toronto": "BMO Field, Toronto",
-      "Levi's Stadium, Santa Clara": "Levi's Stadium, Santa Clara",
-      "SoFi Stadium, Inglewood": "SoFi Stadium, Inglewood",
-      "BC Place, Vancouver": "BC Place, Vancouver",
-      "Lumen Field, Seattle": "Lumen Field, Seattle",
-      "MetLife Stadium, New Jersey": "MetLife Stadium, New Jersey",
-      "Gillette Stadium, Foxboro": "Gillette Stadium, Foxboro",
-      "Lincoln Financial, Philadelphia": "Lincoln Financial Field, Philadelphia",
-      "Hard Rock Stadium, Miami": "Hard Rock Stadium, Miami",
-      "NRG Stadium, Houston": "NRG Stadium, Houston",
-      "AT&T Stadium, Arlington": "AT&T Stadium, Arlington",
-      "Arrowhead Stadium, Kansas City": "Arrowhead Stadium, Kansas City",
-    },
-    months: { "Jun": "Jun", "Jul": "Jul" },
-  },
-  tr: {
-    dir: "ltr",
-    title: "FIFA Dünya Kupası 2026",
-    subtitle: "Kanada · Meksika · Amerika Birleşik Devletleri · 11 Haziran – 19 Temmuz",
-    tabGroups: "⚽",
-    tabGroupsSub: "Grup Aşaması",
-    tabKnockout: "Eleme Aşaması",
-    tabMatches: "Maçlar",
-    tabFacts: "💡",
-    tabGoals: "🥅",
-    tabStats: "📊",
-    tabAbout: "ⓘ",
-    group: "Grup",
-    team: "Takım",
-    lost: "M", drawn: "B", won: "G", pts: "Puan", gd: "A:Y", played: "O",
-    notPlayed: "Oynanmadı",
-    notStarted: "Başlamadı",
-    live: "CANLI",
-    remaining: "Kalan",
-    hour: "sa", minute: "dk",
-    knockoutNote: "Her maçtan sonra güncellenir",
-    koFooter: "Eleme turu takımları grup aşaması bittikten sonra dinamik olarak eklenecek ve güncellenecektir",
-    dedicationL1: "Babama ve ilk öğretmenime ithaf edilmiştir — Muhammad Zuhdi ❤️",
-    dedicationL2: "Bana maç tablolarını okumayı ve Dünya Kupası finallerinin nasıl yapılandırıldığını öğreten kişi ⚽",
-    aboutBody: "FIFA Dünya Kupası 2026 turnuva takip uygulamasına hoş geldiniz. Turnuva sonuçları ilerledikçe canlı puan durumlarını, grupları, bireysel maç programlarını ve dinamik olarak bağlantılı eleme aşaması tablosunu takip edin.",
-    madeBy: "Tarafından yapıldı ",
-    authorName: "Ahmad Saleh Tuffaha",
-    cvBtn: "🔍 Geliştiricinin Özgeçmişini Görüntüle →",
-    changelogTitle: "Sürüm Geçmişi",
-    changelog: [
-      { v:"v3.5", date:"25 Haz 2026", title:"Sekme Yeniden Yapılandırması & Genel Düzeltmeler", desc:"Sekmeler yeniden yapılandırıldı: Maçlar, Gruplar ve Eleme alt gezinmeyle tek sekmede birleştirildi. Genel düzeltmeler ve iyileştirmeler." },
-      { v:"v3.4", date:"24 Haz 2026", title:"Oyuncu Adı Çevirileri",                    desc:"GitHub'daki translations.js aracılığıyla Arapça ve Türkçe oyuncu adı çevirileri eklendi." },
-      { v:"v3.3", date:"23 Haz 2026", title:"İstatistik Sekmesi",                       desc:"Genel toplamlar ve saldırı, savunma ile gol kralı sıralamaları içeren İstatistik sekmesi eklendi." },
-      { v:"v3.2", date:"22 Haz 2026", title:"Goller Sekmesi",                           desc:"Takım ve oyuncuya göre sıralanmış tüm gol atıcıların ayrıntılı dökümünü içeren Goller sekmesi eklendi." },
-      { v:"v3.1", date:"18 Haz 2026", title:"İlginç Bilgiler Sekmesi", desc:"Dünya Kupası rekorları ve önemli başarılarını içeren Eğlenceli Bilgiler sekmesi eklendi." },
-      { v:"v3.0", date:"17 Haz 2026", title:"Turnuva Merkezi",         desc:"Grupları ve Knockout'u alt gezinme menüsüyle tek bir sekmede birleştirin." },
-      { v:"v2.2", date:"16 Haz 2026", title:"Otomatik Güncelleme",     desc:"Cloudflare Worker üzerinden resmi API ile canlı sonuçlar. Her dakika otomatik güncelleme." },
-      { v:"v2.1", date:"15 Haz 2026", title:"Akıllı Saat Dilimi",      desc:"Tüm saatler kullanıcının yerel saat dilimine otomatik dönüştürülür." },
-      { v:"v2.0", date:"14 Haz 2026", title:"Fikstür Sekmesi",         desc:"Tüm maçların kronolojik sırayla gösterildiği yeni sekme — canlı, yaklaşan, biten." },
-      { v:"v1.2", date:"13 Haz 2026", title:"Eleme & Çeviriler",       desc:"Eleme turu etiketleri ve resmi FIFA venue saatleri düzeltildi. Tüm dillerde terminoloji güncellendi." },
-      { v:"v1.1", date:"12 Haz 2026", title:"UI & Hata Düzeltmeleri",  desc:"Karanlık mod, emoji bayraklar, Arapça/Türkçe yazım düzeltmeleri, GitHub Pages'e geçiş." },
-      { v:"v1.0", date:"11 Haz 2026", title:"İlk Sürüm",               desc:"Tam takip: 12 grup, 48 takım, canlı puan durumu, eleme kupası. Üç dil: Arapça, İngilizce, Türkçe." },
-    ],
-    final: "Final", third: "Üçüncülük Maçı",
-    r32: "Son 32", r16: "Son 16", qf: "Çeyrek Final", sf: "Yarı Final",
-    unknown: "?",
-    teams: {
-      "Mexico": "Meksika", "South Africa": "Güney Afrika", "Korea Republic": "Güney Kore", "Czechia": "Çekya",
-      "Canada": "Kanada", "Bosnia and Herzegovina": "Bosna-Hersek", "Qatar": "Katar", "Switzerland": "İsviçre",
-      "Brazil": "Brezilya", "Morocco": "Fas", "Haiti": "Haiti", "Scotland": "İskoçya",
-      "USA": "ABD", "Paraguay": "Paraguay", "Australia": "Avustralya", "Türkiye": "Türkiye",
-      "Germany": "Almanya", "Curaçao": "Curaçao", "Côte d'Ivoire": "Fildişi Sahili", "Ecuador": "Ekvador",
-      "Netherlands": "Hollanda", "Japan": "Japonya", "Sweden": "İsveç", "Tunisia": "Tunus",
-      "Belgium": "Belçika", "Egypt": "Mısır", "IR Iran": "İran", "New Zealand": "Yeni Zelanda",
-      "Spain": "İspanya", "Cabo Verde": "Yeşil Burun Adaları", "Saudi Arabia": "Suudi Arabistan", "Uruguay": "Uruguay",
-      "France": "Fransa", "Senegal": "Senegal", "Iraq": "Irak", "Norway": "Norveç",
-      "Argentina": "Arjantin", "Algeria": "Cezayir", "Austria": "Avusturya", "Jordan": "Ürdün",
-      "Portugal": "Portekiz", "Congo DR": "Kongo Demokratik Cumhuriyeti", "Uzbekistan": "Özbekistan", "Colombia": "Kolombiya",
-      "England": "İngiltere", "Croatia": "Hırvatistan", "Ghana": "Gana", "Panama": "Panama",
-    },
-    venues: {
-      "Azteca Stadium, Mexico City": "Azteca Stadyumu, Meksiko Şehri",
-      "Akron Stadium, Guadalajara": "Akron Stadyumu, Guadalajara",
-      "Mercedes-Benz Stadium, Atlanta": "Mercedes-Benz Stadyumu, Atlanta",
-      "BBVA Stadium, Monterrey": "BBVA Stadyumu, Monterrey",
-      "BMO Field, Toronto": "BMO Field, Toronto",
-      "Levi's Stadium, Santa Clara": "Levi's Stadyumu, Santa Clara",
-      "SoFi Stadium, Inglewood": "SoFi Stadyumu, Inglewood",
-      "BC Place, Vancouver": "BC Place, Vancouver",
-      "Lumen Field, Seattle": "Lumen Field, Seattle",
-      "MetLife Stadium, New Jersey": "MetLife Stadyumu, New Jersey",
-      "Gillette Stadium, Foxboro": "Gillette Stadyumu, Foxboro",
-      "Lincoln Financial, Philadelphia": "Lincoln Financial Field, Philadelphia",
-      "Hard Rock Stadium, Miami": "Hard Rock Stadyumu, Miami",
-      "NRG Stadium, Houston": "NRG Stadyumu, Houston",
-      "AT&T Stadium, Arlington": "AT&T Stadyumu, Arlington",
-      "Arrowhead Stadium, Kansas City": "Arrowhead Stadyumu, Kansas City",
-    },
-    months: { "Jun": "Haz", "Jul": "Tem" },
-  },
-};
-
-// ─── RAW GROUPS DATA (canonical English keys) ─────────────────
-window.GROUPS_RAW = {
-  A: {
-    teams: ["Mexico","South Africa","Korea Republic","Czechia"],
-    matches: [
-      { home:"Mexico",       away:"South Africa",  date:"11 Jun", time:"19:00", venue:"Azteca Stadium, Mexico City",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Korea Republic",  away:"Czechia",        date:"12 Jun", time:"02:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Czechia",      away:"South Africa",   date:"18 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta",    hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Mexico",       away:"Korea Republic",    date:"19 Jun", time:"01:00", venue:"Akron Stadium, Guadalajara",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Czechia",      away:"Mexico",         date:"25 Jun", time:"01:00", venue:"Azteca Stadium, Mexico City",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"South Africa", away:"Korea Republic",    date:"25 Jun", time:"01:00", venue:"BBVA Stadium, Monterrey",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-  B: {
-    teams: ["Canada","Bosnia and Herzegovina","Qatar","Switzerland"],
-    matches: [
-      { home:"Canada",                  away:"Bosnia and Herzegovina", date:"12 Jun", time:"19:00", venue:"BMO Field, Toronto",             hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Qatar",                   away:"Switzerland",             date:"13 Jun", time:"19:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Switzerland",             away:"Bosnia and Herzegovina", date:"18 Jun", time:"19:00", venue:"SoFi Stadium, Inglewood",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Canada",                  away:"Qatar",                   date:"19 Jun", time:"01:00", venue:"BC Place, Vancouver",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Switzerland",             away:"Canada",                  date:"24 Jun", time:"19:00", venue:"BC Place, Vancouver",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Bosnia and Herzegovina",  away:"Qatar",                   date:"24 Jun", time:"19:00", venue:"Lumen Field, Seattle",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-  C: {
-    teams: ["Brazil","Morocco","Haiti","Scotland"],
-    matches: [
-      { home:"Brazil",    away:"Morocco",   date:"13 Jun", time:"22:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Haiti",     away:"Scotland",  date:"14 Jun", time:"01:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Scotland",  away:"Morocco",   date:"20 Jun", time:"01:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Brazil",    away:"Haiti",     date:"20 Jun", time:"00:30", venue:"Lincoln Financial, Philadelphia",   hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Scotland",  away:"Brazil",    date:"25 Jun", time:"01:00", venue:"Hard Rock Stadium, Miami",          hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Morocco",   away:"Haiti",     date:"25 Jun", time:"01:00", venue:"Mercedes-Benz Stadium, Atlanta",   hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-  D: {
-    teams: ["USA","Paraguay","Australia","Türkiye"],
-    matches: [
-      { home:"USA",        away:"Paraguay",   date:"13 Jun", time:"01:00", venue:"SoFi Stadium, Inglewood",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Australia",  away:"Türkiye",    date:"14 Jun", time:"04:00", venue:"BC Place, Vancouver",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"USA",        away:"Australia",  date:"19 Jun", time:"19:00", venue:"Lumen Field, Seattle",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Türkiye",    away:"Paraguay",   date:"20 Jun", time:"03:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Türkiye",    away:"USA",        date:"26 Jun", time:"02:00", venue:"SoFi Stadium, Inglewood",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Paraguay",   away:"Australia",  date:"26 Jun", time:"02:00", venue:"Levi's Stadium, Santa Clara",    hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-  E: {
-    teams: ["Germany","Curaçao","Côte d'Ivoire","Ecuador"],
-    matches: [
-      { home:"Germany",     away:"Curaçao",      date:"14 Jun", time:"17:00", venue:"NRG Stadium, Houston",             hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Côte d'Ivoire", away:"Ecuador",       date:"14 Jun", time:"23:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Germany",     away:"Côte d'Ivoire",   date:"20 Jun", time:"20:00", venue:"BMO Field, Toronto",               hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Ecuador",     away:"Curaçao",       date:"21 Jun", time:"00:00", venue:"Arrowhead Stadium, Kansas City",   hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Ecuador",     away:"Germany",       date:"25 Jun", time:"20:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Curaçao",     away:"Côte d'Ivoire",   date:"25 Jun", time:"20:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-  F: {
-    teams: ["Netherlands","Japan","Sweden","Tunisia"],
-    matches: [
-      { home:"Netherlands", away:"Japan",    date:"14 Jun", time:"20:00", venue:"AT&T Stadium, Arlington",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Sweden",      away:"Tunisia",  date:"15 Jun", time:"02:00", venue:"BBVA Stadium, Monterrey",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Netherlands", away:"Sweden",   date:"20 Jun", time:"17:00", venue:"NRG Stadium, Houston",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Tunisia",     away:"Japan",    date:"21 Jun", time:"04:00", venue:"BBVA Stadium, Monterrey",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Japan",       away:"Sweden",   date:"26 Jun", time:"02:00", venue:"AT&T Stadium, Arlington",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Tunisia",     away:"Netherlands", date:"26 Jun", time:"02:00", venue:"Arrowhead Stadium, Kansas City", hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-  G: {
-    teams: ["Belgium","Egypt","IR Iran","New Zealand"],
-    matches: [
-      { home:"Belgium",     away:"Egypt",        date:"15 Jun", time:"19:00", venue:"Lumen Field, Seattle",          hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"IR Iran",        away:"New Zealand",  date:"16 Jun", time:"01:00", venue:"SoFi Stadium, Inglewood",       hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Belgium",     away:"IR Iran",         date:"21 Jun", time:"19:00", venue:"SoFi Stadium, Inglewood",       hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"New Zealand", away:"Egypt",        date:"22 Jun", time:"01:00", venue:"BC Place, Vancouver",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Egypt",       away:"IR Iran",         date:"26 Jun", time:"03:00", venue:"Lumen Field, Seattle",          hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"New Zealand", away:"Belgium",      date:"27 Jun", time:"03:00", venue:"BC Place, Vancouver",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-  H: {
-    teams: ["Spain","Cabo Verde","Saudi Arabia","Uruguay"],
-    matches: [
-      { home:"Spain",       away:"Cabo Verde",    date:"15 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta", hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Saudi Arabia",away:"Uruguay",        date:"15 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",       hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Spain",       away:"Saudi Arabia",  date:"21 Jun", time:"16:00", venue:"Mercedes-Benz Stadium, Atlanta", hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Uruguay",     away:"Cabo Verde",    date:"21 Jun", time:"22:00", venue:"Hard Rock Stadium, Miami",       hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Cabo Verde",  away:"Saudi Arabia",  date:"27 Jun", time:"00:00", venue:"NRG Stadium, Houston",           hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Uruguay",     away:"Spain",         date:"27 Jun", time:"00:00", venue:"Akron Stadium, Guadalajara",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-  I: {
-    teams: ["France","Senegal","Iraq","Norway"],
-    matches: [
-      { home:"France",   away:"Senegal",  date:"16 Jun", time:"19:00", venue:"MetLife Stadium, New Jersey",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Iraq",     away:"Norway",   date:"16 Jun", time:"22:00", venue:"Gillette Stadium, Foxboro",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"France",   away:"Iraq",     date:"22 Jun", time:"21:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Norway",   away:"Senegal",  date:"23 Jun", time:"00:00", venue:"MetLife Stadium, New Jersey",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Norway",   away:"France",   date:"26 Jun", time:"19:00", venue:"Gillette Stadium, Foxboro",        hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Senegal",  away:"Iraq",     date:"26 Jun", time:"19:00", venue:"BMO Field, Toronto",               hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-  J: {
-    teams: ["Argentina","Algeria","Austria","Jordan"],
-    matches: [
-      { home:"Argentina", away:"Algeria",   date:"17 Jun", time:"01:00", venue:"Arrowhead Stadium, Kansas City",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Austria",   away:"Jordan",    date:"17 Jun", time:"04:00", venue:"Levi's Stadium, Santa Clara",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Argentina", away:"Austria",   date:"22 Jun", time:"17:00", venue:"AT&T Stadium, Arlington",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Jordan",    away:"Algeria",   date:"23 Jun", time:"03:00", venue:"Levi's Stadium, Santa Clara",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Argentina", away:"Jordan",    date:"28 Jun", time:"02:00", venue:"AT&T Stadium, Arlington",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Algeria",   away:"Austria",   date:"28 Jun", time:"02:00", venue:"Arrowhead Stadium, Kansas City",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-  K: {
-    teams: ["Portugal","Congo DR","Uzbekistan","Colombia"],
-    matches: [
-      { home:"Portugal",   away:"Congo DR",    date:"17 Jun", time:"17:00", venue:"NRG Stadium, Houston",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Uzbekistan", away:"Colombia",    date:"18 Jun", time:"02:00", venue:"Azteca Stadium, Mexico City",     hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Portugal",   away:"Uzbekistan",  date:"23 Jun", time:"17:00", venue:"NRG Stadium, Houston",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Colombia",   away:"Congo DR",    date:"24 Jun", time:"02:00", venue:"Akron Stadium, Guadalajara",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Portugal",   away:"Colombia",    date:"28 Jun", time:"01:00", venue:"NRG Stadium, Houston",            hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Congo DR",   away:"Uzbekistan",  date:"28 Jun", time:"01:00", venue:"Mercedes-Benz Stadium, Atlanta",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-  L: {
-    teams: ["England","Croatia","Ghana","Panama"],
-    matches: [
-      { home:"England",  away:"Croatia",  date:"17 Jun", time:"20:00", venue:"AT&T Stadium, Arlington",          hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Ghana",    away:"Panama",   date:"17 Jun", time:"23:00", venue:"BMO Field, Toronto",               hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"England",  away:"Ghana",    date:"23 Jun", time:"20:00", venue:"Gillette Stadium, Foxboro",         hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Panama",   away:"Croatia",  date:"23 Jun", time:"23:00", venue:"BMO Field, Toronto",               hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Panama",   away:"England",  date:"28 Jun", time:"00:00", venue:"MetLife Stadium, New Jersey",      hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-      { home:"Croatia",  away:"Ghana",    date:"28 Jun", time:"00:00", venue:"Lincoln Financial, Philadelphia",  hg:null, ag:null, status:"SCHEDULED", minute:null, injuryTime:null },
-    ],
-  },
-};
-
+// ─── FIXED REFERENCE DATA (never changes — emoji flags & bracket colors) ──
 const FLAGS = {
   "Mexico":"🇲🇽","South Africa":"🇿🇦","Korea Republic":"🇰🇷","Czechia":"🇨🇿",
   "Canada":"🇨🇦","Bosnia and Herzegovina":"🇧🇦","Qatar":"🇶🇦","Switzerland":"🇨🇭",
@@ -438,7 +64,7 @@ function toLocalDT(dateStr, timeStr) {
   const monthMap = { Jun: "06", Jul: "07" };
   const dayStr = String(parseInt(d)).padStart(2, "0");
   const monthStr = monthMap[mo];
-  const time = timeStr.split(" ")[0]; // يشيل أي offset قديم إذا موجود
+  const time = timeStr.split(" ")[0];
   return new Date(`2026-${monthStr}-${dayStr}T${time}:00Z`);
 }
 
@@ -489,61 +115,6 @@ function koLabel(lang, type, group) {
   }
   return "?";
 }
-
-const mkP = (id, homeType, homeGroup, awayType, awayGroup, date="", time="", venue="") => ({
-  id, homeType, homeGroup, awayType, awayGroup,
-  home:"", away:"", hg:null, ag:null, date, time, venue, status:"SCHEDULED"
-});
-const mk = (id, date="", time="", venue="") => ({
-  id, home:"", away:"", hg:null, ag:null, date, time, venue, status:"SCHEDULED"
-});
-
-window.KO = {
-  L_r32: [
-    mkP("Lr32_0","RU","A","RU","B",           "28 Jun","19:00","SoFi Stadium, Inglewood"),
-    mkP("Lr32_3","W","F","RU","C",             "30 Jun","01:00","BBVA Stadium, Monterrey"),
-    mk("Lr32_2",                             "29 Jun","20:30","Gillette Stadium, Foxboro"),
-    mk("Lr32_5",                             "30 Jun","21:00","MetLife Stadium, New Jersey"),
-    mk("Lr32_1",                             "2 Jul","00:00","Levi's Stadium, Santa Clara"),
-    mk("Lr32_4",                             "1 Jul","20:00","Lumen Field, Seattle"),
-    mk("Lr32_6",                             "2 Jul","23:00","BMO Field, Toronto"),
-    mkP("Lr32_7","W","H","RU","J",             "2 Jul","19:00","SoFi Stadium, Inglewood"),
-  ],
-  R_r32: [
-    mkP("Rr32_3","W","C","RU","F",            "29 Jun","17:00","NRG Stadium, Houston"),
-    mkP("Rr32_2","RU","E","RU","I",           "30 Jun","17:00","AT&T Stadium, Arlington"),
-    mk("Rr32_1",                             "1 Jul","01:00","Azteca Stadium, Mexico City"),
-    mk("Rr32_0",                             "1 Jul","16:00","Mercedes-Benz Stadium, Atlanta"),
-    mkP("Rr32_5","W","J","RU","H",            "3 Jul","22:00","Hard Rock Stadium, Miami"),
-    mkP("Rr32_6","RU","D","RU","G",           "3 Jul","18:00","AT&T Stadium, Arlington"),
-    mk("Rr32_7",                             "3 Jul","03:00","BC Place, Vancouver"),
-    mk("Rr32_4",                             "4 Jul","01:30","Arrowhead Stadium, Kansas City"),
-  ],
-  L_r16:[
-    mk("Lr16_0","4 Jul","17:00","NRG Stadium, Houston"),
-    mk("Lr16_1","4 Jul","21:00","Lincoln Financial, Philadelphia"),
-    mk("Lr16_2","6 Jul","23:00","Lumen Field, Seattle"),
-    mk("Lr16_3","6 Jul","19:00","AT&T Stadium, Arlington"),
-  ],
-  R_r16:[
-    mk("Rr16_0","5 Jul","20:00","MetLife Stadium, New Jersey"),
-    mk("Rr16_1","6 Jul","00:00","Azteca Stadium, Mexico City"),
-    mk("Rr16_2","7 Jul","16:00","Mercedes-Benz Stadium, Atlanta"),
-    mk("Rr16_3","7 Jul","20:00","BC Place, Vancouver"),
-  ],
-  L_qf:[
-    mk("Lqf_0","9 Jul","20:00","Gillette Stadium, Foxboro"),
-    mk("Lqf_1","10 Jul","19:00","SoFi Stadium, Inglewood"),
-  ],
-  R_qf:[
-    mk("Rqf_0","11 Jul","21:00","Hard Rock Stadium, Miami"),
-    mk("Rqf_1","12 Jul","01:00","Arrowhead Stadium, Kansas City"),
-  ],
-  L_sf:[mk("Lsf_0","14 Jul","19:00","AT&T Stadium, Arlington")],
-  R_sf:[mk("Rsf_0","15 Jul","19:00","Mercedes-Benz Stadium, Atlanta")],
-  third:[mk("third_0","18 Jul","21:00","Hard Rock Stadium, Miami")],
-  final:[mk("final_0","19 Jul","19:00","MetLife Stadium, New Jersey")],
-};
 
 const getWinner = m => {
   if (m.hg===null||m.ag===null) return null;
@@ -1097,159 +668,23 @@ function LastUpdatedTimestamp({ lang }) {
   );
 }
 
-const FACTS = [
-  {
-    ar: "رونالدو أصبح أكبر لاعب ميداني يشارك في مرحلة الإقصاء بتاريخ كأس العالم — عمره 41 سنة و147 يوماً في مباراة البرتغال وكرواتيا.",
-    en: "Ronaldo became the oldest outfield player to feature in a World Cup knockout match — aged 41 years and 147 days vs Croatia.",
-    tr: "Ronaldo, Hırvatistan maçında 41 yaş 147 günlükken Dünya Kupası eleme turunda oynayan en yaşlı alan oyuncusu oldu."
-  },
-  {
-    ar: "رونالدو سجّل أول هدف إقصائي في كأس العالم بمسيرته كلها ضد كرواتيا — بعد 20 سنة من المشاركة في البطولة وبعد 8 مباريات إقصائية بدون هدف.",
-    en: "Ronaldo scored his first-ever World Cup knockout goal vs Croatia — after 20 years at the tournament and 8 knockout games without scoring.",
-    tr: "Ronaldo, Hırvatistan'a karşı Dünya Kupası'ndaki ilk eleme golünü attı — turnuvada 20 yıl ve gol atmadan geçirilen 8 eleme maçının ardından."
-  },
-  {
-    ar: "سويسرا حققت أول فوز إقصائي في كأس العالم منذ عام 1938 بفوزها على الجزائر 2-0 — انتظار دام 88 سنة.",
-    en: "Switzerland won their first World Cup knockout match since 1938, beating Algeria 2-0 — an 88-year wait finally over.",
-    tr: "İsviçre, Cezayir'i 2-0 yenerek 1938'den bu yana ilk Dünya Kupası eleme galibiyetini aldı — 88 yıllık bekleme sona erdi."
-  },
-  {
-    ar: "رونالدو أول لاعب في تاريخ كأس العالم يسجل في 6 نسخ مختلفة — حقق الرقم في الدقيقة الخامسة أمام أوزبكستان (23 يونيو).",
-    en: "Ronaldo became the first player in World Cup history to score in 6 different editions — he achieved the record in the 5th minute against Uzbekistan (June 23).",
-    tr: "Ronaldo, Dünya Kupası tarihinde 6 farklı turnuvada gol atan ilk oyuncu oldu — rekoru Özbekistan'a karşı 5. dakikada kırdı (23 Haziran)."
-  },
-  {
-    ar: "ميسي أصبح أكثر هداف في تاريخ كأس العالم رجالاً ونساءً بـ18 هدفاً — متجاوزاً البرازيلية مارتا (17) والألماني كلوزه (16).",
-    en: "Messi became the all-time top scorer in World Cup history — men's and women's combined — with 18 goals, surpassing Brazil's Marta (17) and Germany's Klose (16).",
-    tr: "Messi, 18 golle Dünya Kupası tarihinin erkekler ve kadınlar dahil en fazla gol atan oyuncusu oldu — Brezilyalı Marta'yı (17) ve Klose'yi (16) geride bıraktı."
-  },
-  {
-    ar: "ميسي سجل أول هاتريك في مسيرته بكأس العالم (38 سنة) ضد الجزائر — أكبر لاعب يسجل ثلاثية في تاريخ البطولة.",
-    en: "Messi scored his first-ever World Cup hat-trick (age 38) vs Algeria — the oldest player to score a treble in World Cup history.",
-    tr: "Messi, Cezayir'e karşı kariyer ilk Dünya Kupası hat-trick'ini attı (38 yaşında) — turnuva tarihinin en yaşlı hat-trick gol atıcısı."
-  },
-  {
-    ar: "مصر انتظرت 92 سنة لأول فوز لها في كأس العالم — فازت على نيوزيلندا 3–1 بعد مشاركات خاسرة في 1934 و1990 و2018.",
-    en: "Egypt waited 92 years for their first-ever World Cup win — beating New Zealand 3–1 after winless appearances in 1934, 1990, and 2018.",
-    tr: "Mısır, ilk Dünya Kupası galibiyeti için 92 yıl bekledi — 1934, 1990 ve 2018'deki galibiyet alamayan turnuvaların ardından Yeni Zelanda'yı 3–1 yendi."
-  },
-  {
-    ar: "صلاح سجل وصنع هدفاً ضد نيوزيلندا — أكبر لاعب أفريقي يسجل ويصنع هدفاً في نفس مباراة بكأس العالم.",
-    en: "Salah scored and assisted against New Zealand — the oldest African player on record to both score and assist in the same World Cup match.",
-    tr: "Salah, Yeni Zelanda'ya karşı gol attı ve asist yaptı — aynı Dünya Kupası maçında hem gol atan hem asist yapan en yaşlı Afrikalı oyuncu oldu."
-  },
-  {
-    ar: "اليابان 4–0 تونس — أول منتخب آسيوي يسجل 4 أهداف في مباراة واحدة في تاريخ كأس العالم.",
-    en: "Japan 4–0 Tunisia — the first Asian team to ever score 4 goals in a single World Cup match.",
-    tr: "Japonya 4–0 Tunus — Dünya Kupası'nda tek bir maçta 4 gol atan ilk Asya takımı."
-  },
-  {
-    ar: "المكسيك تأهلت من دور المجموعات بعد فوزها 1–0 على كوريا الجنوبية — أول منتخب مضيف يتأهل للدور القادم في نسخة يستضيفها منذ فرنسا 1998.",
-    en: "Mexico qualified from the group stage after beating South Korea 1–0 — the first host nation to advance in their own tournament since France 1998.",
-    tr: "Meksika, Güney Kore'yi 1–0 yenerek grup aşamasını geçti — Fransa 1998'den bu yana kendi turnuvasında tur atlayan ilk ev sahibi ülke."
-  },
-  {
-    ar: "كندا حققت أول فوز في تاريخها بكأس العالم بسحق قطر 6–0 — أكبر فوز لمنتخب من خارج أوروبا وأمريكا الجنوبية في تاريخ البطولة.",
-    en: "Canada secured their first-ever World Cup win by thrashing Qatar 6–0 — the biggest victory by a team from outside Europe and South America in tournament history.",
-    tr: "Kanada, Katar'ı 6–0 yenerek Dünya Kupası tarihindeki ilk galibiyetini aldı — turnuva tarihinde Avrupa ve Güney Amerika dışından bir takımın kazandığı en büyük galibiyet."
-  },
-  {
-    ar: "جوناثان ديفيد سجّل هاتريك ضد قطر — أول هاتريك لهداف منتخب مضيف في كأس العالم منذ جيف هيرست مع إنجلترا عام 1966.",
-    en: "Jonathan David scored a hat-trick against Qatar — the first hat-trick by a host nation's player since Geoff Hurst for England in 1966.",
-    tr: "Jonathan David, Katar'a karşı hat-trick yaptı — 1966'da İngiltere'den Geoff Hurst'ten bu yana bir ev sahibi ülke oyuncusunun attığı ilk hat-trick."
-  },
-  {
-    ar: "إبراهيم مباي من السنغال (18 سنة) أصغر لاعب أفريقي يسجل في تاريخ كأس العالم.",
-    en: "Senegal's Ibrahim Mbaye (age 18) became the youngest African player to score in World Cup history.",
-    tr: "Senegal'in İbrahim Mbaye (18 yaşında) Dünya Kupası tarihinin en genç Afrikalı gol atıcısı oldu."
-  },
-  {
-    ar: "4 منتخبات سجّلت أول هدف في تاريخها بكأس العالم في نفس النسخة: الكونغو، الأردن، كوراساو، وأوزبكستان — رقم قياسي منذ 2006.",
-    en: "4 teams scored their first-ever World Cup goal in the same edition: Congo DR, Jordan, Curaçao, and Uzbekistan — a record not seen since 2006.",
-    tr: "4 takım aynı turnuvada Dünya Kupası tarihlerindeki ilk golü attı: Kongo, Ürdün, Curaçao ve Özbekistan — 2006'dan bu yana görülmeyen bir rekor."
-  },
-  {
-    ar: "إنجلترا فازت 4–2 على كرواتيا — أول فوز إنجليزي على منتخب من أفضل 15 في تصنيف الفيفا منذ الفوز على الأرجنتين عام 2002.",
-    en: "England beat Croatia 4–2 — their first win against a FIFA top-15 ranked side since defeating Argentina in 2002.",
-    tr: "İngiltere, Hırvatistan'ı 4–2 yendi — 2002'de Arjantin'i yenmelerinden bu yana FIFA'nın ilk 15 takımına karşı ilk galibiyetleri."
-  },
-  {
-    ar: "كوراساو — بعدد سكان 150,000 — أصغر دولة تسجل هدفاً في تاريخ كأس العالم، وذلك في خسارتهم 1–7 أمام ألمانيا.",
-    en: "Curaçao — population 150,000 — became the smallest nation ever to score at a World Cup, despite losing 7–1 to Germany.",
-    tr: "Curaçao — 150.000 nüfusuyla — Almanya'ya 1-7 kaybetmesine rağmen Dünya Kupası tarihinde gol atan en küçük ülke oldu."
-  },
-  {
-    ar: "مدرب كوراساو Dick Advocaat (78 سنة) أصبح أكبر مدرب في تاريخ كأس العالم.",
-    en: "Curaçao coach Dick Advocaat (age 78) became the oldest manager in World Cup history.",
-    tr: "Curaçao teknik direktörü Dick Advocaat (78 yaşında) Dünya Kupası tarihinin en yaşlı teknik direktörü oldu."
-  },
-  {
-    ar: "مبابي تجاوز رقم Just Fontaine (13 هدف) وأصبح أكثر هداف في تاريخ فرنسا بكأس العالم.",
-    en: "Mbappé surpassed Just Fontaine's record (13 goals) to become France's all-time top scorer at the World Cup.",
-    tr: "Mbappé, Just Fontaine'nin rekorunu (13 gol) geçerek Fransa'nın Dünya Kupası tarihinin en golcü oyuncusu oldu."
-  },
-  {
-    ar: "هالاند سجل هدفين في أول ظهور لنرويج بكأس العالم منذ 1998 — أول لاعب نرويجي يسجل ضربة مزدوجة في البطولة.",
-    en: "Haaland scored a brace in Norway's first World Cup appearance since 1998 — the first Norwegian to ever score twice in a World Cup match.",
-    tr: "Haaland, Norveç'in 1998'den bu yana ilk Dünya Kupası maçında çift gol attı — turnuvada çift gol atan ilk Norveçli."
-  },
-  {
-    ar: "كندا حصلت على أول نقطة في تاريخها بكأس العالم بعد التعادل 1–1 مع البوسنة.",
-    en: "Canada earned their first-ever World Cup point after drawing 1–1 with Bosnia and Herzegovina.",
-    tr: "Kanada, Bosna Hersek ile 1–1 berabere kalarak Dünya Kupası tarihinde ilk puanını kazandı."
-  },
-  {
-    ar: "Craig Gordon (43 سنة) حارس اسكتلندا هو أكبر لاعب في البطولة.",
-    en: "Scotland's Craig Gordon (43) is the oldest player at this tournament.",
-    tr: "İskoçya kalecisi Craig Gordon (43 yaşında) turnuvanın en yaşlı oyuncusu."
-  },
-  {
-    ar: "المكسيك أول دولة تستضيف كأس العالم 3 مرات (1970، 1986، 2026)، وحارسها أوتشوا في كأسه السادس (40 سنة).",
-    en: "Mexico became the first country to host the World Cup three times (1970, 1986, 2026). Goalkeeper Ochoa (40) is in his sixth World Cup.",
-    tr: "Meksika, Dünya Kupası'na üç kez ev sahipliği yapan ilk ülke oldu (1970, 1986, 2026). Kaleci Ochoa (40) altıncı Dünya Kupası'nda."
-  },
-  {
-    ar: "البرازيل المنتخب الوحيد الذي شارك في جميع نسخ كأس العالم منذ 1930 حتى 2026 — 22 نسخة متتالية.",
-    en: "Brazil is the only nation to have participated in every single World Cup from 1930 to 2026 — 22 consecutive editions.",
-    tr: "Brezilya, 1930'dan 2026'ya kadar her Dünya Kupası'na katılan tek ülke — 22 arka arkaya turnuva."
-  },
-  {
-    ar: "2026 هو أول كأس عالم تشارك فيه 48 منتخباً في 104 مباراة عبر 3 دول مضيفة: أمريكا، كندا، والمكسيك.",
-    en: "2026 is the first World Cup with 48 teams, 104 matches, and 3 host nations: USA, Canada, and Mexico.",
-    tr: "2026, 48 takım, 104 maç ve 3 ev sahibi ülkeyle (ABD, Kanada, Meksika) ilk Dünya Kupası."
-  },
-];
-
-
 function FunFactsTab({ lang }) {
   const isRtl = lang === "ar";
   return (
-    <div style={{ maxWidth:720, margin:"0 auto" }}>
+    <div style={{ maxWidth:680, margin:"0 auto", display:"flex", flexDirection:"column", gap:10 }} dir={isRtl ? "rtl" : "ltr"}>
       {FACTS.map((f, i) => (
         <div key={i} style={{
-          display:"flex", gap:14, padding:"14px 16px",
-          borderBottom:"1px solid var(--border2)",
-          background:"var(--surface)",
-          alignItems:"flex-start",
-          direction: isRtl ? "rtl" : "ltr",
+          background:"var(--surface)", border:"1px solid var(--border)", borderRadius:10,
+          padding:"14px 16px", fontSize:13, lineHeight:1.6, color:"var(--text2)",
+          display:"flex", gap:10, alignItems:"flex-start"
         }}>
-          <div style={{
-            flexShrink:0, width:28, height:28, borderRadius:"50%",
-            background:"var(--accent)" + "22",
-            border:"1px solid var(--accent)" + "44",
-            display:"flex", alignItems:"center", justifyContent:"center",
-            fontSize:13,
-          }}>💡</div>
-          <p style={{ margin:0, fontSize:13, color:"var(--text2)", lineHeight:1.6 }}>
-            {f[lang]}
-          </p>
+          <span style={{ fontSize:16, flexShrink:0 }}>💡</span>
+          <span>{f[lang]}</span>
         </div>
       ))}
     </div>
   );
 }
-
-
 
 function StatsTab({ lang }) {
   const [data, setData] = useState(null);
@@ -1258,7 +693,7 @@ function StatsTab({ lang }) {
   const isRtl = lang === "ar";
 
   useEffect(() => {
-    fetch("https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js?v=2")
+    fetch("https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js?v=3")
       .then(r => r.text())
       .then(code => {
         try {
@@ -1390,11 +825,6 @@ function StatsTab({ lang }) {
         const finishedMatches = matches.length;
         const avgGoals = finishedMatches > 0 ? (totalGoals / finishedMatches).toFixed(2) : 0;
 
-        const topScorerName = Object.entries(playerGoals).sort((a,b) => b[1]-a[1])[0];
-        const topAttackTeam = Object.entries(teamScored).sort((a,b) => b[1]-a[1])[0];
-        const bestDefenseTeam = Object.entries(teamConceded).sort((a,b) => a[1]-b[1])[0];
-
-        // top 3 for ranked stats
         const topScorers = Object.entries(playerGoals).sort((a,b) => b[1]-a[1]).slice(0,3);
         const topAttacks = Object.entries(teamScored).sort((a,b) => b[1]-a[1]).slice(0,3);
         const bestDefenses = Object.entries(teamConceded).sort((a,b) => a[1]-b[1]).slice(0,3);
@@ -1588,7 +1018,7 @@ function GoalsTab({ lang }) {
   const L = labels[lang];
 
   useEffect(() => {
-    fetch("https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js?v=2")
+    fetch("https://cdn.jsdelivr.net/gh/ast47/worldcup2026@main/translations.js?v=3")
       .then(r => r.text())
       .then(code => {
         try {
@@ -1871,12 +1301,14 @@ function App() {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+window.__initApp = function() {
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(<App />);
+};
 </script>
 
 <script>
-// ===== API CONFIG =====
+// ===== API CONFIG (Cloudflare Worker → football-data.org proxy) =====
 const API_TOKEN = "5b08761bf1ff47d89c971360c3c3a857";
 const API_URL   = "https://polished-mode-ba6a.salehzuh.workers.dev/";
 
@@ -1943,38 +1375,42 @@ const TEAM_MAP = {
   "Panama":                    "Panama",
 };
 
-window.__lastApiSuccessTime = null;
-fillKOFromStandings();
+// ===== PERMANENT BRACKET STRUCTURE (official FIFA match numbers, never changes) =====
+// Visual column order per side/round — index-adjacency = who plays whom next round.
+const BRACKET_LAYOUT = {
+  L_r32: [73, 75, 74, 77, 81, 82, 83, 84],
+  R_r32: [76, 78, 79, 80, 86, 88, 85, 87],
+  L_r16: [90, 89, 94, 93],
+  R_r16: [91, 92, 95, 96],
+  L_qf:  [97, 98],
+  R_qf:  [99, 100],
+  L_sf:  [101],
+  R_sf:  [102],
+  third: [103],
+  final: [104],
+};
 
-let autoUpdateInterval = null;
+// Which two matches feed into each match number. Official FIFA bracket — fixed forever.
+const FEEDS_R16 = { 89:[74,77], 90:[73,75], 91:[76,78], 92:[79,80], 93:[83,84], 94:[81,82], 95:[86,88], 96:[85,87] };
+const FEEDS_QF  = { 97:[89,90], 98:[93,94], 99:[91,92], 100:[95,96] };
+const FEEDS_SF  = { 101:[97,98], 102:[99,100] };
 
+function buildKO(koData) {
+  const ko = {};
+  Object.keys(BRACKET_LAYOUT).forEach(stage => {
+    ko[stage] = BRACKET_LAYOUT[stage].map(num => ({
+      id: num,
+      ...koData[String(num)],
+    }));
+  });
+  return ko;
+}
 
 function fillKOFromStandings() {
   if (!window.KO) return;
 
-  // 1. أسماء R32 الثابتة أولاً (لازم تكون موجودة قبل ما نحسب R16)
-  const allR32 = {
-    "Lr32_2": ["Germany",        "Paraguay"],
-    "Rr32_1": ["Mexico",         "Ecuador"],
-    "Rr32_0": ["England",        "Congo DR"],
-    "Lr32_1": ["USA",            "Bosnia and Herzegovina"],
-    "Lr32_4": ["Belgium",        "Senegal"],
-    "Rr32_4": ["Colombia",       "Ghana"],
-    "Rr32_7": ["Switzerland",    "Algeria"],
-    "Lr32_5": ["France",         "Sweden"],
-    "Lr32_6": ["Portugal",       "Croatia"],
-  };
-  ["L_r32","R_r32"].forEach(stage => {
-    (window.KO[stage] || []).forEach(koMatch => {
-      if (allR32[koMatch.id]) {
-        koMatch.home = allR32[koMatch.id][0];
-        koMatch.away = allR32[koMatch.id][1];
-      }
-    });
-  });
-
-  // 2. R32 المرتبطة بالمجموعات (W/RU) من ترتيب المجموعات
-  const groupWinner  = {};
+  // 1. أسماء R32 المرتبطة بترتيب المجموعات (winner/runner-up)
+  const groupWinner = {};
   const groupRunnerUp = {};
   Object.keys(GROUPS_RAW).forEach(gKey => {
     const st = calcStandings(gKey, "en");
@@ -1988,97 +1424,52 @@ function fillKOFromStandings() {
     return null;
   };
 
-  const r32Stages = ["L_r32", "R_r32"];
-  r32Stages.forEach(stage => {
+  ["L_r32", "R_r32"].forEach(stage => {
     (window.KO[stage] || []).forEach(koMatch => {
-      if (koMatch.homeType) {
-        const t = resolveTeam(koMatch.homeType, koMatch.homeGroup);
-        if (t) koMatch.home = t;
-      }
-      if (koMatch.awayType) {
-        const t = resolveTeam(koMatch.awayType, koMatch.awayGroup);
-        if (t) koMatch.away = t;
-      }
+      if (koMatch.homeType) { const t = resolveTeam(koMatch.homeType, koMatch.homeGroup); if (t) koMatch.home = t; }
+      if (koMatch.awayType) { const t = resolveTeam(koMatch.awayType, koMatch.awayGroup); if (t) koMatch.away = t; }
     });
   });
 
-  // helper
-  const getKOMatch = (id) => {
+  const getKOMatch = (num) => {
     for (const stage of Object.values(window.KO)) {
-      const m = stage.find(m => m.id === id);
+      const m = stage.find(m => m.id === num);
       if (m) return m;
     }
     return null;
   };
 
-  // 3. R16 من فائزي R32
-  const r32ToR16 = {
-    "Lr16_0": ["Lr32_0", "Lr32_3"],
-    "Lr16_1": ["Lr32_2", "Lr32_5"],
-    "Lr16_2": ["Lr32_1", "Lr32_4"],
-    "Lr16_3": ["Lr32_6", "Lr32_7"],
-    "Rr16_0": ["Rr32_3", "Rr32_2"],
-    "Rr16_1": ["Rr32_1", "Rr32_0"],
-    "Rr16_2": ["Rr32_5", "Rr32_6"],
-    "Rr16_3": ["Rr32_7", "Rr32_4"],
-  };
-  ["L_r16","R_r16"].forEach(stage => {
-    (window.KO[stage] || []).forEach(r16Match => {
-      const [homeId, awayId] = r32ToR16[r16Match.id] || [];
-      if (!homeId) return;
-      const homeR32 = getKOMatch(homeId);
-      const awayR32 = getKOMatch(awayId);
-      if (homeR32) { const w = getWinner(homeR32); if (w) r16Match.home = w; }
-      if (awayR32) { const w = getWinner(awayR32); if (w) r16Match.away = w; }
+  const fillRound = (feeds) => {
+    Object.entries(feeds).forEach(([num, ids]) => {
+      const m = getKOMatch(Number(num));
+      if (!m) return;
+      const homeM = getKOMatch(ids[0]);
+      const awayM = getKOMatch(ids[1]);
+      if (homeM) { const w = getWinner(homeM); if (w) m.home = w; }
+      if (awayM) { const w = getWinner(awayM); if (w) m.away = w; }
     });
-  });
-
-  // 4. QF من فائزي R16
-  const r16ToQF = {
-    "Lqf_0": ["Lr16_0", "Lr16_1"],
-    "Lqf_1": ["Lr16_2", "Lr16_3"],
-    "Rqf_0": ["Rr16_0", "Rr16_1"],
-    "Rqf_1": ["Rr16_2", "Rr16_3"],
   };
-  ["L_qf","R_qf"].forEach(stage => {
-    (window.KO[stage] || []).forEach(qfMatch => {
-      const [homeId, awayId] = r16ToQF[qfMatch.id] || [];
-      if (!homeId) return;
-      const homeR16 = getKOMatch(homeId);
-      const awayR16 = getKOMatch(awayId);
-      if (homeR16) { const w = getWinner(homeR16); if (w) qfMatch.home = w; }
-      if (awayR16) { const w = getWinner(awayR16); if (w) qfMatch.away = w; }
-    });
-  });
 
-  // 5. SF من فائزي QF
-  const qfToSF = {
-    "Lsf_0": ["Lqf_0", "Lqf_1"],
-    "Rsf_0": ["Rqf_0", "Rqf_1"],
-  };
-  ["L_sf","R_sf"].forEach(stage => {
-    (window.KO[stage] || []).forEach(sfMatch => {
-      const [homeId, awayId] = qfToSF[sfMatch.id] || [];
-      if (!homeId) return;
-      const homeQF = getKOMatch(homeId);
-      const awayQF = getKOMatch(awayId);
-      if (homeQF) { const w = getWinner(homeQF); if (w) sfMatch.home = w; }
-      if (awayQF) { const w = getWinner(awayQF); if (w) sfMatch.away = w; }
-    });
-  });
+  // 2. R16 من فائزي R32، 3. QF من فائزي R16، 4. SF من فائزي QF
+  fillRound(FEEDS_R16);
+  fillRound(FEEDS_QF);
+  fillRound(FEEDS_SF);
 
-  // 6. النهائي ومباراة الثالث
-  const lsf = getKOMatch("Lsf_0");
-  const rsf = getKOMatch("Rsf_0");
-  if (lsf && rsf) {
-    const lsfW = getWinner(lsf); const lsfL = lsf.hg !== null ? (lsfW === lsf.home ? lsf.away : lsf.home) : null;
-    const rsfW = getWinner(rsf); const rsfL = rsf.hg !== null ? (rsfW === rsf.home ? rsf.away : rsf.home) : null;
-    const final = getKOMatch("final_0");
-    const third = getKOMatch("third_0");
-    if (final) { if (lsfW) final.home = lsfW; if (rsfW) final.away = rsfW; }
-    if (third) { if (lsfL) third.home = lsfL; if (rsfL) third.away = rsfL; }
+  // 5. النهائي ومباراة الثالث (من فائزي/خاسري نصف النهائي 101 و 102)
+  const sf1 = getKOMatch(101);
+  const sf2 = getKOMatch(102);
+  if (sf1 && sf2) {
+    const w1 = getWinner(sf1); const l1 = sf1.hg !== null ? (w1 === sf1.home ? sf1.away : sf1.home) : null;
+    const w2 = getWinner(sf2); const l2 = sf2.hg !== null ? (w2 === sf2.home ? sf2.away : sf2.home) : null;
+    const final = getKOMatch(104);
+    const third = getKOMatch(103);
+    if (final) { if (w1) final.home = w1; if (w2) final.away = w2; }
+    if (third) { if (l1) third.home = l1; if (l2) third.away = l2; }
   }
 }
+
+window.__lastApiSuccessTime = null;
+let autoUpdateInterval = null;
 
 async function fetchResults(isRetry = false) {
   try {
@@ -2126,7 +1517,7 @@ async function fetchResults(isRetry = false) {
         Object.values(KO).forEach(stageMatches => {
           stageMatches.forEach(koMatch => {
             if (koMatch.home === homeKey && koMatch.away === awayKey) {
-              
+
               koMatch.home = homeKey;
               koMatch.away = awayKey;
               koMatch.status = status;
@@ -2202,9 +1593,22 @@ async function fetchResults(isRetry = false) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+// ===== BOOTSTRAP: load data.json (schedule + results base), then start the app =====
+async function boot() {
+  try {
+    const res = await fetch("data.json", { cache: "no-store" });
+    const raw = await res.json();
+    window.GROUPS_RAW = raw.groups;
+    window.KO = buildKO(raw.knockout);
+    fillKOFromStandings();
+  } catch (err) {
+    console.error("Failed to load data.json:", err);
+  }
+  window.__initApp();
   fetchResults();
   autoUpdateInterval = setInterval(fetchResults, 60000); // تحديث صامت كل دقيقة
-});
+}
+
+document.addEventListener("DOMContentLoaded", boot);
 </script>
 </body></html>
