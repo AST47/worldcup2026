@@ -27,7 +27,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
 <!-- Translations (UI strings, team/venue names, player names, fun facts, changelog) -->
-<script src="https://raw.githubusercontent.com/ast47/worldcup2026/main/translations.js"></script>
+<!-- Translations are loaded via fetch() in the boot script below (not <script src>) -->
+<!-- because raw.githubusercontent.com serves .js as text/plain+nosniff, which blocks <script src> execution. -->
+
 </head>
 <body>
 <div id="root">
@@ -1593,8 +1595,23 @@ async function fetchResults(isRetry = false) {
   }
 }
 
-// ===== BOOTSTRAP: load data.json (schedule + results base), then start the app =====
+const TRANSLATIONS_URL = "https://raw.githubusercontent.com/ast47/worldcup2026/main/translations.js";
+
+// نجيب translations.js كنص وننفذه يدوياً (indirect eval بيحطها بالـ global scope)
+// بدل <script src> لأنه raw.githubusercontent.com بيرجع text/plain+nosniff وهيك المتصفح برفض ينفذه كسكربت
+async function loadTranslations() {
+  const res = await fetch(TRANSLATIONS_URL, { cache: "no-store" });
+  const code = await res.text();
+  (0, eval)(code); // indirect eval → ينفذ بالـ global scope فيصير T و FACTS و PLAYER_NAMES متاحين بكل مكان
+}
+
+// ===== BOOTSTRAP: load translations, then data.json (schedule + results base), then start the app =====
 async function boot() {
+  try {
+    await loadTranslations();
+  } catch (err) {
+    console.error("Failed to load translations.js:", err);
+  }
   try {
     const res = await fetch("data.json", { cache: "no-store" });
     const raw = await res.json();
