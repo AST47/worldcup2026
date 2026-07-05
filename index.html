@@ -1597,12 +1597,15 @@ async function fetchResults(isRetry = false) {
 
 const TRANSLATIONS_URL = "https://raw.githubusercontent.com/ast47/worldcup2026/main/translations.js";
 
-// نجيب translations.js كنص وننفذه يدوياً (indirect eval بيحطها بالـ global scope)
-// بدل <script src> لأنه raw.githubusercontent.com بيرجع text/plain+nosniff وهيك المتصفح برفض ينفذه كسكربت
+// نجيب translations.js كنص وننفذه عبر Function constructor (نفس الطريقة المجربة يلي مستخدمة
+// بتاب الأهداف/الإحصائيات لجلب PLAYER_NAMES) ونعلّقها صراحةً على window
 async function loadTranslations() {
   const res = await fetch(TRANSLATIONS_URL, { cache: "no-store" });
   const code = await res.text();
-  (0, eval)(code); // indirect eval → ينفذ بالـ global scope فيصير T و FACTS و PLAYER_NAMES متاحين بكل مكان
+  console.log("translations.js fetched, length:", code.length, "status:", res.status);
+  const fn = new Function(code + "; window.T = T; window.FACTS = FACTS; window.PLAYER_NAMES = PLAYER_NAMES;");
+  fn();
+  console.log("After exec — typeof T:", typeof window.T, "typeof FACTS:", typeof window.FACTS);
 }
 
 // ===== BOOTSTRAP: load translations, then data.json (schedule + results base), then start the app =====
@@ -1611,6 +1614,9 @@ async function boot() {
     await loadTranslations();
   } catch (err) {
     console.error("Failed to load translations.js:", err);
+    document.getElementById("root").innerHTML =
+      '<div style="padding:40px;text-align:center;font-family:sans-serif;color:#c00;">Failed to load translations.js — check console for details.</div>';
+    return;
   }
   try {
     const res = await fetch("data.json", { cache: "no-store" });
@@ -1620,6 +1626,9 @@ async function boot() {
     fillKOFromStandings();
   } catch (err) {
     console.error("Failed to load data.json:", err);
+    document.getElementById("root").innerHTML =
+      '<div style="padding:40px;text-align:center;font-family:sans-serif;color:#c00;">Failed to load data.json — check console for details.</div>';
+    return;
   }
   window.__initApp();
   fetchResults();
