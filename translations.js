@@ -1,4 +1,5 @@
 const PLAYER_NAMES = {
+  "Abbosbek Fayzullaev":   { ar: "عباس بيك فايزولاييف", tr: "Abbosbek Fayzullaev" },
   "Abduvohid Nematov":     { ar: "عبد الواحد نيماتوف", tr: "Abduvohid Nematov" },
   "Abdulelah Al-Amri":     { ar: "عبد الإله العمري",   tr: "Abdulelah Al-Amri" },
   "Achraf Hakimi":         { ar: "أشرف حكيمي",         tr: "Achraf Hakimi" },
