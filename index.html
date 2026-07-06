@@ -1188,7 +1188,7 @@ function buildGoalsData(matches) {
         const actualTeam = g.owngoal ? opponent : scoringTeam;
         const actualOpponent = g.owngoal ? scoringTeam : opponent;
         if (!teams[actualTeam]) teams[actualTeam] = {};
-        const playerName = g.owngoal ? `${g.name} (OG)` : g.name;
+        const playerName = g.name;
         if (!teams[actualTeam][playerName]) teams[actualTeam][playerName] = [];
         teams[actualTeam][playerName].push({
           minute: g.minute,
