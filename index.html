@@ -899,27 +899,33 @@ function FunFactsTab({ lang }) {
   );
 }
 
+// كل المباريات المنتهية (مجموعات + إقصاءات) مع بيانات الأهداف — مصدر واحد للتابين أهداف/إحصائيات
+function getAllFinishedMatchesWithGoals() {
+  const rows = [];
+  Object.values(GROUPS_RAW).forEach(g => {
+    g.matches.forEach(m => {
+      if (m.hg === null || m.hg === undefined || m.ag === null || m.ag === undefined) return;
+      rows.push(m);
+    });
+  });
+  if (window.KO) {
+    Object.values(window.KO).forEach(stage => {
+      stage.forEach(m => {
+        if (!m.home || !m.away) return;
+        if (m.hg === null || m.hg === undefined || m.ag === null || m.ag === undefined) return;
+        rows.push(m);
+      });
+    });
+  }
+  return rows;
+}
+
 function StatsTab({ lang }) {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [playerNames, setPlayerNames] = useState({});
   const isRtl = lang === "ar";
-
-  useEffect(() => {
-    fetch("https://raw.githubusercontent.com/ast47/worldcup2026/main/translations.js")
-      .then(r => r.text())
-      .then(code => {
-        try {
-          const fn = new Function(code + "; return PLAYER_NAMES;");
-          setPlayerNames(fn());
-        } catch(e) {}
-      })
-      .catch(() => {});
-  }, []);
 
   const L = {
     ar: {
-      loading: "جارٍ التحميل...",
       totalGoals: "إجمالي أهداف البطولة",
       avgGoals: "متوسط الأهداف لكل مباراة",
       penGoals: "أهداف من ركلات الجزاء",
@@ -937,7 +943,6 @@ function StatsTab({ lang }) {
       conceded: "هدف مستقبل",
     },
     en: {
-      loading: "Loading...",
       totalGoals: "Total Goals",
       avgGoals: "Avg Goals per Match",
       penGoals: "Penalty Goals",
@@ -955,7 +960,6 @@ function StatsTab({ lang }) {
       conceded: "conceded",
     },
     tr: {
-      loading: "Yükleniyor...",
       totalGoals: "Toplam Gol",
       avgGoals: "Maç Başına Ortalama Gol",
       penGoals: "Penaltı Golleri",
@@ -975,84 +979,77 @@ function StatsTab({ lang }) {
   }[lang];
 
   useEffect(() => {
-    fetch("https://nameless-bird-6db7.salehzuh.workers.dev/")
-      .then(r => r.json())
-      .then(json => {
-        const matches = (json.matches || []).filter(m => m.score);
+    const matches = getAllFinishedMatchesWithGoals();
 
-        let totalGoals = 0, penGoals = 0, ogGoals = 0, zeroZero = 0;
-        const teamScored = {}, teamConceded = {}, playerGoals = {};
-        let fastestGoal = null, latestGoal = null, topMatch = null;
+    let totalGoals = 0, penGoals = 0, ogGoals = 0, zeroZero = 0;
+    const teamScored = {}, teamConceded = {}, playerGoals = {};
+    let fastestGoal = null, latestGoal = null, topMatch = null;
 
-        const parseMin = (str) => {
-          if (!str) return 0;
-          const m = str.match(/(\d+)(?:\+(\d+))?/);
-          if (!m) return 0;
-          return parseInt(m[1]) + (m[2] ? parseInt(m[2]) : 0);
-        };
+    const parseMin = (str) => {
+      if (!str) return 0;
+      const m = String(str).match(/(\d+)(?:\+(\d+))?/);
+      if (!m) return 0;
+      return parseInt(m[1]) + (m[2] ? parseInt(m[2]) : 0);
+    };
 
-        matches.forEach(m => {
-          const t1 = normalizeTeam(m.team1);
-          const t2 = normalizeTeam(m.team2);
-          const g1 = m.score.ft[0], g2 = m.score.ft[1];
-          const matchTotal = g1 + g2;
+    matches.forEach(m => {
+      const t1 = m.home, t2 = m.away;
+      const g1 = m.hg, g2 = m.ag;
+      const matchTotal = g1 + g2;
 
-          totalGoals += matchTotal;
-          if (matchTotal === 0) zeroZero++;
+      totalGoals += matchTotal;
+      if (matchTotal === 0) zeroZero++;
 
-          if (!teamScored[t1]) teamScored[t1] = 0;
-          if (!teamScored[t2]) teamScored[t2] = 0;
-          if (!teamConceded[t1]) teamConceded[t1] = 0;
-          if (!teamConceded[t2]) teamConceded[t2] = 0;
-          teamScored[t1] += g1;
-          teamScored[t2] += g2;
-          teamConceded[t1] += g2;
-          teamConceded[t2] += g1;
+      if (!teamScored[t1]) teamScored[t1] = 0;
+      if (!teamScored[t2]) teamScored[t2] = 0;
+      if (!teamConceded[t1]) teamConceded[t1] = 0;
+      if (!teamConceded[t2]) teamConceded[t2] = 0;
+      teamScored[t1] += g1;
+      teamScored[t2] += g2;
+      teamConceded[t1] += g2;
+      teamConceded[t2] += g1;
 
-          if (!topMatch || matchTotal > topMatch.total) {
-            topMatch = { total: matchTotal, t1, t2, g1, g2, date: m.date };
-          }
+      if (!topMatch || matchTotal > topMatch.total) {
+        topMatch = { total: matchTotal, t1, t2, g1, g2, date: m.date };
+      }
 
-          const allGoals = [
-            ...(m.goals1 || []).map(g => ({ ...g, scoringTeam: t1, opponent: t2 })),
-            ...(m.goals2 || []).map(g => ({ ...g, scoringTeam: t2, opponent: t1 })),
-          ];
+      const allGoals = [
+        ...(m.homeGoals || []).map(g => ({ ...g, scoringTeam: t1, opponent: t2 })),
+        ...(m.awayGoals || []).map(g => ({ ...g, scoringTeam: t2, opponent: t1 })),
+      ];
 
-          allGoals.forEach(g => {
-            if (g.penalty) penGoals++;
-            if (g.owngoal) { ogGoals++; return; }
+      allGoals.forEach(g => {
+        if (g.penalty) penGoals++;
+        if (g.owngoal) { ogGoals++; return; }
 
-            const min = parseMin(g.minute);
-            if (!fastestGoal || min < fastestGoal.min) {
-              fastestGoal = { min, name: g.name, scoringTeam: g.scoringTeam, opponent: g.opponent, minute: g.minute };
-            }
-            if (!latestGoal || min > latestGoal.min) {
-              latestGoal = { min, name: g.name, scoringTeam: g.scoringTeam, opponent: g.opponent, minute: g.minute };
-            }
+        const min = parseMin(g.minute);
+        if (!fastestGoal || min < fastestGoal.min) {
+          fastestGoal = { min, name: g.name, scoringTeam: g.scoringTeam, opponent: g.opponent, minute: g.minute };
+        }
+        if (!latestGoal || min > latestGoal.min) {
+          latestGoal = { min, name: g.name, scoringTeam: g.scoringTeam, opponent: g.opponent, minute: g.minute };
+        }
 
-            if (!playerGoals[g.name]) playerGoals[g.name] = 0;
-            playerGoals[g.name]++;
-          });
-        });
+        if (!playerGoals[g.name]) playerGoals[g.name] = 0;
+        playerGoals[g.name]++;
+      });
+    });
 
-        const finishedMatches = matches.length;
-        const avgGoals = finishedMatches > 0 ? (totalGoals / finishedMatches).toFixed(2) : 0;
+    const finishedMatches = matches.length;
+    const avgGoals = finishedMatches > 0 ? (totalGoals / finishedMatches).toFixed(2) : 0;
 
-        const topScorers = Object.entries(playerGoals).sort((a,b) => b[1]-a[1]).slice(0,3);
-        const topAttacks = Object.entries(teamScored).sort((a,b) => b[1]-a[1]).slice(0,3);
-        const bestDefenses = Object.entries(teamConceded).sort((a,b) => a[1]-b[1]).slice(0,3);
+    const topScorers = Object.entries(playerGoals).sort((a,b) => b[1]-a[1]).slice(0,3);
+    const topAttacks = Object.entries(teamScored).sort((a,b) => b[1]-a[1]).slice(0,3);
+    const bestDefenses = Object.entries(teamConceded).sort((a,b) => a[1]-b[1]).slice(0,3);
 
-        setData({ totalGoals, avgGoals, penGoals, ogGoals, zeroZero,
-          topScorers, topAttacks, bestDefenses,
-          fastestGoal, latestGoal, topMatch });
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+    setData({ totalGoals, avgGoals, penGoals, ogGoals, zeroZero,
+      topScorers, topAttacks, bestDefenses,
+      fastestGoal, latestGoal, topMatch });
+  }, [lang]);
 
-  if (loading) return <div style={{ textAlign:"center", padding:40, color:"var(--text3)", fontSize:13 }}>{L.loading}</div>;
   if (!data) return null;
 
+  const playerNames = window.PLAYER_NAMES || {};
   const medals = ["🥇","🥈","🥉"];
 
   const StatCard = ({ label, value, sub }) => (
@@ -1148,40 +1145,14 @@ function StatsTab({ lang }) {
   );
 }
 
-const GOALS_WORKER_URL = "https://nameless-bird-6db7.salehzuh.workers.dev/";
-
-// اسم الفريق في openfootball → مفتاح الفريق عندنا
-const OF_TEAM_MAP = {
-  "Mexico": "Mexico", "South Africa": "South Africa", "South Korea": "Korea Republic",
-  "Czech Republic": "Czechia", "Canada": "Canada", "Bosnia & Herzegovina": "Bosnia and Herzegovina",
-  "Qatar": "Qatar", "Switzerland": "Switzerland", "Brazil": "Brazil", "Morocco": "Morocco",
-  "Haiti": "Haiti", "Scotland": "Scotland", "USA": "USA", "Paraguay": "Paraguay",
-  "Australia": "Australia", "Turkey": "Türkiye", "Germany": "Germany", "Curaçao": "Curaçao",
-  "Ivory Coast": "Côte d'Ivoire", "Ecuador": "Ecuador", "Netherlands": "Netherlands",
-  "Japan": "Japan", "Sweden": "Sweden", "Tunisia": "Tunisia", "Belgium": "Belgium",
-  "Egypt": "Egypt", "Iran": "IR Iran", "New Zealand": "New Zealand", "Spain": "Spain",
-  "Cape Verde": "Cabo Verde", "Saudi Arabia": "Saudi Arabia", "Uruguay": "Uruguay",
-  "France": "France", "Senegal": "Senegal", "Iraq": "Iraq", "Norway": "Norway",
-  "Argentina": "Argentina", "Algeria": "Algeria", "Austria": "Austria", "Jordan": "Jordan",
-  "Portugal": "Portugal", "DR Congo": "Congo DR", "Uzbekistan": "Uzbekistan",
-  "Colombia": "Colombia", "England": "England", "Croatia": "Croatia", "Ghana": "Ghana",
-  "Panama": "Panama",
-};
-
-function normalizeTeam(name) {
-  return OF_TEAM_MAP[name] || name;
-}
-
 function buildGoalsData(matches) {
   // teamKey → { players: { playerName → [{ minute, opponent, owngoal, penalty }] } }
   const teams = {};
 
   matches.forEach(m => {
-    if (!m.score) return;
-    const t1 = normalizeTeam(m.team1);
-    const t2 = normalizeTeam(m.team2);
+    const t1 = m.home, t2 = m.away;
 
-    const addGoal = (goals, scoringTeam, opponent, isOwnGoal) => {
+    const addGoal = (goals, scoringTeam, opponent) => {
       if (!goals || !goals.length) return;
       goals.forEach(g => {
         // own goal: يُضاف للفريق الخصم
@@ -1199,8 +1170,8 @@ function buildGoalsData(matches) {
       });
     };
 
-    addGoal(m.goals1, t1, t2, false);
-    addGoal(m.goals2, t2, t1, false);
+    addGoal(m.homeGoals, t1, t2);
+    addGoal(m.awayGoals, t2, t1);
   });
 
   // حوّل لقائمة مرتبة
@@ -1217,53 +1188,27 @@ function buildGoalsData(matches) {
 
 function GoalsTab({ lang }) {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [openTeams, setOpenTeams] = useState({});
-  const [playerNames, setPlayerNames] = useState({});
   const isRtl = lang === "ar";
+  const playerNames = window.PLAYER_NAMES || {};
 
   const labels = {
-    ar: { title: "الهدافون", loading: "جارٍ التحميل...", error: "تعذّر تحميل البيانات", goals: "هدف", penalty: "ركلة جزاء", owngoal: "هدف مرمى", vs: "ضد", min: "د" },
-    en: { title: "Top Scorers", loading: "Loading...", error: "Failed to load data", goals: "goal", penalty: "pen", owngoal: "OG", vs: "vs", min: "'" },
-    tr: { title: "Gol Krallığı", loading: "Yükleniyor...", error: "Veriler yüklenemedi", goals: "gol", penalty: "pen", owngoal: "KK", vs: "vs", min: "'" },
+    ar: { title: "الهدافون", goals: "هدف", penalty: "ركلة جزاء", owngoal: "هدف مرمى", vs: "ضد", min: "د" },
+    en: { title: "Top Scorers", goals: "goal", penalty: "pen", owngoal: "OG", vs: "vs", min: "'" },
+    tr: { title: "Gol Krallığı", goals: "gol", penalty: "pen", owngoal: "KK", vs: "vs", min: "'" },
   };
   const L = labels[lang];
-
-  useEffect(() => {
-    fetch("https://raw.githubusercontent.com/ast47/worldcup2026/main/translations.js")
-      .then(r => r.text())
-      .then(code => {
-        try {
-          const fn = new Function(code + "; return PLAYER_NAMES;");
-          setPlayerNames(fn());
-        } catch(e) {}
-      })
-      .catch(() => {});
-  }, []);
 
   const pn = (name) => (playerNames[name] && playerNames[name][lang]) || name;
 
   useEffect(() => {
-    setLoading(true);
-    fetch(GOALS_WORKER_URL)
-      .then(r => r.json())
-      .then(json => {
-        const built = buildGoalsData(json.matches || []);
-        setData(built);
-        setLoading(false);
-      })
-      .catch(() => { setError(true); setLoading(false); });
-  }, []);
+    const built = buildGoalsData(getAllFinishedMatchesWithGoals());
+    setData(built);
+  }, [lang]);
 
   const toggleTeam = (key) => setOpenTeams(p => ({ ...p, [key]: !p[key] }));
 
-  if (loading) return (
-    <div style={{ textAlign:"center", padding:40, color:"var(--text3)", fontSize:13 }}>{L.loading}</div>
-  );
-  if (error) return (
-    <div style={{ textAlign:"center", padding:40, color:"var(--text3)", fontSize:13 }}>{L.error}</div>
-  );
+  if (!data) return null;
 
   return (
     <div style={{ maxWidth:720, margin:"0 auto" }} dir={isRtl ? "rtl" : "ltr"}>
@@ -1586,6 +1531,7 @@ const TEAM_MAP = {
   "Jordan":                    "Jordan",
   "Portugal":                  "Portugal",
   "Congo DR":                  "Congo DR",
+  "DR Congo":                  "Congo DR",
   "Democratic Republic of Congo": "Congo DR",
   "Uzbekistan":                "Uzbekistan",
   "Colombia":                  "Colombia",

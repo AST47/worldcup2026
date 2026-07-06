@@ -14,11 +14,26 @@
           "date": "11 Jun",
           "time": "19:00",
           "venue": "Azteca Stadium, Mexico City",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Julián Quiñones",
+              "minute": "9",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Raúl Jiménez",
+              "minute": "67",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "Korea Republic",
@@ -26,11 +41,33 @@
           "date": "12 Jun",
           "time": "02:00",
           "venue": "Akron Stadium, Guadalajara",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Hwang In-Beom",
+              "minute": "67",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Oh Hyeon-Gyu",
+              "minute": "80",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Ladislav Krejcí",
+              "minute": "59",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Czechia",
@@ -38,11 +75,27 @@
           "date": "18 Jun",
           "time": "16:00",
           "venue": "Mercedes-Benz Stadium, Atlanta",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Michal Sadílek",
+              "minute": "6",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Teboho Mokoena",
+              "minute": "83",
+              "penalty": true,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Mexico",
@@ -50,11 +103,20 @@
           "date": "19 Jun",
           "time": "01:00",
           "venue": "Akron Stadium, Guadalajara",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Luis Romo",
+              "minute": "50",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "Czechia",
@@ -62,11 +124,32 @@
           "date": "25 Jun",
           "time": "01:00",
           "venue": "Azteca Stadium, Mexico City",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 3,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": [
+            {
+              "name": "Mateo Chávez",
+              "minute": "55",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Julián Quiñones",
+              "minute": "61",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Álvaro Fidalgo",
+              "minute": "90+4",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "South Africa",
@@ -74,11 +157,20 @@
           "date": "25 Jun",
           "time": "01:00",
           "venue": "BBVA Stadium, Monterrey",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Thapelo Maseko",
+              "minute": "63",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         }
       ]
     },
@@ -96,11 +188,27 @@
           "date": "12 Jun",
           "time": "19:00",
           "venue": "BMO Field, Toronto",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Cyle Larin",
+              "minute": "78",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Jovo Lukić",
+              "minute": "21",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Qatar",
@@ -108,11 +216,27 @@
           "date": "13 Jun",
           "time": "19:00",
           "venue": "Levi's Stadium, Santa Clara",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Miro Muheim",
+              "minute": "90+4",
+              "penalty": false,
+              "owngoal": true
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Breel Embolo",
+              "minute": "17",
+              "penalty": true,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Switzerland",
@@ -120,11 +244,45 @@
           "date": "18 Jun",
           "time": "19:00",
           "venue": "SoFi Stadium, Inglewood",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 4,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Johan Manzambi",
+              "minute": "74",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Johan Manzambi",
+              "minute": "90",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Rubén Vargas",
+              "minute": "84",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Granit Xhaka",
+              "minute": "90+7",
+              "penalty": true,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Ermin Mahmic",
+              "minute": "90+3",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Canada",
@@ -132,11 +290,50 @@
           "date": "19 Jun",
           "time": "01:00",
           "venue": "BC Place, Vancouver",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 6,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Cyle Larin",
+              "minute": "16",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Jonathan David",
+              "minute": "29",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Jonathan David",
+              "minute": "45+3",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Nathan Saliba",
+              "minute": "64",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Mohamed Manai",
+              "minute": "75",
+              "penalty": false,
+              "owngoal": true
+            },
+            {
+              "name": "Jonathan David",
+              "minute": "90+2",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "Switzerland",
@@ -144,11 +341,33 @@
           "date": "24 Jun",
           "time": "19:00",
           "venue": "BC Place, Vancouver",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Rubén Vargas",
+              "minute": "46",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Johan Manzambi",
+              "minute": "57",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Promise David",
+              "minute": "76",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Bosnia and Herzegovina",
@@ -156,11 +375,39 @@
           "date": "24 Jun",
           "time": "19:00",
           "venue": "Lumen Field, Seattle",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 3,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Kerim Alajbegovic",
+              "minute": "29",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Mahmoud Abunada",
+              "minute": "34",
+              "penalty": false,
+              "owngoal": true
+            },
+            {
+              "name": "Ermin Mahmic",
+              "minute": "80",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Hassan Al-Haydos",
+              "minute": "42",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         }
       ]
     },
@@ -178,11 +425,27 @@
           "date": "13 Jun",
           "time": "22:00",
           "venue": "MetLife Stadium, New Jersey",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Vinícius Júnior",
+              "minute": "32",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Ismael Saibari",
+              "minute": "21",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Haiti",
@@ -190,11 +453,20 @@
           "date": "14 Jun",
           "time": "01:00",
           "venue": "Gillette Stadium, Foxboro",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": [
+            {
+              "name": "John McGinn",
+              "minute": "28",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Scotland",
@@ -202,11 +474,20 @@
           "date": "20 Jun",
           "time": "01:00",
           "venue": "Gillette Stadium, Foxboro",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": [
+            {
+              "name": "Ismael Saibari",
+              "minute": "2",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Brazil",
@@ -214,11 +495,32 @@
           "date": "20 Jun",
           "time": "00:30",
           "venue": "Lincoln Financial, Philadelphia",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 3,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Matheus Cunha",
+              "minute": "23",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Matheus Cunha",
+              "minute": "36",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Vinícius Júnior",
+              "minute": "45+3",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "Scotland",
@@ -226,11 +528,32 @@
           "date": "25 Jun",
           "time": "01:00",
           "venue": "Hard Rock Stadium, Miami",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 3,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": [
+            {
+              "name": "Vinícius Júnior",
+              "minute": "7",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Vinícius Júnior",
+              "minute": "45+3",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Matheus Cunha",
+              "minute": "60",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Morocco",
@@ -238,11 +561,51 @@
           "date": "25 Jun",
           "time": "01:00",
           "venue": "Mercedes-Benz Stadium, Atlanta",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 4,
+          "ag": 2,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Achraf Hakimi",
+              "minute": "39",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Ismael Saibari",
+              "minute": "45+1",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Soufiane Rahimi",
+              "minute": "78",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Gessime Yassine",
+              "minute": "89",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Yassine Bounou",
+              "minute": "10",
+              "penalty": false,
+              "owngoal": true
+            },
+            {
+              "name": "Wilson Isidor",
+              "minute": "43",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         }
       ]
     },
@@ -260,11 +623,45 @@
           "date": "13 Jun",
           "time": "01:00",
           "venue": "SoFi Stadium, Inglewood",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 4,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Damian Bobadilla",
+              "minute": "7",
+              "penalty": false,
+              "owngoal": true
+            },
+            {
+              "name": "Folarin Balogun",
+              "minute": "31",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Folarin Balogun",
+              "minute": "45+5",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Giovanni Reyna",
+              "minute": "90+8",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Mauricio",
+              "minute": "73",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Australia",
@@ -272,11 +669,26 @@
           "date": "14 Jun",
           "time": "04:00",
           "venue": "BC Place, Vancouver",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Nestory Irankunda",
+              "minute": "27",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Connor Metcalfe",
+              "minute": "75",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "USA",
@@ -284,11 +696,26 @@
           "date": "19 Jun",
           "time": "19:00",
           "venue": "Lumen Field, Seattle",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Cameron Burgess",
+              "minute": "11",
+              "penalty": false,
+              "owngoal": true
+            },
+            {
+              "name": "Alex Freeman",
+              "minute": "43",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "Türkiye",
@@ -296,11 +723,20 @@
           "date": "20 Jun",
           "time": "03:00",
           "venue": "Levi's Stadium, Santa Clara",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": [
+            {
+              "name": "Matías Galarza",
+              "minute": "2",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Türkiye",
@@ -308,11 +744,45 @@
           "date": "26 Jun",
           "time": "02:00",
           "venue": "SoFi Stadium, Inglewood",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 3,
+          "ag": 2,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Arda Güler",
+              "minute": "10",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Baris Alper Yilmaz",
+              "minute": "31",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Kaan Ayhan",
+              "minute": "90+8",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Auston Trusty",
+              "minute": "3",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Sebastian Berhalter",
+              "minute": "49",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Paraguay",
@@ -320,11 +790,13 @@
           "date": "26 Jun",
           "time": "02:00",
           "venue": "Levi's Stadium, Santa Clara",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": []
         }
       ]
     },
@@ -342,11 +814,63 @@
           "date": "14 Jun",
           "time": "17:00",
           "venue": "NRG Stadium, Houston",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 7,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Felix Nmecha",
+              "minute": "6",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Nico Schlotterbeck",
+              "minute": "38",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Kai Havertz",
+              "minute": "45+5",
+              "penalty": true,
+              "owngoal": false
+            },
+            {
+              "name": "Kai Havertz",
+              "minute": "88",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Jamal Musiala",
+              "minute": "47",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Nathaniel Brown",
+              "minute": "68",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Deniz Undav",
+              "minute": "78",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Livano Comenencia",
+              "minute": "21",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Côte d'Ivoire",
@@ -354,11 +878,20 @@
           "date": "14 Jun",
           "time": "23:00",
           "venue": "Lincoln Financial, Philadelphia",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Amad Diallo",
+              "minute": "90",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "Germany",
@@ -366,11 +899,33 @@
           "date": "20 Jun",
           "time": "20:00",
           "venue": "BMO Field, Toronto",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Deniz Undav",
+              "minute": "68",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Deniz Undav",
+              "minute": "90+4",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Franck Kessié",
+              "minute": "30",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Ecuador",
@@ -378,11 +933,13 @@
           "date": "21 Jun",
           "time": "00:00",
           "venue": "Arrowhead Stadium, Kansas City",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": []
         },
         {
           "home": "Ecuador",
@@ -390,11 +947,33 @@
           "date": "25 Jun",
           "time": "20:00",
           "venue": "MetLife Stadium, New Jersey",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Nilson Angulo",
+              "minute": "9",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Gonzalo Plata",
+              "minute": "77",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Leroy Sané",
+              "minute": "2",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Curaçao",
@@ -402,11 +981,26 @@
           "date": "25 Jun",
           "time": "20:00",
           "venue": "Lincoln Financial, Philadelphia",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 2,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": [
+            {
+              "name": "Nicolas Pépé",
+              "minute": "7",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Nicolas Pépé",
+              "minute": "64",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         }
       ]
     },
@@ -424,11 +1018,39 @@
           "date": "14 Jun",
           "time": "20:00",
           "venue": "AT&T Stadium, Arlington",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 2,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Virgil van Dijk",
+              "minute": "51",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Crysencio Summerville",
+              "minute": "64",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Keito Nakamura",
+              "minute": "57",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Daichi Kamada",
+              "minute": "88",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Sweden",
@@ -436,11 +1058,51 @@
           "date": "15 Jun",
           "time": "02:00",
           "venue": "BBVA Stadium, Monterrey",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 5,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Yasin Ayari",
+              "minute": "7",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Yasin Ayari",
+              "minute": "90+6",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Alexander Isak",
+              "minute": "30",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Viktor Gyökeres",
+              "minute": "59",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Mattias Svanberg",
+              "minute": "84",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Omar Rekik",
+              "minute": "43",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Netherlands",
@@ -448,11 +1110,51 @@
           "date": "20 Jun",
           "time": "17:00",
           "venue": "NRG Stadium, Houston",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 5,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Brian Brobbey",
+              "minute": "5",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Brian Brobbey",
+              "minute": "17",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Cody Gakpo",
+              "minute": "47",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Cody Gakpo",
+              "minute": "54",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Crysencio Summerville",
+              "minute": "89",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Anthony Elanga",
+              "minute": "59",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Tunisia",
@@ -460,11 +1162,38 @@
           "date": "21 Jun",
           "time": "04:00",
           "venue": "BBVA Stadium, Monterrey",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 4,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": [
+            {
+              "name": "Daichi Kamada",
+              "minute": "4",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Ayase Ueda",
+              "minute": "31",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Ayase Ueda",
+              "minute": "83",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Junya Ito",
+              "minute": "69",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Japan",
@@ -472,11 +1201,27 @@
           "date": "26 Jun",
           "time": "02:00",
           "venue": "AT&T Stadium, Arlington",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Daizen Maeda",
+              "minute": "56",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Anthony Elanga",
+              "minute": "62",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Tunisia",
@@ -484,11 +1229,39 @@
           "date": "26 Jun",
           "time": "02:00",
           "venue": "Arrowhead Stadium, Kansas City",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 3,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Hazem Mastouri",
+              "minute": "54",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Ellyes Skhiri",
+              "minute": "3",
+              "penalty": false,
+              "owngoal": true
+            },
+            {
+              "name": "Brian Brobbey",
+              "minute": "7",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Jan Paul van Hecke",
+              "minute": "62",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         }
       ]
     },
@@ -506,11 +1279,27 @@
           "date": "15 Jun",
           "time": "19:00",
           "venue": "Lumen Field, Seattle",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Mohamed Hany",
+              "minute": "66",
+              "penalty": false,
+              "owngoal": true
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Emam Ashour",
+              "minute": "19",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "IR Iran",
@@ -518,11 +1307,39 @@
           "date": "16 Jun",
           "time": "01:00",
           "venue": "SoFi Stadium, Inglewood",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 2,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Ramin Rezaeian",
+              "minute": "32",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Mohammad Mohebbi",
+              "minute": "64",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Elijah Just",
+              "minute": "7",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Elijah Just",
+              "minute": "54",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Belgium",
@@ -530,11 +1347,13 @@
           "date": "21 Jun",
           "time": "19:00",
           "venue": "SoFi Stadium, Inglewood",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": []
         },
         {
           "home": "New Zealand",
@@ -542,11 +1361,39 @@
           "date": "22 Jun",
           "time": "01:00",
           "venue": "BC Place, Vancouver",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 3,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Finn Surman",
+              "minute": "15",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Mostafa Zico",
+              "minute": "58",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Mohamed Salah",
+              "minute": "67",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Trézéguet",
+              "minute": "82",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Egypt",
@@ -554,11 +1401,27 @@
           "date": "26 Jun",
           "time": "03:00",
           "venue": "Lumen Field, Seattle",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Mahmoud Saber",
+              "minute": "5",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Ramin Rezaeian",
+              "minute": "14",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "New Zealand",
@@ -566,11 +1429,51 @@
           "date": "27 Jun",
           "time": "03:00",
           "venue": "BC Place, Vancouver",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 5,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Elijah Just",
+              "minute": "84",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Leandro Trossard",
+              "minute": "28",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Leandro Trossard",
+              "minute": "50",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Kevin De Bruyne",
+              "minute": "66",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Romelu Lukaku",
+              "minute": "86",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Alexis Saelemaekers",
+              "minute": "90+4",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         }
       ]
     },
@@ -588,11 +1491,13 @@
           "date": "15 Jun",
           "time": "16:00",
           "venue": "Mercedes-Benz Stadium, Atlanta",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": []
         },
         {
           "home": "Saudi Arabia",
@@ -600,11 +1505,27 @@
           "date": "15 Jun",
           "time": "22:00",
           "venue": "Hard Rock Stadium, Miami",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Abdulelah Al-Amri",
+              "minute": "41",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Maxi Araújo",
+              "minute": "80",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Spain",
@@ -612,11 +1533,38 @@
           "date": "21 Jun",
           "time": "16:00",
           "venue": "Mercedes-Benz Stadium, Atlanta",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 4,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Lamine Yamal",
+              "minute": "10",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Mikel Oyarzabal",
+              "minute": "21",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Mikel Oyarzabal",
+              "minute": "24",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Hassan Al-Tambakti",
+              "minute": "49",
+              "penalty": false,
+              "owngoal": true
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "Uruguay",
@@ -624,11 +1572,39 @@
           "date": "21 Jun",
           "time": "22:00",
           "venue": "Hard Rock Stadium, Miami",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 2,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Maxi Araújo",
+              "minute": "44",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Agustín Cano",
+              "minute": "45+6",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Kevin Pina",
+              "minute": "21",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Hélio Varela",
+              "minute": "61",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Cabo Verde",
@@ -636,11 +1612,13 @@
           "date": "27 Jun",
           "time": "00:00",
           "venue": "NRG Stadium, Houston",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": []
         },
         {
           "home": "Uruguay",
@@ -648,11 +1626,20 @@
           "date": "27 Jun",
           "time": "00:00",
           "venue": "Akron Stadium, Guadalajara",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": [
+            {
+              "name": "Álex Baena",
+              "minute": "42",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         }
       ]
     },
@@ -670,11 +1657,39 @@
           "date": "16 Jun",
           "time": "19:00",
           "venue": "MetLife Stadium, New Jersey",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 3,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Kylian Mbappé",
+              "minute": "66",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Kylian Mbappé",
+              "minute": "90+6",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Bradley Barcola",
+              "minute": "82",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Ibrahim Mbaye",
+              "minute": "90+5",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Iraq",
@@ -682,11 +1697,45 @@
           "date": "16 Jun",
           "time": "22:00",
           "venue": "Gillette Stadium, Foxboro",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 4,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Aymen Hussein",
+              "minute": "39",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Erling Haaland",
+              "minute": "29",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Erling Haaland",
+              "minute": "43",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Leo Østigard",
+              "minute": "76",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Aymen Hussein",
+              "minute": "90+6",
+              "penalty": false,
+              "owngoal": true
+            }
+          ]
         },
         {
           "home": "France",
@@ -694,11 +1743,32 @@
           "date": "22 Jun",
           "time": "21:00",
           "venue": "Lincoln Financial, Philadelphia",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 3,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Kylian Mbappé",
+              "minute": "14",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Kylian Mbappé",
+              "minute": "54",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Ousmane Dembélé",
+              "minute": "66",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "Norway",
@@ -706,11 +1776,45 @@
           "date": "23 Jun",
           "time": "00:00",
           "venue": "MetLife Stadium, New Jersey",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 3,
+          "ag": 2,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Marcus Holmgren Pedersen",
+              "minute": "43",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Erling Haaland",
+              "minute": "48",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Erling Haaland",
+              "minute": "58",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Ismaïla Sarr",
+              "minute": "53",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Ismaïla Sarr",
+              "minute": "90+3",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Norway",
@@ -718,11 +1822,45 @@
           "date": "26 Jun",
           "time": "19:00",
           "venue": "Gillette Stadium, Foxboro",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 4,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Thelo Aasgaard",
+              "minute": "21",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Ousmane Dembélé",
+              "minute": "7",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Ousmane Dembélé",
+              "minute": "20",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Ousmane Dembélé",
+              "minute": "32",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Désiré Doué",
+              "minute": "90+4",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Senegal",
@@ -730,11 +1868,44 @@
           "date": "26 Jun",
           "time": "19:00",
           "venue": "BMO Field, Toronto",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 5,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Habib Diarra",
+              "minute": "4",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Ismaïla Sarr",
+              "minute": "56",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Pape Gueye",
+              "minute": "59",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Pape Gueye",
+              "minute": "71",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Iliman Ndiaye",
+              "minute": "82",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         }
       ]
     },
@@ -752,11 +1923,32 @@
           "date": "17 Jun",
           "time": "01:00",
           "venue": "Arrowhead Stadium, Kansas City",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 3,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Lionel Messi",
+              "minute": "17",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Lionel Messi",
+              "minute": "60",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Lionel Messi",
+              "minute": "76",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "Austria",
@@ -764,11 +1956,39 @@
           "date": "17 Jun",
           "time": "04:00",
           "venue": "Levi's Stadium, Santa Clara",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 3,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Romano Schmid",
+              "minute": "21",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Yazan Al-Arab",
+              "minute": "76",
+              "penalty": false,
+              "owngoal": true
+            },
+            {
+              "name": "Marko Arnautovic",
+              "minute": "90+12",
+              "penalty": true,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Ali Olwan",
+              "minute": "50",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Argentina",
@@ -776,11 +1996,26 @@
           "date": "22 Jun",
           "time": "17:00",
           "venue": "AT&T Stadium, Arlington",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Lionel Messi",
+              "minute": "38",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Lionel Messi",
+              "minute": "90+5",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "Jordan",
@@ -788,23 +2023,73 @@
           "date": "23 Jun",
           "time": "03:00",
           "venue": "Levi's Stadium, Santa Clara",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 2,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Nizar Al-Rashdan",
+              "minute": "36",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Nadhir Benbouali",
+              "minute": "69",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Amine Gouiri",
+              "minute": "82",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
-          "home": "Argentina",
-          "away": "Jordan",
+          "home": "Jordan",
+          "away": "Argentina",
           "date": "28 Jun",
           "time": "02:00",
           "venue": "AT&T Stadium, Arlington",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 3,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Mousa Al-Tamari",
+              "minute": "55",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Giovani Lo Celso",
+              "minute": "19",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Lautaro Martínez",
+              "minute": "31",
+              "penalty": true,
+              "owngoal": false
+            },
+            {
+              "name": "Lionel Messi",
+              "minute": "80",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Algeria",
@@ -812,11 +2097,51 @@
           "date": "28 Jun",
           "time": "02:00",
           "venue": "Arrowhead Stadium, Kansas City",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 3,
+          "ag": 3,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Rafik Belghali",
+              "minute": "45",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Riyad Mahrez",
+              "minute": "60",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Riyad Mahrez",
+              "minute": "90+3",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Marko Arnautovic",
+              "minute": "28",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Marcel Sabitzer",
+              "minute": "55",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Sasa Kalajdzic",
+              "minute": "90+6",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         }
       ]
     },
@@ -834,11 +2159,27 @@
           "date": "17 Jun",
           "time": "17:00",
           "venue": "NRG Stadium, Houston",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "João Neves",
+              "minute": "6",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Yoane Wissa",
+              "minute": "45+5",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Uzbekistan",
@@ -846,11 +2187,39 @@
           "date": "18 Jun",
           "time": "02:00",
           "venue": "Azteca Stadium, Mexico City",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 3,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Abbosbek Fayzullaev",
+              "minute": "60",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Daniel Muñoz",
+              "minute": "40",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Luis Díaz",
+              "minute": "65",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Jáminton Campaz",
+              "minute": "90+9",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Portugal",
@@ -858,11 +2227,44 @@
           "date": "23 Jun",
           "time": "17:00",
           "venue": "NRG Stadium, Houston",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 5,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Cristiano Ronaldo",
+              "minute": "6",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Cristiano Ronaldo",
+              "minute": "39",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Nuno Mendes",
+              "minute": "17",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Abduvohid Nematov",
+              "minute": "60",
+              "penalty": false,
+              "owngoal": true
+            },
+            {
+              "name": "Rafael Leão",
+              "minute": "87",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "Colombia",
@@ -870,23 +2272,34 @@
           "date": "24 Jun",
           "time": "02:00",
           "venue": "Akron Stadium, Guadalajara",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Daniel Muñoz",
+              "minute": "76",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
-          "home": "Portugal",
-          "away": "Colombia",
+          "home": "Colombia",
+          "away": "Portugal",
           "date": "28 Jun",
           "time": "01:00",
           "venue": "NRG Stadium, Houston",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": []
         },
         {
           "home": "Congo DR",
@@ -894,11 +2307,39 @@
           "date": "28 Jun",
           "time": "01:00",
           "venue": "Mercedes-Benz Stadium, Atlanta",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 3,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Yoane Wissa",
+              "minute": "68",
+              "penalty": true,
+              "owngoal": false
+            },
+            {
+              "name": "Fiston Mayele",
+              "minute": "78",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Yoane Wissa",
+              "minute": "90+1",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Eldor Shomurodov",
+              "minute": "10",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         }
       ]
     },
@@ -916,11 +2357,51 @@
           "date": "17 Jun",
           "time": "20:00",
           "venue": "AT&T Stadium, Arlington",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 4,
+          "ag": 2,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Harry Kane",
+              "minute": "12",
+              "penalty": true,
+              "owngoal": false
+            },
+            {
+              "name": "Harry Kane",
+              "minute": "42",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Jude Bellingham",
+              "minute": "47",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Marcus Rashford",
+              "minute": "85",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Martin Baturina",
+              "minute": "36",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Petar Musa",
+              "minute": "45+5",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Ghana",
@@ -928,11 +2409,20 @@
           "date": "17 Jun",
           "time": "23:00",
           "venue": "BMO Field, Toronto",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 1,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Caleb Yirenkyi",
+              "minute": "90+5",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": []
         },
         {
           "home": "England",
@@ -940,11 +2430,13 @@
           "date": "23 Jun",
           "time": "20:00",
           "venue": "Gillette Stadium, Foxboro",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 0,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": []
         },
         {
           "home": "Panama",
@@ -952,11 +2444,20 @@
           "date": "23 Jun",
           "time": "23:00",
           "venue": "BMO Field, Toronto",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": [
+            {
+              "name": "Ante Budimir",
+              "minute": "54",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Panama",
@@ -964,11 +2465,26 @@
           "date": "28 Jun",
           "time": "00:00",
           "venue": "MetLife Stadium, New Jersey",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 0,
+          "ag": 2,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [],
+          "awayGoals": [
+            {
+              "name": "Jude Bellingham",
+              "minute": "62",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Harry Kane",
+              "minute": "67",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         },
         {
           "home": "Croatia",
@@ -976,11 +2492,33 @@
           "date": "28 Jun",
           "time": "00:00",
           "venue": "Lincoln Financial, Philadelphia",
-          "hg": null,
-          "ag": null,
-          "status": "SCHEDULED",
+          "hg": 2,
+          "ag": 1,
+          "status": "FINISHED",
           "minute": null,
-          "injuryTime": null
+          "injuryTime": null,
+          "homeGoals": [
+            {
+              "name": "Petar Sucic",
+              "minute": "31",
+              "penalty": false,
+              "owngoal": false
+            },
+            {
+              "name": "Nikola Vlasic",
+              "minute": "83",
+              "penalty": false,
+              "owngoal": false
+            }
+          ],
+          "awayGoals": [
+            {
+              "name": "Derrick Luckassen",
+              "minute": "73",
+              "penalty": false,
+              "owngoal": false
+            }
+          ]
         }
       ]
     }
@@ -999,7 +2537,16 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [],
+      "awayGoals": [
+        {
+          "name": "Stephan Eustáquio",
+          "minute": "90+2",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "74": {
       "side": "L",
@@ -1014,7 +2561,23 @@
       "pAg": 4,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Kai Havertz",
+          "minute": "54",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Julio Enciso",
+          "minute": "42",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "75": {
       "side": "L",
@@ -1029,7 +2592,23 @@
       "pAg": 3,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Cody Gakpo",
+          "minute": "72",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Issa Diop",
+          "minute": "90+1",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "76": {
       "side": "R",
@@ -1044,7 +2623,29 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Casemiro",
+          "minute": "56",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Gabriel Martinelli",
+          "minute": "90+5",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Kaishu Sano",
+          "minute": "29",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "77": {
       "side": "L",
@@ -1059,7 +2660,28 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Kylian Mbappé",
+          "minute": "45",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Kylian Mbappé",
+          "minute": "74",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Bradley Barcola",
+          "minute": "53",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": []
     },
     "78": {
       "side": "R",
@@ -1074,7 +2696,29 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Amad Diallo",
+          "minute": "74",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Antonio Nusa",
+          "minute": "39",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Erling Haaland",
+          "minute": "86",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "79": {
       "side": "R",
@@ -1089,7 +2733,22 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Julián Quiñones",
+          "minute": "31",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Raúl Jiménez",
+          "minute": "45+1",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": []
     },
     "80": {
       "side": "R",
@@ -1104,7 +2763,29 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Harry Kane",
+          "minute": "75",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Harry Kane",
+          "minute": "86",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Brian Cipenga",
+          "minute": "7",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "81": {
       "side": "L",
@@ -1119,7 +2800,22 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Folarin Balogun",
+          "minute": "45",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Malik Tillman",
+          "minute": "82",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": []
     },
     "82": {
       "side": "L",
@@ -1128,13 +2824,47 @@
       "date": "1 Jul",
       "time": "20:00",
       "venue": "Lumen Field, Seattle",
-      "hg": 3,
+      "hg": 2,
       "ag": 2,
       "pHg": null,
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Romelu Lukaku",
+          "minute": "86",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Youri Tielemans",
+          "minute": "89",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Youri Tielemans",
+          "minute": "120+5",
+          "penalty": true,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Habib Diarra",
+          "minute": "25",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Ismaïla Sarr",
+          "minute": "51",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "83": {
       "side": "L",
@@ -1149,7 +2879,29 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Cristiano Ronaldo",
+          "minute": "68",
+          "penalty": true,
+          "owngoal": false
+        },
+        {
+          "name": "Gonçalo Ramos",
+          "minute": "90+4",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Ivan Perisic",
+          "minute": "53",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "84": {
       "side": "L",
@@ -1164,7 +2916,28 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Mikel Oyarzabal",
+          "minute": "36",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Mikel Oyarzabal",
+          "minute": "89",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Pedro Porro",
+          "minute": "66",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": []
     },
     "85": {
       "side": "R",
@@ -1179,7 +2952,22 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Breel Embolo",
+          "minute": "10",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Dan Ndoye",
+          "minute": "46",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": []
     },
     "86": {
       "side": "R",
@@ -1188,13 +2976,47 @@
       "date": "3 Jul",
       "time": "22:00",
       "venue": "Hard Rock Stadium, Miami",
-      "hg": 3,
-      "ag": 2,
+      "hg": 1,
+      "ag": 1,
       "pHg": null,
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Lionel Messi",
+          "minute": "29",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Lisandro Martínez",
+          "minute": "92",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Diney Borges",
+          "minute": "111",
+          "penalty": false,
+          "owngoal": true
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Deroy Duarte",
+          "minute": "59",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Sidny Lopes Cabral",
+          "minute": "103",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "87": {
       "side": "R",
@@ -1209,7 +3031,16 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Jhon Arias",
+          "minute": "14",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": []
     },
     "88": {
       "side": "R",
@@ -1224,7 +3055,23 @@
       "pAg": 4,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Mohamed Hany",
+          "minute": "55",
+          "penalty": false,
+          "owngoal": true
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Emam Ashour",
+          "minute": "13",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "89": {
       "side": "L",
@@ -1239,7 +3086,16 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [],
+      "awayGoals": [
+        {
+          "name": "Kylian Mbappé",
+          "minute": "70",
+          "penalty": true,
+          "owngoal": false
+        }
+      ]
     },
     "90": {
       "side": "L",
@@ -1254,7 +3110,28 @@
       "pAg": null,
       "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [],
+      "awayGoals": [
+        {
+          "name": "Azzedine Ounahi",
+          "minute": "50",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Azzedine Ounahi",
+          "minute": "82",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Soufiane Rahimi",
+          "minute": "90+8",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "91": {
       "side": "R",
@@ -1263,13 +3140,35 @@
       "date": "5 Jul",
       "time": "20:00",
       "venue": "MetLife Stadium, New Jersey",
-      "hg": null,
-      "ag": null,
+      "hg": 1,
+      "ag": 2,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Neymar",
+          "minute": "90+10",
+          "penalty": true,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Erling Haaland",
+          "minute": "79",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Erling Haaland",
+          "minute": "90",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "92": {
       "side": "R",
@@ -1278,13 +3177,47 @@
       "date": "6 Jul",
       "time": "00:00",
       "venue": "Azteca Stadium, Mexico City",
-      "hg": null,
-      "ag": null,
+      "hg": 2,
+      "ag": 3,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Julián Quiñones",
+          "minute": "42",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Raúl Jiménez",
+          "minute": "69",
+          "penalty": true,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Jude Bellingham",
+          "minute": "36",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Jude Bellingham",
+          "minute": "38",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Harry Kane",
+          "minute": "60",
+          "penalty": true,
+          "owngoal": false
+        }
+      ]
     },
     "93": {
       "side": "L",
