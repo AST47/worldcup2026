@@ -3226,13 +3226,22 @@
       "date": "6 Jul",
       "time": "19:00",
       "venue": "AT&T Stadium, Arlington",
-      "hg": null,
-      "ag": null,
+      "hg": 0,
+      "ag": 1,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [],
+      "awayGoals": [
+        {
+          "name": "Mikel Merino",
+          "minute": "90+1",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "94": {
       "side": "L",
@@ -3241,13 +3250,47 @@
       "date": "6 Jul",
       "time": "23:00",
       "venue": "Lumen Field, Seattle",
-      "hg": null,
-      "ag": null,
+      "hg": 1,
+      "ag": 4,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Malik Tillman",
+          "minute": "31",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Charles De Ketelaere",
+          "minute": "9",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Charles De Ketelaere",
+          "minute": "33",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Hans Vanaken",
+          "minute": "57",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Romelu Lukaku",
+          "minute": "90+3",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "95": {
       "side": "R",
@@ -3256,13 +3299,47 @@
       "date": "7 Jul",
       "time": "16:00",
       "venue": "Mercedes-Benz Stadium, Atlanta",
-      "hg": null,
-      "ag": null,
+      "hg": 3,
+      "ag": 2,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Cristian Romero",
+          "minute": "79",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Lionel Messi",
+          "minute": "83",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Enzo Fernández",
+          "minute": "90+2",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Yasser Ibrahim",
+          "minute": "15",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Mostafa Zico",
+          "minute": "67",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "96": {
       "side": "R",
@@ -3271,18 +3348,20 @@
       "date": "7 Jul",
       "time": "20:00",
       "venue": "BC Place, Vancouver",
-      "hg": null,
-      "ag": null,
-      "pHg": null,
-      "pAg": null,
-      "status": "SCHEDULED",
+      "hg": 0,
+      "ag": 0,
+      "pHg": 4,
+      "pAg": 3,
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [],
+      "awayGoals": []
     },
     "97": {
       "side": "L",
-      "home": "",
-      "away": "",
+      "home": "France",
+      "away": "Morocco",
       "date": "9 Jul",
       "time": "20:00",
       "venue": "Gillette Stadium, Foxboro",
@@ -3296,8 +3375,8 @@
     },
     "98": {
       "side": "L",
-      "home": "",
-      "away": "",
+      "home": "Spain",
+      "away": "Belgium",
       "date": "10 Jul",
       "time": "19:00",
       "venue": "SoFi Stadium, Inglewood",
@@ -3311,8 +3390,8 @@
     },
     "99": {
       "side": "R",
-      "home": "",
-      "away": "",
+      "home": "Norway",
+      "away": "England",
       "date": "11 Jul",
       "time": "21:00",
       "venue": "Hard Rock Stadium, Miami",
@@ -3326,8 +3405,8 @@
     },
     "100": {
       "side": "R",
-      "home": "",
-      "away": "",
+      "home": "Argentina",
+      "away": "Switzerland",
       "date": "12 Jul",
       "time": "01:00",
       "venue": "Arrowhead Stadium, Kansas City",
