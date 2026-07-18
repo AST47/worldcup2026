@@ -2824,7 +2824,7 @@
       "date": "1 Jul",
       "time": "20:00",
       "venue": "Lumen Field, Seattle",
-      "hg": 2,
+      "hg": 3,
       "ag": 2,
       "pHg": null,
       "pAg": null,
@@ -2976,8 +2976,8 @@
       "date": "3 Jul",
       "time": "22:00",
       "venue": "Hard Rock Stadium, Miami",
-      "hg": 1,
-      "ag": 1,
+      "hg": 3,
+      "ag": 2,
       "pHg": null,
       "pAg": null,
       "status": "FINISHED",
@@ -3365,13 +3365,28 @@
       "date": "9 Jul",
       "time": "20:00",
       "venue": "Gillette Stadium, Foxboro",
-      "hg": null,
-      "ag": null,
+      "hg": 2,
+      "ag": 0,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Kylian Mbappé",
+          "minute": "60",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Ousmane Dembélé",
+          "minute": "66",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": []
     },
     "98": {
       "side": "L",
@@ -3380,13 +3395,35 @@
       "date": "10 Jul",
       "time": "19:00",
       "venue": "SoFi Stadium, Inglewood",
-      "hg": null,
-      "ag": null,
+      "hg": 2,
+      "ag": 1,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Fabián Ruiz",
+          "minute": "30",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Mikel Merino",
+          "minute": "88",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Charles De Ketelaere",
+          "minute": "41",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "99": {
       "side": "R",
@@ -3395,13 +3432,35 @@
       "date": "11 Jul",
       "time": "21:00",
       "venue": "Hard Rock Stadium, Miami",
-      "hg": null,
-      "ag": null,
+      "hg": 1,
+      "ag": 2,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Andreas Schjelderup",
+          "minute": "36",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Jude Bellingham",
+          "minute": "45+2",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Jude Bellingham",
+          "minute": "93",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "100": {
       "side": "R",
@@ -3410,48 +3469,113 @@
       "date": "12 Jul",
       "time": "01:00",
       "venue": "Arrowhead Stadium, Kansas City",
-      "hg": null,
-      "ag": null,
+      "hg": 3,
+      "ag": 1,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Alexis Mac Allister",
+          "minute": "10",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Julián Álvarez",
+          "minute": "112",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Lautaro Martínez",
+          "minute": "120+1",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Dan Ndoye",
+          "minute": "67",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "101": {
       "side": "L",
-      "home": "",
-      "away": "",
+      "home": "France",
+      "away": "Spain",
       "date": "14 Jul",
       "time": "19:00",
       "venue": "AT&T Stadium, Arlington",
-      "hg": null,
-      "ag": null,
+      "hg": 0,
+      "ag": 2,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [],
+      "awayGoals": [
+        {
+          "name": "Mikel Oyarzabal",
+          "minute": "22",
+          "penalty": true,
+          "owngoal": false
+        },
+        {
+          "name": "Pedro Porro",
+          "minute": "58",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "102": {
       "side": "R",
-      "home": "",
-      "away": "",
+      "home": "England",
+      "away": "Argentina",
       "date": "15 Jul",
       "time": "19:00",
       "venue": "Mercedes-Benz Stadium, Atlanta",
-      "hg": null,
-      "ag": null,
+      "hg": 1,
+      "ag": 2,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Anthony Gordon",
+          "minute": "55",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Enzo Fernández",
+          "minute": "86",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Lautaro Martínez",
+          "minute": "92",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "103": {
       "side": "3rd",
-      "home": "",
-      "away": "",
+      "home": "France",
+      "away": "England",
       "date": "18 Jul",
       "time": "21:00",
       "venue": "Hard Rock Stadium, Miami",
@@ -3465,8 +3589,8 @@
     },
     "104": {
       "side": "F",
-      "home": "",
-      "away": "",
+      "home": "Spain",
+      "away": "Argentina",
       "date": "19 Jul",
       "time": "19:00",
       "venue": "MetLife Stadium, New Jersey",
