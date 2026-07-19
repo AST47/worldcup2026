@@ -61,21 +61,21 @@ const GC = ["#e74c3c","#e67e22","#f1c40f","#2ecc71","#1abc9c","#3498db","#9b59b6
 
 // تصنيف الفيفا الرسمي (11 يونيو 2026) + الاتحاد القاري — بيانات مرجعية ثابتة، ما بتتغير خلال البطولة
 const TEAM_INFO = {
-  "Argentina": { rank: 1, confederation: "CONMEBOL" },
-  "Spain": { rank: 2, confederation: "UEFA" },
-  "France": { rank: 3, confederation: "UEFA" },
-  "England": { rank: 4, confederation: "UEFA" },
+  "Argentina": { rank: 1, confederation: "CONMEBOL", titles: [1978, 1986, 2022] },
+  "Spain": { rank: 2, confederation: "UEFA", titles: [2010, 2026] },
+  "France": { rank: 3, confederation: "UEFA", titles: [1998, 2018] },
+  "England": { rank: 4, confederation: "UEFA", titles: [1966] },
   "Portugal": { rank: 5, confederation: "UEFA" },
-  "Brazil": { rank: 6, confederation: "CONMEBOL" },
+  "Brazil": { rank: 6, confederation: "CONMEBOL", titles: [1958, 1962, 1970, 1994, 2002] },
   "Morocco": { rank: 7, confederation: "CAF" },
   "Netherlands": { rank: 8, confederation: "UEFA" },
   "Belgium": { rank: 9, confederation: "UEFA" },
-  "Germany": { rank: 10, confederation: "UEFA" },
+  "Germany": { rank: 10, confederation: "UEFA", titles: [1954, 1974, 1990, 2014] },
   "Croatia": { rank: 11, confederation: "UEFA" },
   "Colombia": { rank: 13, confederation: "CONMEBOL" },
   "Mexico": { rank: 14, confederation: "CONCACAF" },
   "Senegal": { rank: 15, confederation: "CAF" },
-  "Uruguay": { rank: 16, confederation: "CONMEBOL" },
+  "Uruguay": { rank: 16, confederation: "CONMEBOL", titles: [1930, 1950] },
   "USA": { rank: 17, confederation: "CONCACAF" },
   "Japan": { rank: 18, confederation: "AFC" },
   "Switzerland": { rank: 19, confederation: "UEFA" },
@@ -109,6 +109,14 @@ const TEAM_INFO = {
   "Curaçao": { rank: 82, confederation: "CONCACAF" },
   "Haiti": { rank: 83, confederation: "CONCACAF" },
   "New Zealand": { rank: 85, confederation: "OFC" },
+};
+
+// الجوائز الرسمية بعد نهاية البطولة — بيانات ثابتة، ما بتتغير
+const AWARDS = {
+  goldenBall:  { name: "Rodri",         team: "Spain" },
+  goldenBoot:  { name: "Kylian Mbappé", team: "France" },
+  goldenGlove: { name: "Unai Simón",    team: "Spain" },
+  youngPlayer: { name: "Pau Cubarsí",   team: "Spain" },
 };
 
 function tn(lang, key) { return T[lang].teams[key] || key; }
@@ -221,6 +229,11 @@ function TeamModal({ teamKey, lang, onClose }) {
               {info.confederation ? t.confederations[info.confederation] : ""}
               {info.rank ? `  ·  ${t.fifaRank}: #${info.rank}` : ""}
             </div>
+            {info.titles && info.titles.length > 0 && (
+              <div style={{ fontSize: 11, color: "#f1c40f", fontWeight: 600, marginTop: 3 }}>
+                🏆 {t.worldChampion} {info.titles.join(" · ")}
+              </div>
+            )}
           </div>
           <button onClick={onClose} style={{
             background: "none", border: "none", fontSize: 22, color: "var(--text3)",
@@ -440,6 +453,16 @@ function SymmetricBracket({ lang }) {
           ))}
           <div style={{ width:CENTER_W, flexShrink:0, height:TOTAL_H, display:"flex", flexDirection:"column",
             alignItems:"center", justifyContent:"center", gap:20, margin:`0 ${GAP}px` }}>
+            {(() => {
+              const champion = getWinner(KO.final[0]);
+              if (!champion) return null;
+              return (
+                <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:4, marginBottom:-8 }}>
+                  <span style={{ fontSize:44, lineHeight:1 }}>{FLAGS[champion] || "🏳️"}</span>
+                  <span style={{ fontSize:12, fontWeight:800, color:"#f1c40f" }}>🏆 {tn(lang, champion)}</span>
+                </div>
+              );
+            })()}
             <div style={{ fontSize:10, color:"#f1c40f", fontWeight:700 }}>{t.final}</div>
             <KOCard match={KO.final[0]} accent="#f1c40f" lang={lang}/>
             <div style={{ width:"70%", height:1, background:"var(--border)" }}/>
@@ -943,6 +966,11 @@ function StatsTab({ lang }) {
       min: "د",
       vs: "ضد",
       conceded: "هدف مستقبل",
+      awardsTitle: "جوائز البطولة",
+      goldenBall: "الكرة الذهبية (أفضل لاعب)",
+      goldenBoot: "الحذاء الذهبي (هداف البطولة)",
+      goldenGlove: "القفاز الذهبي (أفضل حارس)",
+      youngPlayer: "أفضل لاعب شاب",
     },
     en: {
       totalGoals: "Total Goals",
@@ -960,6 +988,11 @@ function StatsTab({ lang }) {
       min: "'",
       vs: "vs",
       conceded: "conceded",
+      awardsTitle: "Tournament Awards",
+      goldenBall: "Golden Ball (Best Player)",
+      goldenBoot: "Golden Boot (Top Scorer)",
+      goldenGlove: "Golden Glove (Best Goalkeeper)",
+      youngPlayer: "Best Young Player",
     },
     tr: {
       totalGoals: "Toplam Gol",
@@ -977,6 +1010,11 @@ function StatsTab({ lang }) {
       min: "'",
       vs: "vs",
       conceded: "yenilen",
+      awardsTitle: "Turnuva Ödülleri",
+      goldenBall: "Altın Top (En İyi Oyuncu)",
+      goldenBoot: "Altın Ayakkabı (Gol Kralı)",
+      goldenGlove: "Altın Eldiven (En İyi Kaleci)",
+      youngPlayer: "En İyi Genç Oyuncu",
     },
   }[lang];
 
@@ -1086,8 +1124,33 @@ function StatsTab({ lang }) {
     </div>
   );
 
+  const AwardCard = ({ label, icon, name, teamKey }) => (
+    <div style={{
+      background:"var(--surface)", border:"1px solid var(--border)", borderRadius:10,
+      padding:"12px 16px", marginBottom:8,
+      display:"flex", alignItems:"center", gap:12
+    }}>
+      <span style={{ fontSize:22, flexShrink:0 }}>{icon}</span>
+      <div style={{ flex:1, minWidth:0 }}>
+        <div style={{ fontSize:11, color:"var(--text3)" }}>{label}</div>
+        <div style={{ fontSize:14, fontWeight:700, color:"var(--text)" }}>
+          {(playerNames[name] && playerNames[name][lang]) || name}
+        </div>
+      </div>
+      <span style={{ fontSize:20, flexShrink:0 }}>{FLAGS[teamKey] || "🏳️"}</span>
+    </div>
+  );
+
   return (
     <div style={{ maxWidth:680, margin:"0 auto" }} dir={isRtl ? "rtl" : "ltr"}>
+      <div style={{ fontSize:12, fontWeight:700, color:"var(--text3)", marginBottom:8, textTransform:"uppercase", letterSpacing:.5 }}>{L.awardsTitle}</div>
+      <AwardCard label={L.goldenBall} icon="🏅" name={AWARDS.goldenBall.name} teamKey={AWARDS.goldenBall.team} />
+      <AwardCard label={L.goldenBoot} icon="👟" name={AWARDS.goldenBoot.name} teamKey={AWARDS.goldenBoot.team} />
+      <AwardCard label={L.goldenGlove} icon="🧤" name={AWARDS.goldenGlove.name} teamKey={AWARDS.goldenGlove.team} />
+      <AwardCard label={L.youngPlayer} icon="⭐" name={AWARDS.youngPlayer.name} teamKey={AWARDS.youngPlayer.team} />
+
+      <div style={{ height:16 }} />
+
       <StatCard label={L.totalGoals} value={data.totalGoals} />
       <StatCard label={L.avgGoals} value={data.avgGoals} />
       <StatCard label={L.penGoals} value={data.penGoals} />
@@ -1285,7 +1348,7 @@ function GoalsTab({ lang }) {
 
 function App() {
   const [tab, setTab] = useState("tournament");
-  const [subTab, setSubTab] = useState("schedule");
+  const [subTab, setSubTab] = useState("knockout");
   const [lang, setLang] = useState("en");
   const [tick, setTick] = useState(0);
   const [selectedTeam, setSelectedTeam] = useState(null);
@@ -1365,7 +1428,6 @@ function App() {
               )}
               {subTab==="knockout" && (
                 <div>
-                  <div style={{ fontSize:11, color:"var(--text3)", marginBottom:14, textAlign:"center" }}>{t.knockoutNote}</div>
                   <SymmetricBracket lang={lang}/>
                   <div style={{ marginTop:20, padding:"10px 16px", background:"var(--ko-footer)", borderRadius:8,
                     border:"1px solid var(--border)", fontSize:11, color:"var(--text3)", textAlign:"center" }}>

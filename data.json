@@ -3579,13 +3579,77 @@
       "date": "18 Jul",
       "time": "21:00",
       "venue": "Hard Rock Stadium, Miami",
-      "hg": null,
-      "ag": null,
+      "hg": 4,
+      "ag": 6,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Kylian Mbappé",
+          "minute": "48",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Bradley Barcola",
+          "minute": "54",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Kylian Mbappé",
+          "minute": "66",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Ousmane Dembélé",
+          "minute": "90+6",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": [
+        {
+          "name": "Declan Rice",
+          "minute": "3",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Ezri Konsa",
+          "minute": "18",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Bukayo Saka",
+          "minute": "37",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Bukayo Saka",
+          "minute": "45+1",
+          "penalty": false,
+          "owngoal": false
+        },
+        {
+          "name": "Bukayo Saka",
+          "minute": "87",
+          "penalty": true,
+          "owngoal": false
+        },
+        {
+          "name": "Jude Bellingham",
+          "minute": "90+8",
+          "penalty": false,
+          "owngoal": false
+        }
+      ]
     },
     "104": {
       "side": "F",
@@ -3594,13 +3658,22 @@
       "date": "19 Jul",
       "time": "19:00",
       "venue": "MetLife Stadium, New Jersey",
-      "hg": null,
-      "ag": null,
+      "hg": 1,
+      "ag": 0,
       "pHg": null,
       "pAg": null,
-      "status": "SCHEDULED",
+      "status": "FINISHED",
       "minute": null,
-      "injuryTime": null
+      "injuryTime": null,
+      "homeGoals": [
+        {
+          "name": "Ferran Torres",
+          "minute": "106",
+          "penalty": false,
+          "owngoal": false
+        }
+      ],
+      "awayGoals": []
     }
   }
 }

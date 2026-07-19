@@ -133,7 +133,75 @@ const PLAYER_NAMES = {
   "Yasin Ayari":           { ar: "ياسين عياري",        tr: "Yasin Ayari" },
   "Yassine Bounou":        { ar: "ياسين بونو",         tr: "Yassine Bounou" },
   "Yazan Al-Arab":         { ar: "يزن العرب",          tr: "Yazan Al-Arab" },
-  "Yoane Wissa":           { ar: "يوان ويسا",          tr: "Yoane Wissa" }
+  "Yoane Wissa":           { ar: "يوان ويسا",          tr: "Yoane Wissa" },
+  "Lautaro Martínez":      { ar: "لاوتارو مارتينيز",     tr: "Lautaro Martínez" },
+  "Enzo Fernández":        { ar: "إنزو فرنانديز",        tr: "Enzo Fernández" },
+  "Alexis Mac Allister":   { ar: "أليكسيس ماك أليستر",   tr: "Alexis Mac Allister" },
+  "Cristian Romero":       { ar: "كريستيان روميرو",      tr: "Cristian Romero" },
+  "Giovani Lo Celso":      { ar: "جيوفاني لو تشيلسو",    tr: "Giovani Lo Celso" },
+  "Julián Álvarez":        { ar: "خوليان ألفاريز",       tr: "Julián Álvarez" },
+  "Lisandro Martínez":     { ar: "ليساندرو مارتينيز",    tr: "Lisandro Martínez" },
+  "Désiré Doué":           { ar: "ديزيريه دويه",         tr: "Désiré Doué" },
+  "Anthony Gordon":        { ar: "أنتوني غوردون",        tr: "Anthony Gordon" },
+  "Charles De Ketelaere":  { ar: "تشارلز دي كيتيلار",    tr: "Charles De Ketelaere" },
+  "Romelu Lukaku":         { ar: "روميلو لوكاكو",        tr: "Romelu Lukaku" },
+  "Leandro Trossard":      { ar: "ليياندرو تروسارد",     tr: "Leandro Trossard" },
+  "Youri Tielemans":       { ar: "يوري تيليمانس",        tr: "Youri Tielemans" },
+  "Alexis Saelemaekers":   { ar: "أليكسيس سيلمايكرز",    tr: "Alexis Saelemaekers" },
+  "Hans Vanaken":          { ar: "هانس فاناكن",          tr: "Hans Vanaken" },
+  "Andreas Schjelderup":   { ar: "أندرياس شيلديروب",     tr: "Andreas Schjelderup" },
+  "Antonio Nusa":          { ar: "أنطونيو نوسا",         tr: "Antonio Nusa" },
+  "Thelo Aasgaard":        { ar: "ثيلو أوسغارد",         tr: "Thelo Aasgaard" },
+  "Mikel Merino":          { ar: "ميكيل مرينو",          tr: "Mikel Merino" },
+  "Pedro Porro":           { ar: "بيدرو بورو",           tr: "Pedro Porro" },
+  "Álex Baena":            { ar: "أليكس باينا",          tr: "Álex Baena" },
+  "Leroy Sané":            { ar: "ليروي زانيه",          tr: "Leroy Sané" },
+  "Azzedine Ounahi":       { ar: "عز الدين أوناحي",      tr: "Azzedine Ounahi" },
+  "Achraf Hakimi":         { ar: "أشرف حكيمي",           tr: "Achraf Hakimi" },
+  "Issa Diop":             { ar: "عيسى ديوب",            tr: "Issa Diop" },
+  "Casemiro":              { ar: "كاسيميرو",             tr: "Casemiro" },
+  "Gabriel Martinelli":    { ar: "غابرييل مارتينيلي",    tr: "Gabriel Martinelli" },
+  "Neymar":                { ar: "نيمار",                tr: "Neymar" },
+  "Mahmoud Saber":         { ar: "محمود صابر",           tr: "Mahmoud Saber" },
+  "Yasser Ibrahim":        { ar: "ياسر إبراهيم",         tr: "Yasser Ibrahim" },
+  "Malik Tillman":         { ar: "مالك تيلمان",          tr: "Malik Tillman" },
+  "Auston Trusty":         { ar: "أوستن تراستي",         tr: "Auston Trusty" },
+  "Sebastian Berhalter":   { ar: "سيباستيان بيرهالتر",   tr: "Sebastian Berhalter" },
+  "Jan Paul van Hecke":    { ar: "يان بول فان هيكه",     tr: "Jan Paul van Hecke" },
+  "Habib Diarra":          { ar: "حبيب ديارا",           tr: "Habib Diarra" },
+  "Pape Gueye":            { ar: "بابا غاي",             tr: "Pape Gueye" },
+  "Iliman Ndiaye":         { ar: "إليمان نداي",          tr: "Iliman Ndiaye" },
+  "Stephan Eustáquio":     { ar: "ستيفان يوستاكيو",      tr: "Stephan Eustáquio" },
+  "Daizen Maeda":          { ar: "دايزن مايدا",          tr: "Daizen Maeda" },
+  "Kaishu Sano":           { ar: "كايشو سانو",           tr: "Kaishu Sano" },
+  "Gonçalo Ramos":         { ar: "غونسالو راموس",        tr: "Gonçalo Ramos" },
+  "Ivan Perisic":          { ar: "إيفان بيريشيتش",       tr: "Ivan Perisic" },
+  "Nikola Vlasic":         { ar: "نيكولا فلاشيتش",       tr: "Nikola Vlasic" },
+  "Petar Sucic":           { ar: "بيتار سوتشيتش",        tr: "Petar Sucic" },
+  "Riyad Mahrez":          { ar: "رياض محرز",            tr: "Riyad Mahrez" },
+  "Rafik Belghali":        { ar: "رفيق بلغالي",          tr: "Rafik Belghali" },
+  "Marcel Sabitzer":       { ar: "مارسيل زابيتسر",       tr: "Marcel Sabitzer" },
+  "Sasa Kalajdzic":        { ar: "ساشا كالايجيتش",       tr: "Sasa Kalajdzic" },
+  "Deroy Duarte":          { ar: "ديروي دوارتي",         tr: "Deroy Duarte" },
+  "Diney Borges":          { ar: "ديني بورجيس",          tr: "Diney Borges" },
+  "Hélio Varela":          { ar: "هيليو فاريلا",         tr: "Hélio Varela" },
+  "Sidny Lopes Cabral":    { ar: "سيدني لوبيز كابرال",   tr: "Sidny Lopes Cabral" },
+  "Jhon Arias":            { ar: "جون أرياس",            tr: "Jhon Arias" },
+  "Brian Cipenga":         { ar: "براين سيبينغا",        tr: "Brian Cipenga" },
+  "Fiston Mayele":         { ar: "فيستون مايلي",         tr: "Fiston Mayele" },
+  "Nicolas Pépé":          { ar: "نيكولا بيبيه",         tr: "Nicolas Pépé" },
+  "Mousa Al-Tamari":       { ar: "موسى التعمري",         tr: "Musa Al-Tamari" },
+  "Julio Enciso":          { ar: "خوليو إنسيسو",         tr: "Julio Enciso" },
+  "Mauricio":              { ar: "ماوريسيو",             tr: "Mauricio" },
+  "Arda Güler":            { ar: "أردا غولر",            tr: "Arda Güler" },
+  "Baris Alper Yilmaz":    { ar: "بارش ألبر يلماز",      tr: "Barış Alper Yılmaz" },
+  "Kaan Ayhan":            { ar: "كان آيهان",            tr: "Kaan Ayhan" },
+  "Gonzalo Plata":         { ar: "غونزالو بلاتا",        tr: "Gonzalo Plata" },
+  "Nilson Angulo":         { ar: "نيلسون أنغولو",        tr: "Nilson Angulo" },
+  "Derrick Luckassen":     { ar: "ديريك لوكاسن",         tr: "Derrick Luckassen" },
+  "Rodri":                 { ar: "رودري",                tr: "Rodri" },
+  "Unai Simón":            { ar: "أوناي سيمون",          tr: "Unai Simón" },
+  "Pau Cubarsí":           { ar: "باو كوبارسي",          tr: "Pau Cubarsí" }
 };
 
 // ─── UI / TEAM / VENUE TRANSLATIONS ────────────────────────────
@@ -167,6 +235,7 @@ const T = {
     cvBtn: "🔍 استعرض السيرة الذاتية للمطور ←",
     changelogTitle: "سجل التغييرات",
     changelog: [
+      { v:"v4.2", date:"4 يوليو 2026", title:"أيقونة التطبيق", desc:"إضافة أيقونة مخصصة لكأس العالم بدل الأيقونة الافتراضية." },
       { v:"v4.1", date:"3 يوليو 2026", title:"إعادة هيكلة كاملة", desc:"إعادة بناء التطبيق بالكامل: فصل البيانات والترجمة عن الكود بثلاث ملفات مستقلة (index.html، data.json، translations.js) — تحديث النتائج صار بتعديل ملف بيانات بس، بدون لمس الكود." },
       { v:"v4.0", date:"1 يوليو 2026", title:"كروت الفرق", desc:"إضافة كرت تفاعلي لكل فريق يعرض تصنيف الفيفا والاتحاد القاري ومشوار الفريق الكامل بالبطولة — اضغط على اسم أو علم أي فريق." },
       { v:"v3.5", date:"25 يونيو 2026", title:"إعادة هيكلة التبويبات", desc:"إعادة هيكلة التبويبات ودمج المباريات والمجموعات والإقصاءات ضمن تاب واحد مع تبويبات ثانوية. إصلاحات عامة ورتوشات." },
@@ -186,6 +255,7 @@ const T = {
     r32: "دور الـ32", r16: "دور الـ16", qf: "ربع النهائي", sf: "نصف النهائي",
     unknown: "؟",
     fifaRank: "تصنيف الفيفا",
+    worldChampion: "بطل كأس العالم",
     roadToHere: "مشوار الفريق بالبطولة",
     noMatchesYet: "لسا ما لعب أي مباراة",
     confederations: {
@@ -257,6 +327,7 @@ const T = {
     cvBtn: "🔍 View Developer's Portfolio & CV →",
     changelogTitle: "Changelog",
     changelog: [
+      { v:"v4.2", date:"4 Jul 2026", title:"App Icon", desc:"Added a custom World Cup trophy icon in place of the default browser icon." },
       { v:"v4.1", date:"3 Jul 2026", title:"Full Rebuild", desc:"Rebuilt the app from the ground up: data and translations split from the code into three independent files (index.html, data.json, translations.js) — updating results now only means editing a data file, no code changes needed." },
       { v:"v4.0", date:"1 Jul 2026", title:"Team Cards", desc:"Added an interactive card for every team showing FIFA ranking, confederation, and their full road through the tournament — tap any team name or flag." },
       { v:"v3.5", date:"25 Jun 2026", title:"Tab Restructure & General Fixes", desc:"Restructured tabs: Matches, Groups, and Knockout merged under one tab with sub-navigation. General fixes and polish." },
@@ -276,6 +347,7 @@ const T = {
     r32: "Round of 32", r16: "Round of 16", qf: "Quarter-finals", sf: "Semi-finals",
     unknown: "?",
     fifaRank: "FIFA Ranking",
+    worldChampion: "World Champion",
     roadToHere: "Road to Here",
     noMatchesYet: "No matches played yet",
     confederations: {
@@ -347,6 +419,7 @@ const T = {
     cvBtn: "🔍 Geliştiricinin Özgeçmişini Görüntüle →",
     changelogTitle: "Sürüm Geçmişi",
     changelog: [
+      { v:"v4.2", date:"4 Tem 2026", title:"Uygulama Simgesi", desc:"Varsayılan tarayıcı simgesi yerine özel bir Dünya Kupası kupası simgesi eklendi." },
       { v:"v4.1", date:"3 Tem 2026", title:"Tam Yeniden Yapılanma", desc:"Uygulama sıfırdan yeniden inşa edildi: veri ve çeviriler koddan ayrılıp üç bağımsız dosyaya taşındı (index.html, data.json, translations.js) — artık sonuç güncellemek sadece bir veri dosyasını düzenlemek demek, kod değişikliği gerekmiyor." },
       { v:"v4.0", date:"1 Tem 2026", title:"Takım Kartları", desc:"Her takım için FIFA sıralaması, konfederasyon ve turnuvadaki tüm yolculuğunu gösteren etkileşimli kart eklendi — herhangi bir takım adına veya bayrağına dokunun." },
       { v:"v3.5", date:"25 Haz 2026", title:"Sekme Yeniden Yapılandırması & Genel Düzeltmeler", desc:"Sekmeler yeniden yapılandırıldı: Maçlar, Gruplar ve Eleme alt gezinmeyle tek sekmede birleştirildi. Genel düzeltmeler ve iyileştirmeler." },
@@ -366,6 +439,7 @@ const T = {
     r32: "Son 32", r16: "Son 16", qf: "Çeyrek Final", sf: "Yarı Final",
     unknown: "?",
     fifaRank: "FIFA Sıralaması",
+    worldChampion: "Dünya Şampiyonu",
     roadToHere: "Buraya Kadarki Yolculuk",
     noMatchesYet: "Henüz maç oynamadı",
     confederations: {
@@ -411,6 +485,36 @@ const T = {
 
 // ─── FUN FACTS ──────────────────────────────────────────────────
 const FACTS = [
+  {
+    ar: "بفوزها بلقب 2026، إسبانيا صارت تاني لقب عالمي إلها بعد 2010 — وبهيك، إنجلترا (بطلة 1966) بتضل الوحيدة بين كل الدول يلي فازت بكأس العالم قبل هيك وما عندها غير لقب واحد بس، بينما كل الباقي (البرازيل، ألمانيا، إيطاليا، الأرجنتين، فرنسا، الأوروغواي، وإسبانيا هلق) عندهم لقبين أو أكتر.",
+    en: "With their 2026 triumph, Spain now has two world titles, having first won in 2010. That leaves England (champions in 1966) as the only former winner with just a single title — every other champion (Brazil, Germany, Italy, Argentina, France, Uruguay, and now Spain) has won it at least twice.",
+    tr: "2026 zaferiyle İspanya, 2010'dan sonra ikinci dünya şampiyonluğunu kazandı. Bu da İngiltere'yi (1966 şampiyonu) tek şampiyonluğu olan tek eski galip ülke olarak bırakıyor — diğer tüm şampiyonlar (Brezilya, Almanya, İtalya, Arjantin, Fransa, Uruguay ve şimdi İspanya) en az iki kez kazandı."
+  },
+  {
+    ar: "إسبانيا ما استقبلت غير هدف وحيد بكامل البطولة (7 مباريات) — أقوى دفاع بتاريخ كأس العالم الحديث لمنتخب بطل.",
+    en: "Spain conceded just a single goal in the entire tournament (7 matches) — one of the stingiest defensive campaigns by a champion in modern World Cup history.",
+    tr: "İspanya, tüm turnuva boyunca (7 maç) sadece bir gol yedi — modern Dünya Kupası tarihinde bir şampiyonun en sağlam savunma kampanyalarından biri."
+  },
+  {
+    ar: "إنزو فرنانديز طرد بالدقيقة 90+3 بنهائي الأرجنتين، ما خلى الألبيسيليستي يكمل الوقت الإضافي بـ10 لاعبين — أول طرد بنهائي كأس عالم منذ زيدان 2006.",
+    en: "Enzo Fernández was sent off in the 90+3rd minute of the final, leaving Argentina to play extra time with 10 men — the first red card in a World Cup final since Zidane's in 2006.",
+    tr: "Enzo Fernández, finalin 90+3. dakikasında kırmızı kart gördü ve Arjantin uzatmaları 10 kişi oynadı — 2006'da Zidane'den bu yana bir Dünya Kupası finalindeki ilk kırmızı kart."
+  },
+  {
+    ar: "مباراة المركز الثالث كانت مجنونة: إنجلترا فازت 6-4 على فرنسا بهاتريك لبوكايو ساكا — أكتر مباراة أهدافاً بكامل النسخة (10 أهداف).",
+    en: "The third-place match was a thriller: England beat France 6-4, with a Bukayo Saka hat-trick — the highest-scoring match of the entire tournament (10 goals).",
+    tr: "Üçüncülük maçı çılgın geçti: İngiltere, Fransa'yı Bukayo Saka'nın hat-trick'iyle 6-4 yendi — turnuvanın en golcü maçı (10 gol)."
+  },
+  {
+    ar: "مبابي سجل هدفين بمباراة المركز الثالث ليختم البطولة بـ10 أهداف — بس ما كفت عشان تفوز فرنسا بالحذاء الذهبي بعد خسارتها 4-6.",
+    en: "Mbappé scored twice in the third-place match to finish the tournament with 10 goals — though it wasn't enough as France fell 4-6.",
+    tr: "Mbappé, üçüncülük maçında iki gol atarak turnuvayı 10 golle tamamladı — ancak Fransa'nın 4-6 kaybetmesini engelleyemedi."
+  },
+  {
+    ar: "من المرجّح إنه ميسي (39 سنة) لعب آخر مباراة له بمسيرته بكأس العالم بهالنهائي — والمفارقة إنها بنفس ملعب ميتلايف بنيوجيرسي يلي أعلن فيه اعتزاله الدولي سنة 2016، قبل ما يعدل عن قراره ويرجع.",
+    en: "Messi (39) likely played his final World Cup match in the final — fittingly at the same MetLife Stadium where he announced his (short-lived) international retirement back in 2016.",
+    tr: "Messi (39), muhtemelen finalde son Dünya Kupası maçını oynadı — 2016'da (kısa süreli) millî takım emekliliğini açıkladığı aynı MetLife Stadyumu'nda."
+  },
   {
     ar: "قبل لعب النهائي، كان ميسي ومبابي متعادلين بصدارة هدافي البطولة بـ8 أهداف لكل واحد، وهالاند تالتهم بـ7 أهداف — أقوى منافسة على الحذاء الذهبي منذ سنين.",
     en: "Heading into the final, Messi and Mbappé were tied atop the Golden Boot race with 8 goals each, with Haaland just one behind on 7 — one of the tightest scoring races in years.",
