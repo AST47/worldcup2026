@@ -201,7 +201,13 @@ const PLAYER_NAMES = {
   "Derrick Luckassen":     { ar: "ديريك لوكاسن",         tr: "Derrick Luckassen" },
   "Rodri":                 { ar: "رودري",                tr: "Rodri" },
   "Unai Simón":            { ar: "أوناي سيمون",          tr: "Unai Simón" },
-  "Pau Cubarsí":           { ar: "باو كوبارسي",          tr: "Pau Cubarsí" }
+  "Pau Cubarsí":           { ar: "باو كوبارسي",          tr: "Pau Cubarsí" },
+  "Declan Rice":           { ar: "ديكلان رايس",          tr: "Declan Rice" },
+  "Ezri Konsa":            { ar: "إزري كونسا",           tr: "Ezri Konsa" },
+  "Ferran Torres":         { ar: "فيران توريس",          tr: "Ferran Torres" },
+  "Ellyes Skhiri":         { ar: "إلياس السخيري",        tr: "Ellyes Skhiri" },
+  "Hazem Mastouri":        { ar: "حازم مستوري",          tr: "Hazem Mastouri" },
+  "Eldor Shomurodov":      { ar: "إلدور شوموردوف",       tr: "Eldor Shomurodov" }
 };
 
 // ─── UI / TEAM / VENUE TRANSLATIONS ────────────────────────────
@@ -235,6 +241,7 @@ const T = {
     cvBtn: "🔍 استعرض السيرة الذاتية للمطور ←",
     changelogTitle: "سجل التغييرات",
     changelog: [
+      { v:"v4.3", date:"19 يوليو 2026", title:"ختام البطولة", desc:"إضافة سنين الألقاب السابقة لكرت كل فريق، علم الفريق البطل فوق مباراة النهائي، قسم جوائز البطولة (الكرة الذهبية، الحذاء الذهبي، القفاز الذهبي، أفضل لاعب شاب) بتاب الإحصائيات، والتطبيق هلق بيفتح مباشرة على مرحلة الإقصاءات." },
       { v:"v4.2", date:"4 يوليو 2026", title:"أيقونة التطبيق", desc:"إضافة أيقونة مخصصة لكأس العالم بدل الأيقونة الافتراضية." },
       { v:"v4.1", date:"3 يوليو 2026", title:"إعادة هيكلة كاملة", desc:"إعادة بناء التطبيق بالكامل: فصل البيانات والترجمة عن الكود بثلاث ملفات مستقلة (index.html، data.json، translations.js) — تحديث النتائج صار بتعديل ملف بيانات بس، بدون لمس الكود." },
       { v:"v4.0", date:"1 يوليو 2026", title:"كروت الفرق", desc:"إضافة كرت تفاعلي لكل فريق يعرض تصنيف الفيفا والاتحاد القاري ومشوار الفريق الكامل بالبطولة — اضغط على اسم أو علم أي فريق." },
@@ -327,6 +334,7 @@ const T = {
     cvBtn: "🔍 View Developer's Portfolio & CV →",
     changelogTitle: "Changelog",
     changelog: [
+      { v:"v4.3", date:"19 Jul 2026", title:"Tournament Wrap-Up", desc:"Added past title years to each team's card, a champion flag banner above the final match, a tournament awards section (Golden Ball, Golden Boot, Golden Glove, Best Young Player) in the Stats tab, and the app now opens directly on the Knockout stage." },
       { v:"v4.2", date:"4 Jul 2026", title:"App Icon", desc:"Added a custom World Cup trophy icon in place of the default browser icon." },
       { v:"v4.1", date:"3 Jul 2026", title:"Full Rebuild", desc:"Rebuilt the app from the ground up: data and translations split from the code into three independent files (index.html, data.json, translations.js) — updating results now only means editing a data file, no code changes needed." },
       { v:"v4.0", date:"1 Jul 2026", title:"Team Cards", desc:"Added an interactive card for every team showing FIFA ranking, confederation, and their full road through the tournament — tap any team name or flag." },
@@ -419,6 +427,7 @@ const T = {
     cvBtn: "🔍 Geliştiricinin Özgeçmişini Görüntüle →",
     changelogTitle: "Sürüm Geçmişi",
     changelog: [
+      { v:"v4.3", date:"19 Tem 2026", title:"Turnuva Kapanışı", desc:"Her takımın kartına geçmiş şampiyonluk yılları, final maçının üzerine şampiyon bayrağı, İstatistik sekmesine turnuva ödülleri bölümü (Altın Top, Altın Ayakkabı, Altın Eldiven, En İyi Genç Oyuncu) eklendi; uygulama artık doğrudan Eleme aşamasıyla açılıyor." },
       { v:"v4.2", date:"4 Tem 2026", title:"Uygulama Simgesi", desc:"Varsayılan tarayıcı simgesi yerine özel bir Dünya Kupası kupası simgesi eklendi." },
       { v:"v4.1", date:"3 Tem 2026", title:"Tam Yeniden Yapılanma", desc:"Uygulama sıfırdan yeniden inşa edildi: veri ve çeviriler koddan ayrılıp üç bağımsız dosyaya taşındı (index.html, data.json, translations.js) — artık sonuç güncellemek sadece bir veri dosyasını düzenlemek demek, kod değişikliği gerekmiyor." },
       { v:"v4.0", date:"1 Tem 2026", title:"Takım Kartları", desc:"Her takım için FIFA sıralaması, konfederasyon ve turnuvadaki tüm yolculuğunu gösteren etkileşimli kart eklendi — herhangi bir takım adına veya bayrağına dokunun." },
